@@ -1,0 +1,9 @@
+{
+  "name": "infinity",
+  "version": "1.0.0",
+  "description": "Infinity is a puzzle hunt server written for inteGIRLS.",
+  "main": "app.js",
+  "repository": "https://github.com/itsmingjie/infinity",
+  "author": "Mingjie Jiang<jiang@mingjie.dev>",
+  "license": "MIT"
+}
