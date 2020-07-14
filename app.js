@@ -4,7 +4,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const app = express()
 const http = require('http').createServer(app)
-const mongo = require('mongodb')
 
 // Import all env variables from .env
 require('dotenv').config()

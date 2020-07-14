@@ -11,14 +11,11 @@
   },
   "scripts": {
     "lint": "standard",
-    "start": "node app.js",
-    "db:start": "mongod --quiet --dbpath db --bind_ip_all & echo",
-    "db:stop": "mongod --dbpath db --shutdown"
+    "start": "node app.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
     "eslint-config-standard": "^14.1.1",
-    "express": "^4.17.1",
-    "mongodb": "^3.5.9"
+    "express": "^4.17.1"
   }
 }
