@@ -5,5 +5,20 @@
   "main": "app.js",
   "repository": "https://github.com/itsmingjie/infinity",
   "author": "Mingjie Jiang<jiang@mingjie.dev>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "*"
+  },
+  "scripts": {
+    "lint": "standard",
+    "start": "node app.js",
+    "db:start": "mongod --quiet --dbpath db --bind_ip_all & echo",
+    "db:stop": "mongod --dbpath db --shutdown"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "eslint-config-standard": "^14.1.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.9"
+  }
 }
