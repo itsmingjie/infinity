@@ -2,8 +2,6 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
----
-
 <a href="https://integirls.org"><img align="right" width="150" src="docs/logo.png" title="inteGIRLS Logo"></a>
 
 
