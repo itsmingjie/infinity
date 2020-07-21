@@ -214,3 +214,6 @@ $RECYCLE.BIN/
 
 ### MongoDB ###
 db
+
+*.css
+public

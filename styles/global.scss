@@ -1,0 +1,90 @@
+@import '../node_modules/bulma/sass/utilities/initial-variables.sass';
+
+@import '../node_modules/bulma/sass/utilities/functions.sass';
+
+@font-face {
+  font-family: 'Disket Mono';
+  src: '/assets/fonts/Disket-Mono-Regular.ttf' format('truetype');
+}
+
+@font-face {
+  font-family: 'Disket Mono';
+  src: '/assets/fonts/Disket-Mono-Bold.ttf' format('truetype');
+  font-weight: bold;
+}
+
+$family-monospace: 'Disket Mono', monospace;
+$family-primary: $family-monospace;
+
+$dark: #121217;
+$link: #719df0;
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-Content {
+  flex: 1;
+}
+
+.is-brand {
+  background: linear-gradient(45deg, #613dc1 0%, #e2856e 100%);
+
+  &.button {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  &.hero {
+    margin-bottom: 2rem;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    &.is-fullheight {
+      margin-bottom: 0;
+    }
+  }
+}
+
+button.button,
+a.button {
+  border-radius: 20px;
+}
+
+div.footer {
+  padding-bottom: 3em;
+
+  .hidden {
+    display: none;
+  }
+
+  #copyright {
+    font-weight: 800;
+    color: #4a4a4a !important;
+    cursor: default;
+
+    -webkit-user-select: none; /* Chrome all / Safari all */
+    -moz-user-select: none; /* Firefox all */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Likely future */
+  }
+
+  #copyright:focus {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
+
+  #serverStat {
+    font-size: 14px;
+  }
+}
+
+@import '../node_modules/bulma/bulma.sass';

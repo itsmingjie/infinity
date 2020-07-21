@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const sassMiddleware = require('node-sass-middleware')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -28,7 +29,14 @@ app.use(
     saveUninitialized: true
   })
 )
-
+app.use(
+  sassMiddleware({
+    src: path.join(__dirname, './styles'),
+    dest: path.join(__dirname, './static/assets/styles'),
+    outputStyle: 'compressed',
+    prefix: '/assets/styles/'
+  })
+)
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -36,17 +44,30 @@ app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(express.static(path.join(__dirname, './static')))
+
+app.get('/', (req, res) => {
+  res.render('landing', {
+    title: 'Infinity ∞',
+    heroSize: 'fullheight'
+  })
+})
+
 app.get('/login', (req, res) => {
   console.log(req.isAuthenticated())
   if (req.isAuthenticated()) {
     res.redirect('/dashboard')
   } else {
-    res.render('login', { title: 'Login' })
+    res.render('account/login', { title: 'Login' })
   }
 })
 
 app.get('/register', (req, res) => {
-  res.render('register', { title: 'Register' })
+  res.render('account/register', { title: 'Register' })
+})
+
+app.get('/logout', (req, res) => {
+  res.redirect('/api/account/logout')
 })
 
 const apiRouter = express.Router()

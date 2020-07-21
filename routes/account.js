@@ -13,13 +13,21 @@ app.post('/create', (req, res) => {
   const name = req.body.name
   const password = req.body.password
 
-  db.createUser(name, password)
-    .then(() => {
-      res.send('Success')
+  if (name.indexOf('team_') === 0 && password !== '') {
+    db.createUser(name, password)
+      .then(() => {
+        res.send('Success')
+      })
+      .catch((e) => {
+        res.render('error', { error: e, title: 'Error' })
+      })
+  } else {
+    res.render('error', {
+      error:
+        'Invalid account details. Team ID must start with "team_", and password must not be empty.',
+      title: 'Error'
     })
-    .catch((e) => {
-      res.render('error', { error: e, title: 'Error' })
-    })
+  }
 })
 
 app.post(
@@ -38,4 +46,10 @@ app.post(
     res.redirect('/')
   }
 )
+
+app.get('/logout', function (req, res) {
+  req.logout()
+  res.redirect('/')
+})
+
 module.exports = app
