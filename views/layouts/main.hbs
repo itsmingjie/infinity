@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="has-navbar-fixed-top">
 
 <head>
     <meta charset="utf-8" />
@@ -12,6 +12,8 @@
 
 <body>
     <div class="Site-Content">
+        {{>navbar}}
+
         <section class="hero is-brand is-{{#if heroSize}}{{heroSize}}{{else}}medium{{/if}}">
             <div class="hero-body">
                 <div class="container">

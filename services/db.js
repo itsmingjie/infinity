@@ -53,7 +53,7 @@ const validateUser = (name, password) => {
       .then((client) => {
         client
           .query(
-            'SELECT id, "name", "displayName", "password" FROM teams WHERE "name"=$1',
+            'SELECT id, "name", "displayName", "password", "admin" FROM teams WHERE TRIM("name")=$1',
             [name]
           )
           .then((res) => {
@@ -64,8 +64,9 @@ const validateUser = (name, password) => {
                 .compare(password, res.rows[0].password)
                 .then((check) => {
                   resolve({
-                    name: res.rows[0].name,
-                    displayName: res.rows[0].displayName
+                    name: res.rows[0].name.trim(),
+                    displayName: res.rows[0].displayName.trim(),
+                    isAdmin: res.rows[0].admin
                   })
                 })
                 .catch((e) => reject(new Error('Invalid Login')))
