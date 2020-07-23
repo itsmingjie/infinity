@@ -64,8 +64,11 @@ const validateUser = (name, password) => {
                 .compare(password, res.rows[0].password)
                 .then((check) => {
                   resolve({
+                    id: res.rows[0].id,
                     name: res.rows[0].name.trim(),
-                    displayName: res.rows[0].displayName.trim(),
+                    displayName: res.rows[0].displayName
+                      ? res.rows[0].displayName.trim()
+                      : null,
                     isAdmin: res.rows[0].admin
                   })
                 })
@@ -75,6 +78,14 @@ const validateUser = (name, password) => {
           .catch((e) => reject(e))
       })
       .catch((e) => reject(e))
+  })
+}
+
+const updateUser = (id, data) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client.query('UPDATE teams SET')
+    })
   })
 }
 

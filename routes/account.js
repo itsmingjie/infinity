@@ -16,14 +16,18 @@ app.post('/create', (req, res) => {
   if (name.indexOf('team_') === 0 && password !== '') {
     db.createUser(name, password)
       .then(() => {
-        res.send('Success')
+        res.render('message', {
+          message:
+            'Your account has been registered successfully. You may now proceed to log in.',
+          title: 'Registration Completed'
+        })
       })
       .catch((e) => {
-        res.render('error', { error: e, title: 'Error' })
+        res.render('message', { message: e, title: 'Error' })
       })
   } else {
-    res.render('error', {
-      error:
+    res.render('message', {
+      message:
         'Invalid account details. Team ID must start with "team_", and password must not be empty.',
       title: 'Error'
     })
@@ -33,7 +37,7 @@ app.post('/create', (req, res) => {
 app.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/team',
     failureRedirect: '/login'
   }),
   (req, res) => {
@@ -44,6 +48,20 @@ app.post(
     }
 
     res.redirect('/')
+  }
+)
+
+app.post(
+  '/update',
+  passport.authenticate('local', {
+    successRedirect: '/team',
+    failureRedirect: '/login'
+  }),
+  (req, res) => {
+    const data = {
+      displayName: req.body.displayName,
+      affiliation: req.body.affiliation
+    }
   }
 )
 

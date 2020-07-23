@@ -1,0 +1,44 @@
+<div class="field">
+  <label class="label">Team Login</label>
+  <div class="control">
+    <input class="input" type="text" value="{{team.name}}" disabled>
+  </div>
+  <p class="help">This is the unique identifier of your team. It's your team's login, and it's not public. You cannot
+    change it.</p>
+</div>
+
+<form action="/api/account/update" method="POST">
+  <div class="field">
+    <label class="label">Team Display Name</label>
+    <div class="control">
+      <input class="input" type="text" name="displayName" value="{{team.displayName}}">
+    </div>
+  </div>
+
+
+  <div class="field">
+    <label class="label">Affiliation (School, Club, etc.) {{>adminSymbol}}</label>
+    <div class="control">
+      <input class="input" type="text" name="affiliation" {{#if team.isAdmin}}value="Staff"
+        disabled{{else}}value="{{team.affiliation}}" {{/if}}>
+    </div>
+  </div>
+
+  {{#if team.isAdmin}}
+  <div class="adminOnly">
+    <div class="field">
+      <label class="label">Team ID</label>
+      <div class="control">
+        <input class="input" type="text" value="{{team.id}}" disabled>
+      </div>
+      <p class="help">This string makes zero sense to you, but it's incredibly important for us. Take good care of it,
+        would
+        you?</p>
+    </div>
+  </div>
+  {{/if}}
+
+  <div class="field">
+    <button class="button is-brand" type="submit">Save</button>
+  </div>
+</form>

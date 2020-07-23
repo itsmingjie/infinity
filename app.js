@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // always pass in the user credentials
 app.use((req, res, next) => {
-  res.locals.user = req.user
+  res.locals.team = req.user
   next()
 })
 
@@ -73,6 +73,10 @@ app.get('/register', (req, res) => {
   res.render('account/register', { title: 'Register' })
 })
 
+app.get('/team', utils.authCheck(false), (req, res) => {
+  res.render('account/team', { title: 'Team Profile' })
+})
+
 app.get('/logout', (req, res) => {
   res.redirect('/api/account/logout')
 })
@@ -84,7 +88,7 @@ app.use('/api', apiRouter)
 apiRouter.use('/account', require('./routes/account'))
 
 const adminRouter = express.Router()
-app.use('/admin', utils.adminOnly(), adminRouter)
+app.use('/admin', utils.authCheck(true), adminRouter)
 
 adminRouter.get('/', (req, res) => {
   res.render('admin/dashboard', { title: 'Dashboard' })
