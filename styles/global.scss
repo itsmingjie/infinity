@@ -2,9 +2,9 @@
 
 @import '../node_modules/bulma/sass/utilities/functions.sass';
 
-@import './fonts.scss';
+@import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap');
 
-$family-sans-serif: 'Mazzard', sans-serif;
+$family-sans-serif: 'Recursive', sans-serif;
 
 $dark: #121217;
 $link: #719df0;
