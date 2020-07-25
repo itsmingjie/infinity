@@ -7,6 +7,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const sassMiddleware = require('node-sass-middleware')
+const minifyHTML = require('express-minify-html')
+const compression = require('compression')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -40,6 +42,22 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(
+  minifyHTML({
+    override: true,
+    exception_url: false,
+    htmlMinifier: {
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeEmptyAttributes: true,
+      minifyJS: true,
+      minifyCSS: true
+    }
+  })
+)
+app.use(compression())
 
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
