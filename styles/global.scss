@@ -2,12 +2,15 @@
 
 @import '../node_modules/bulma/sass/utilities/functions.sass';
 
-@import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap');
-
 $family-sans-serif: 'Recursive', sans-serif;
 
 $dark: #121217;
 $link: #719df0;
+
+// Yosemite Gradient
+$gradient-start: #ea8d8d;
+$gradient-end: #a890fe;
+$yosemite: linear-gradient(45deg, $gradient-start 0%, $gradient-end 100%);
 
 body {
   display: flex;
@@ -20,7 +23,9 @@ body {
 }
 
 .is-brand {
-  background: linear-gradient(45deg, #613dc1 0%, #e2856e 100%);
+  background: $yosemite;
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
 
   &.button {
     font-weight: bold;
@@ -46,7 +51,20 @@ body {
 
 button.button,
 a.button {
-  border-radius: 20px;
+  font-weight: 600;
+  margin-top: 7px;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  outline: none;
+
+  &:hover {
+    background: $yosemite;
+    box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
+  }
 }
 
 .field {
@@ -94,6 +112,20 @@ div.footer {
 
   #serverStat {
     font-size: 14px;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
 

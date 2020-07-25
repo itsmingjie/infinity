@@ -5,7 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{title}} &ndash; ∞</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/styles/global.css" />
+    <link rel="icon" href="/assets/images/infinity.png" type="image/png" sizes="32x32">
 
     {{{block 'head-inject'}}}
 </head>
@@ -22,9 +25,11 @@
             </div>
         </section>
 
-        <div class="container main">
-            {{{body}}}
-        </div>
+        <section class="section">
+            <div class="container">
+                {{{body}}}
+            </div>
+        </section>
     </div>
 
     {{> footer}}
