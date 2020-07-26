@@ -73,6 +73,9 @@ const validateUser = (name, password) => {
                   })
                 })
                 .catch((e) => reject(new Error('Invalid Login')))
+                .finally(() => {
+                  client.release()
+                })
             }
           })
           .catch((e) => reject(e))

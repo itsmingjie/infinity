@@ -71,6 +71,10 @@ a.button {
   margin-bottom: 1.5rem;
 }
 
+div.navbar-dropdown {
+  border-radius: 4px;
+}
+
 .adminOnly::before {
   content: 'Warning: The following area is admin only. Be extra careful with the information and the controls!';
   color: orange;
