@@ -52,10 +52,7 @@ const validateUser = (name, password) => {
       .connect()
       .then((client) => {
         client
-          .query(
-            'SELECT id, "name", "displayName", "password", "admin" FROM teams WHERE TRIM("name")=$1',
-            [name]
-          )
+          .query('SELECT id, password FROM teams WHERE TRIM("name")=$1', [name])
           .then((res) => {
             if (res.rows[0] == null) {
               reject(new Error('Invalid Login'))
@@ -64,12 +61,7 @@ const validateUser = (name, password) => {
                 .compare(password, res.rows[0].password)
                 .then((check) => {
                   resolve({
-                    id: res.rows[0].id,
-                    name: res.rows[0].name.trim(),
-                    displayName: res.rows[0].displayName
-                      ? res.rows[0].displayName.trim()
-                      : null,
-                    isAdmin: res.rows[0].admin
+                    id: res.rows[0].id
                   })
                 })
                 .catch((e) => reject(new Error('Invalid Login')))
@@ -79,6 +71,41 @@ const validateUser = (name, password) => {
             }
           })
           .catch((e) => reject(e))
+      })
+      .catch((e) => reject(e))
+  })
+}
+
+const getUser = (id) => {
+  return new Promise((resolve, reject) => {
+    pool
+      .connect()
+      .then((client) => {
+        client
+          .query(
+            'SELECT id, "name", "displayName", "admin", "score", "banned" FROM teams WHERE id=$1',
+            [id]
+          )
+          .then((res) => {
+            if (res.rows[0] == null) {
+              reject(new Error('Invalid Login'))
+            } else {
+              resolve({
+                id: res.rows[0].id,
+                name: res.rows[0].name.trim(),
+                displayName: res.rows[0].displayName
+                  ? res.rows[0].displayName.trim()
+                  : null,
+                isAdmin: res.rows[0].admin,
+                isBanned: res.rows[0].banned,
+                score: res.rows[0].score
+              })
+            }
+          })
+          .catch((e) => reject(e))
+          .finally(() => {
+            client.release()
+          })
       })
       .catch((e) => reject(e))
   })
@@ -101,4 +128,4 @@ const hashPassword = (password) => {
   })
 }
 
-module.exports = { createUser, validateUser }
+module.exports = { createUser, validateUser, getUser }

@@ -1,0 +1,34 @@
+{{#level.fields}}
+<div class="columns cards">
+  {{#each Puzzles}}
+  <div class="column is-one-third">
+    <div class="card{{#unless unlocked}} locked{{/unless}}">
+      <header class="card-header is-brand">
+        <p class="card-header-title">
+          {{title}}
+        </p>
+
+        <p class="card-header-icon">
+          {{value}} pts
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          {{description}}
+        </div>
+
+      </div>
+
+      <footer class="card-footer">
+        {{#if unlocked}}
+        <a href="/game/puzzle/{{id}}" class="card-footer-item">Solve</a>
+        {{else}}
+        <p class="is-hint card-footer-item">This puzzle is locked.</p>
+        {{/if}}
+      </footer>
+    </div>
+  </div>
+  {{/each}}
+</div>
+
+{{/level.fields}}

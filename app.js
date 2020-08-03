@@ -16,6 +16,7 @@ const helpers = require('./lib/helpers')
 const passport = require('./lib/passport')
 const utils = require('./lib/utils')
 const hbs = exphbs.create({ helpers: helpers, extname: '.hbs' })
+const db = require('./services/db')
 const config = require('./config')
 
 app.use(
@@ -64,8 +65,8 @@ app.set('view engine', '.hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // always pass in the user credentials
-app.use((req, res, next) => {
-  res.locals.team = req.user
+app.use(async (req, res, next) => {
+  res.locals.team = req.user ? await db.getUser(req.user.id) : null
   next()
 })
 
@@ -113,12 +114,7 @@ app.use('/api', apiRouter)
 // All account-related operations
 apiRouter.use('/account', require('./routes/account'))
 
-const adminRouter = express.Router()
-app.use('/admin', utils.authCheck(true), adminRouter)
-
-adminRouter.get('/', (req, res) => {
-  res.render('admin/dashboard', { title: 'Dashboard' })
-})
+app.use('/admin', utils.authCheck(true), require('./routes/admin'))
 
 // Launch Server
 http.listen(config.port, () => {

@@ -1,1 +1,15 @@
-Welcome to the admin dashboard, {{user.displayName}}!
+<p>Welcome to the admin dashboard, {{team.displayName}}! All actions are logged via a third-party logging service.
+  Please be extra careful when performing maintenance tasks. Your UUID is <code>{{team.id}}</code>.</p>
+<hr />
+<div class="adminOnly">
+  <h1 class="title">Puzzles</h1>
+
+  <table class="table is-fullwidth is-hoverable">
+    <tbody>
+      <tr>
+        <td>Restock Puzzles</td>
+        <td><a class="button">Restock</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

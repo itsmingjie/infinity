@@ -21,14 +21,13 @@
 
     <div class="navbar-end">
       {{#if team}}
+      <div class="navbar-item">
+        Score: {{team.score}}
+      </div>
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link is-light" href="/team">
-          <span class="icon">
-            <i class="fas fa-user"></i>
-          </span>
-          &emsp;{{#if team.isAdmin}}{{>adminSymbol}}{{/if}}{{team.name}}
+          {{#if team.isAdmin}}{{>adminSymbol}}{{/if}}{{team.name}}
         </a>
-
         <div class="navbar-dropdown">
           {{#if team.isAdmin}}
           <a class="navbar-item" href="/admin">

@@ -18,15 +18,19 @@
         <div class="content">
           {{Description}}
         </div>
+
       </div>
       {{/fields}}
 
-      {{#if fields.Unlocked}}
       <footer class="card-footer">
-        <a href="/levels/{{id}}" class="card-footer-item">Enter World</a>
-        {{#if fields.Meta}}<a href="/puzzles/{{fields.Meta}}" class="card-footer-item">Meta Puzzle</a>{{/if}}
+        {{#if fields.Unlocked}}
+        <a href="/game/{{id}}" class="card-footer-item">Enter World</a>
+        {{#if fields.Meta}}<a href="/game/puzzle/{{fields.Meta}}" class="card-footer-item">Meta Puzzle</a>{{/if}}
+        {{else}}
+        <p class="is-hint card-footer-item">You must complete the previous world's Meta Puzzle in order to unlock this
+          level.</p>
+        {{/if}}
       </footer>
-      {{/if}}
     </div>
   </div>
   {{/each}}

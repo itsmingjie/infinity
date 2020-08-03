@@ -22,6 +22,12 @@ body {
   flex: 1;
 }
 
+.is-hint {
+  font-size: small;
+  font-style: italic;
+  color: gray;
+}
+
 .is-brand {
   background: $yosemite;
   animation: gradient 15s ease infinite;
@@ -151,9 +157,15 @@ div.footer {
       transform: translateY(-7px);
     }
 
+    &.locked {
+      filter: grayscale(1);
+      user-select: none;
+    }
+
     .card-header {
       border-radius: 4px;
       box-shadow: none;
+      color: #fff;
 
       .card-header-title {
         color: #fff;
@@ -163,6 +175,17 @@ div.footer {
     .card-footer-item {
       font-weight: bold;
     }
+  }
+}
+
+table {
+  td {
+    vertical-align: middle !important;
+  }
+
+  td:nth-child(1) {
+    font-weight: 800;
+    width: 20%;
   }
 }
 
