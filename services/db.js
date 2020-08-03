@@ -87,7 +87,7 @@ const validateUser = (name, password) => {
 const updateUser = (id, data) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
-      client.query('UPDATE teams SET')
+      client.query('UPDATE teams SET ')
     })
   })
 }

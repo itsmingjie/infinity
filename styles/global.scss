@@ -69,6 +69,13 @@ a.button {
 
 .field {
   margin-bottom: 1.5rem;
+
+  label {
+    .is-danger {
+      color: red;
+      font-weight: bold;
+    }
+  }
 }
 
 div.navbar-dropdown {
@@ -130,6 +137,32 @@ div.footer {
 
   100% {
     background-position: 0% 50%;
+  }
+}
+
+.cards {
+  .card {
+    margin-bottom: 2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease 0s;
+
+    &:not(.locked):hover {
+      box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
+      transform: translateY(-7px);
+    }
+
+    .card-header {
+      border-radius: 4px;
+      box-shadow: none;
+
+      .card-header-title {
+        color: #fff;
+      }
+    }
+
+    .card-footer-item {
+      font-weight: bold;
+    }
   }
 }
 

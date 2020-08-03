@@ -14,6 +14,8 @@ Please contact me at [hi@mingjie.dev](mailto:hi@mingjie.dev) before reusing this
 1. Create `.env` with the following configurations:
    - `DB_URI`: The PostgreSQL Connection URI.
    - `PORT`: The port the application should run on. Default `3000`.
+   - `AIRTABLE_KEY`: API Key from Airtable.
+   - `AIRTABLE_BASE`: Base ID from Airtable, where the problems and solutions are stored.
 1. Start the initialized PostgreSQL server `service postgresql start`.
    - WIP: Queries to initialize the database will be added in a later update, once all the structures are set in.
 1. Start application with `yarn start`.

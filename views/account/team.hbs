@@ -7,7 +7,7 @@
     change it.</p>
 </div>
 
-<form action="/api/account/update" method="POST">
+<form action="/api/account/update/{{team.id}}" method="POST">
   <div class="field">
     <label class="label">Team Display Name</label>
     <div class="control">
@@ -24,6 +24,10 @@
     </div>
   </div>
 
+  <!-- Admin Only Section -->
+  <!-- WARNING: Be sure to server-check the prvileges when updating user data or users will potentially
+  be able to self-grant admin perms. -->
+
   {{#if team.isAdmin}}
   <div class="adminOnly">
     <div class="field">
@@ -34,6 +38,23 @@
       <p class="help">This string makes zero sense to you, but it's incredibly important for us. Take good care of it,
         would
         you?</p>
+    </div>
+
+    <div class="field">
+      <label class="label">Special Privileges</label>
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" name="admin" {{#if team.isAdmin}}checked{{/if}}>
+          Admin User &mdash; <span class="is-danger">Be extra careful!</span> {{>adminSymbol}}
+        </label>
+      </div>
+
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" name="banned" {{#if team.isBanned}}checked{{/if}}>
+          User Banned &mdash; Banned users will be locked out of Infinity.
+        </label>
+      </div>
     </div>
   </div>
   {{/if}}

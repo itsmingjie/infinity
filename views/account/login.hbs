@@ -1,3 +1,9 @@
+{{#if requested}}
+<div class="notification is-danger is-light">
+    You must be logged in to access <code>{{path}}</code>.
+</div>
+{{/if}}
+
 <form action="/api/account/login" method="POST">
     <div class="field">
         <label class="label">Team Name</label>
@@ -12,6 +18,10 @@
             <input class="input" type="password" placeholder="********" name="password" required>
         </div>
     </div>
+
+    {{#if requested}}
+    <input class="input is-hidden" type="text" name="redirectURL" value="{{path}}" required>
+    {{/if}}
 
     <label class="checkbox">
         <input type="checkbox" name="remember">

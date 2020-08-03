@@ -79,11 +79,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  console.log(req.isAuthenticated())
+  const requested = req.query.requested
+  const path = req.query.path
+
   if (req.isAuthenticated()) {
-    res.redirect('/dashboard')
+    res.redirect('/team')
   } else {
-    res.render('account/login', { title: 'Login' })
+    res.render('account/login', {
+      title: 'Login',
+      requested: requested,
+      path: path
+    })
   }
 })
 
@@ -98,6 +104,8 @@ app.get('/team', utils.authCheck(false), (req, res) => {
 app.get('/logout', (req, res) => {
   res.redirect('/api/account/logout')
 })
+
+app.use('/game', utils.authCheck(false), require('./routes/game'))
 
 const apiRouter = express.Router()
 app.use('/api', apiRouter)

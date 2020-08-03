@@ -7,6 +7,7 @@ const express = require('express')
 const app = express.Router()
 const db = require('../services/db')
 const passport = require('../lib/passport')
+const messages = require('../lib/messages')
 
 // Temporary route strictly for internal use, remove later
 app.post('/create', (req, res) => {
@@ -58,9 +59,22 @@ app.post(
     failureRedirect: '/login'
   }),
   (req, res) => {
-    const data = {
-      displayName: req.body.displayName,
-      affiliation: req.body.affiliation
+    const id = req.query.id
+
+    if (id !== req.user.id && !req.user.isAdmin) {
+      // unauthorized access
+      res.render('message', messages.unauthorizedAdmin)
+    } else {
+      const data = {}
+      if (req.user.isAdmin) {
+        // elevated control (includes permission settings)
+        data.admin = req.body.admin
+        data.verified = req.body.verified
+      }
+
+      // general user control
+      data.displayName = req.body.displayName
+      data.affiliation = req.body.affiliation
     }
   }
 )

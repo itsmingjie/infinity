@@ -1,0 +1,33 @@
+<div class="columns cards">
+  {{#each levels}}
+  <div class="column is-half">
+    <div class="card{{#unless fields.Unlocked}} locked{{/unless}}">
+      <header class="card-header is-brand">
+        {{#fields}}
+        <p class="card-header-title">
+          World {{bump @index}} &mdash; {{Title}}
+        </p>
+
+        {{#unless Unlocked}}
+        <span class="card-header-icon" aria-label="Locked">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+        </span>
+        {{/unless}}
+      </header>
+      <div class="card-content">
+        <div class="content">
+          {{Description}}
+        </div>
+      </div>
+      {{/fields}}
+
+      {{#if fields.Unlocked}}
+      <footer class="card-footer">
+        <a href="/levels/{{id}}" class="card-footer-item">Enter World</a>
+        {{#if fields.Meta}}<a href="/puzzles/{{fields.Meta}}" class="card-footer-item">Meta Puzzle</a>{{/if}}
+      </footer>
+      {{/if}}
+    </div>
+  </div>
+  {{/each}}
+</div>

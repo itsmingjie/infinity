@@ -13,10 +13,11 @@
 
   <div id="navbar-menu" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
-        Rules
+      <a class="navbar-item" href="/game">
+        Puzzles
       </a>
     </div>
+
 
     <div class="navbar-end">
       {{#if team}}
@@ -29,6 +30,12 @@
         </a>
 
         <div class="navbar-dropdown">
+          {{#if team.isAdmin}}
+          <a class="navbar-item" href="/admin">
+            {{>adminSymbol}}Admin
+          </a>
+          {{/if}}
+
           <a class="navbar-item" href="/logout">
             Log Out
           </a>
