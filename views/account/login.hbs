@@ -4,7 +4,7 @@
 </div>
 {{/if}}
 
-<form action="/api/account/login" method="POST">
+<form action="/account/login" method="POST">
     <div class="field">
         <label class="label">Team Name</label>
         <div class="control">
@@ -28,5 +28,15 @@
         Remember me
     </label>
 
-    <button class="button is-pulled-right" type="submit">Login</button>
+    <button class="button is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit'
+        data-action='submit'>Login</button>
 </form>
+
+{{#extend "foot-inject"}}
+<script src="https://www.google.com/recaptcha/api.js" defer></script>
+<script>
+    function onSubmit(token) {
+        document.querySelector("form").submit();
+    }
+</script>
+{{/extend}}

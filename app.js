@@ -72,49 +72,7 @@ app.use(async (req, res, next) => {
 
 app.use(express.static(path.join(__dirname, './static')))
 
-app.get('/', (req, res) => {
-  res.render('landing', {
-    title: 'Infinity ∞',
-    heroSize: 'fullheight'
-  })
-})
-
-app.get('/login', (req, res) => {
-  const requested = req.query.requested
-  const path = req.query.path
-
-  if (req.isAuthenticated()) {
-    res.redirect('/team')
-  } else {
-    res.render('account/login', {
-      title: 'Login',
-      requested: requested,
-      path: path
-    })
-  }
-})
-
-app.get('/register', (req, res) => {
-  res.render('account/register', { title: 'Register' })
-})
-
-app.get('/team', utils.authCheck(false), (req, res) => {
-  res.render('account/team', { title: 'Team Profile' })
-})
-
-app.get('/logout', (req, res) => {
-  res.redirect('/api/account/logout')
-})
-
-app.use('/game', utils.authCheck(false), require('./routes/game'))
-
-const apiRouter = express.Router()
-app.use('/api', apiRouter)
-
-// All account-related operations
-apiRouter.use('/account', require('./routes/account'))
-
-app.use('/admin', utils.authCheck(true), require('./routes/admin'))
+app.use(require('./routes/index'))
 
 // Launch Server
 http.listen(config.port, () => {

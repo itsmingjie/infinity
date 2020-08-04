@@ -1,4 +1,4 @@
-<form action="/api/account/create" method="POST">
+<form action="/account/create" method="POST">
     <div class="field">
         <label class="label">Team Name</label>
         <div class="control">
@@ -13,5 +13,15 @@
         </div>
     </div>
 
-    <button class="button is-pulled-right" type="submit">Create Account</button>
+    <button class="button is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit'
+        data-action='submit'>Create Account</button>
 </form>
+
+{{#extend "foot-inject"}}
+<script src="https://www.google.com/recaptcha/api.js" defer></script>
+<script>
+    function onSubmit(token) {
+        document.querySelector("form").submit();
+    }
+</script>
+{{/extend}}
