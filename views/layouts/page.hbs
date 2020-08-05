@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}} &ndash; ∞</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles/global.css" />
+  <link rel="icon" href="/assets/images/infinity.png" type="image/png" sizes="32x32">
+
+  {{{block 'head-inject'}}}
+
+  <style>
+    p {
+      font-size: 1em;
+      margin-bottom: 1rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      border-bottom: 1px solid #dddddd;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    ul,
+    li {
+      margin-left: 2rem;
+      padding-left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="Site-Content">
+    {{>navbar}}
+
+    <section class="section">
+      <div class="container">
+        {{{body}}}
+      </div>
+    </section>
+  </div>
+
+  {{> footer}}
+
+  <script src="/assets/scripts/global.js" type="text/javascript" defer></script>
+  <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" type="text/javascript" defer></script>
+  {{{block 'foot-inject'}}}
+</body>
+
+</html>
