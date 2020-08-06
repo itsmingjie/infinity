@@ -20,6 +20,10 @@ body {
 
 .Site-Content {
   flex: 1;
+
+  p {
+    margin-bottom: 1rem;
+  }
 }
 
 .is-hint {
@@ -71,6 +75,10 @@ a.button {
     color: #fff;
     transform: translateY(-7px);
   }
+
+  &.is-fullwidth {
+    width: 100%;
+  }
 }
 
 .field {
@@ -81,6 +89,15 @@ a.button {
       color: red;
       font-weight: bold;
     }
+  }
+}
+
+.control .button,
+.button.noFloat {
+  margin-top: 0;
+
+  &:hover {
+    transform: none;
   }
 }
 
@@ -187,6 +204,29 @@ table {
     font-weight: 800;
     width: 20%;
   }
+}
+
+.iframe-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
+  border-radius: 10px;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+form#submission {
+  margin-top: 2rem;
 }
 
 @import '../node_modules/bulma/bulma.sass';

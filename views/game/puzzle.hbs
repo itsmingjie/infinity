@@ -1,0 +1,42 @@
+{{#puzzle.fields}}
+
+<p>{{Description}}</p>
+
+<!-- For puzzles linked to an external site -->
+{{#eq Type "Link"}}
+<p>This puzzle is hosted on an external site. <a class="is-uppercase has-text-weight-bold" href="{{../URL}}"
+    target="_blank">Please click here to launch the puzzle »</a></p>
+{{/eq}}
+
+<!-- For puzzles embedded with iframe (not recommended) -->
+{{#eq Type "Embed"}}
+
+<div class="container iframe-container">
+  <iframe src="{{../URL}}"></iframe>
+</div>
+<br />
+<p class="is-pulled-right">Embedded content not showing up? <a class="is-uppercase has-text-weight-bold"
+    href="{{../URL}}" target="_blank">Please click here to launch it in another tab »</a></p>
+{{/eq}}
+
+<!-- For puzzles rendered with Markdown (please do cleanup ahead of time) -->
+{{#eq Type "Text"}}
+
+THIS IS A TEXT
+
+{{/eq}}
+<br />
+<form id="submission">
+  <div class="field is-grouped">
+    <p class="control is-expanded">
+      <input class="input" type="text">
+    </p>
+    <p class="control">
+      <a class="button">
+        Solve!
+      </a>
+    </p>
+  </div>
+</form>
+
+{{/puzzle.fields}}

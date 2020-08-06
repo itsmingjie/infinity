@@ -8,7 +8,6 @@ const app = express.Router()
 const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
-const { forEach } = require('lodash')
 
 // Cached in memory
 let PUZZLES_CACHE, LEVELS_CACHE
@@ -43,8 +42,19 @@ app.get('/:level', cacheCheck(), (req, res) => {
   }
 })
 
-app.get('/debug/levels', (req, res) => {
-  res.json(LEVELS_CACHE)
+app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
+  console.log('Oh look! I can pull the puzzle directly from cache!')
+  const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
+  console.log(puzzle)
+
+  if (puzzle) {
+    res.render('game/puzzle', {
+      title: `${puzzle.fields.Title} — ${puzzle.fields.Value} pts`,
+      puzzle: puzzle
+    })
+  } else {
+    res.render('message', messages.notFound)
+  }
 })
 
 // repull information from Airtable to memory
