@@ -1,15 +1,85 @@
 <p>Welcome to the admin dashboard, {{team.displayName}}! All actions are logged via a third-party logging service.
   Please be extra careful when performing maintenance tasks. Your UUID is <code>{{team.id}}</code>.</p>
 <hr />
-<div class="adminOnly">
-  <h1 class="title">Puzzles</h1>
 
-  <table class="table is-fullwidth is-hoverable">
-    <tbody>
-      <tr>
-        <td>Restock Puzzles</td>
-        <td><a class="button">Restock</a></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<h1 class="title is-4">Global Settings</h1>
+
+<table class="table is-fullwidth is-hoverable">
+  <tbody>
+    <tr>
+      <td>Game Name</td>
+      <td>
+        <div class="field is-grouped">
+          <div class="control is-expanded"><input type="text" class="input" value="{{global.gameName}}"
+              data-prop="gameName" /></div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 class="title is-4">Puzzles</h1>
+
+<table class="table is-fullwidth is-hoverable">
+  <tbody>
+    <tr>
+      <td>Restock Puzzles</td>
+      <td><a class="button noFloat">Restock</a></td>
+    </tr>
+  </tbody>
+</table>
+
+{{#extend "foot-inject"}}
+
+<script>
+  document.querySelectorAll("input").forEach(el => {
+    el.addEventListener("blur", function (e) {
+      if (!el.dataset.hassave) {
+        let wrapper = document.createElement("div")
+        wrapper.setAttribute('class', 'control')
+        wrapper.setAttribute('id', `save-${el.dataset.prop}`)
+
+        let saveButton = document.createElement("a")
+        saveButton.setAttribute('class', 'button noFloat');
+        saveButton.setAttribute('id', `button-${el.dataset.prop}`)
+        saveButton.innerHTML = `<i class="fas fa-check"></i>`
+        saveButton.addEventListener("click", () => {
+          console.log(`Set ${el.dataset.prop} to ${el.value}`)
+          el.setAttribute("readonly", true)
+          saveButton.classList.add("is-loading")
+
+          fetch('/admin/update', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              prop: el.dataset.prop,
+              value: el.value
+            })
+          }).then(response => {
+            const t = document.getElementById(`save-${el.dataset.prop}`)
+            saveButton.classList.remove("is-loading")
+            t.firstChild.classList.add("is-success")
+
+            setTimeout(() => {
+              t.parentNode.removeChild(t)
+              el.removeAttribute("readonly")
+              el.removeAttribute('data-hassave')
+
+            }, 2000)
+
+          })
+        })
+
+        wrapper.appendChild(saveButton)
+
+        el.parentNode.after(wrapper)
+        el.setAttribute('data-hassave', true)
+      }
+    });
+  })
+</script>
+
+{{/extend}}

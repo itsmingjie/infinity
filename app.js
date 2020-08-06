@@ -14,9 +14,9 @@ const app = express()
 const http = require('http').createServer(app)
 const helpers = require('./lib/helpers')
 const passport = require('./lib/passport')
-const utils = require('./lib/utils')
 const hbs = exphbs.create({ helpers: helpers, extname: '.hbs' })
 const db = require('./services/db')
+const redis = require('./services/redis')
 const config = require('./config')
 
 app.use(
@@ -64,9 +64,13 @@ app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// always pass in the user credentials
+// always pass in global configs and user credentials
 app.use(async (req, res, next) => {
   res.locals.team = req.user ? await db.getUser(req.user.id) : null
+  res.locals.global = redis.settings || {}
+
+  console.log(res.locals.global)
+
   next()
 })
 
