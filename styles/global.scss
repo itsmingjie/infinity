@@ -233,4 +233,35 @@ form#submission {
   margin-top: 2rem;
 }
 
+div.formattedText {
+  p {
+    font-size: 1em;
+    margin-bottom: 1rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  ul,
+  li {
+    margin-left: 2rem;
+    padding-left: 0;
+  }
+}
+
 @import '../node_modules/bulma/bulma.sass';

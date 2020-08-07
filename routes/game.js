@@ -45,7 +45,6 @@ app.get('/:level', cacheCheck(), (req, res) => {
 app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
   console.log('Oh look! I can pull the puzzle directly from cache!')
   const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
-  console.log(puzzle)
 
   if (puzzle) {
     res.render('game/puzzle', {
@@ -104,4 +103,4 @@ const mergeMeta = (ids, titles, descriptions, values, locks) => {
   return r
 }
 
-module.exports = app
+module.exports = { app, restock }

@@ -9,6 +9,7 @@ const session = require('express-session')
 const sassMiddleware = require('node-sass-middleware')
 const minifyHTML = require('express-minify-html')
 const compression = require('compression')
+const asciify = require('asciify-image')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -69,8 +70,6 @@ app.use(async (req, res, next) => {
   res.locals.team = req.user ? await db.getUser(req.user.id) : null
   res.locals.global = redis.settings || {}
 
-  console.log(res.locals.global)
-
   next()
 })
 
@@ -80,5 +79,19 @@ app.use(require('./routes/index'))
 
 // Launch Server
 http.listen(config.port, () => {
-  console.log(`Infinity is running on *:${config.port}`)
+  asciify(
+    './static/assets/images/infinity.png',
+    {
+      fit: 'box',
+      width: 15,
+      height: 15
+    },
+    (err, asciified) => {
+      if (err) throw err
+
+      console.log(asciified)
+      console.log('\n')
+      console.log(`Infinity is running on *:${config.port}`)
+    }
+  )
 })

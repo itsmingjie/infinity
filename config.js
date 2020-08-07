@@ -2,7 +2,7 @@ require('dotenv').config()
 
 module.exports = {
   port: process.env.PORT || 3000,
-  db: process.env.DB_URI,
+  db: process.env.DATABASE_URL,
   redis: process.env.REDIS_URL,
   sessionSecret: process.env.SESSION_SECRET,
   airtable: {

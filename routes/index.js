@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
   })
 })
 
-app.use('/game', utils.authCheck(false), require('./game'))
+app.use('/game', utils.authCheck(false), require('./game').app)
 app.use('/admin', utils.authCheck(true), require('./admin'))
 app.use('/account', require('./account'))
 app.use('/page', require('./page'))

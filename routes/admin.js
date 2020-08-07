@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express.Router()
+
+const restock = require('../routes/game').restock
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
@@ -18,6 +20,11 @@ app.post('/update', (req, res) => {
   console.log(value)
 
   res.send('OK')
+})
+
+app.get('/restock', (req, res) => {
+  restock()
+  res.send('Success!')
 })
 
 module.exports = app
