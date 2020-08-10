@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const app = express.Router()
 
 const restock = require('../routes/game').restock
+
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
@@ -11,15 +12,18 @@ app.get('/', (req, res) => {
 })
 
 app.post('/update', (req, res) => {
-  console.log(req.body)
-
   const prop = req.body.prop
   const value = req.body.value
 
-  console.log(prop)
-  console.log(value)
-
-  res.send('OK')
+  require('../services/redis')
+    .updateSettings(prop, value)
+    .then(() => {
+      res.send('OK')
+      console.log('Success')
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
 })
 
 app.get('/restock', (req, res) => {

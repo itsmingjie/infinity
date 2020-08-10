@@ -8,6 +8,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/styles/global.css" />
+
+    <!-- Custom CSS Inject -->
+    {{#if global.customCSS}}
+    <link rel="stylesheet" href="{{global.customCSS}}" />
+    {{/if}}
     <link rel="icon" href="/assets/images/infinity.png" type="image/png" sizes="32x32">
 
     {{{block 'head-inject'}}}

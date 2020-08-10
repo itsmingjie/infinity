@@ -68,7 +68,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // always pass in global configs and user credentials
 app.use(async (req, res, next) => {
   res.locals.team = req.user ? await db.getUser(req.user.id) : null
-  res.locals.global = redis.settings || {}
+  res.locals.global = await redis.getSettings()
 
   next()
 })

@@ -1,5 +1,8 @@
 <p>Welcome to the admin dashboard, {{team.displayName}}! All actions are logged via a third-party logging service.
   Please be extra careful when performing maintenance tasks. Your UUID is <code>{{team.id}}</code>.</p>
+
+<p>If you run into a technical issue, please contact tech at <a
+    href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
 <hr />
 
 <h1 class="title is-4">Global Settings</h1>
@@ -12,6 +15,41 @@
         <div class="field is-grouped">
           <div class="control is-expanded"><input type="text" class="input" value="{{global.gameName}}"
               data-prop="gameName" /></div>
+
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Tech Email</td>
+      <td>
+        <div class="field is-grouped">
+          <div class="control is-expanded"><input type="email" class="input" value="{{global.techEmail}}"
+              data-prop="techEmail" /></div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>Puzzle Lockdown</td>
+      <td>
+        <div class="field">
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" data-prop="puzzleLockdown" value="true"
+                {{#if global.puzzleLockdown}}checked{{/if}}>
+              <strong>Prevent unelevated users from accessing puzzles</strong>
+            </label>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>Global Custom CSS <a href="https://gist.github.com/" target="_blank">+</a></td>
+      <td>
+        <div class="field is-grouped">
+          <div class="control is-expanded"><input type="url" class="input" value="{{global.customCSS}}"
+              placeholder="https://gist.github.com/..." data-prop="customCSS" /></div>
         </div>
       </td>
     </tr>
@@ -31,93 +69,6 @@
 
 {{#extend "foot-inject"}}
 
-<script>
-  document.querySelectorAll("input").forEach(el => {
-    el.addEventListener("blur", function (e) {
-      if (!el.dataset.hassave) {
-        let wrapper = document.createElement("div")
-        wrapper.setAttribute('class', 'control')
-        wrapper.setAttribute('id', `save-${el.dataset.prop}`)
-
-        let saveButton = document.createElement("a")
-        saveButton.setAttribute('class', 'button noFloat');
-        saveButton.setAttribute('id', `button-${el.dataset.prop}`)
-        saveButton.innerHTML = `<i class="fas fa-check"></i>`
-        saveButton.addEventListener("click", () => {
-          console.log(`Set ${el.dataset.prop} to ${el.value}`)
-          el.setAttribute("readonly", true)
-          saveButton.classList.add("is-loading")
-
-          fetch('/admin/update', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              prop: el.dataset.prop,
-              value: el.value
-            })
-          }).then(response => {
-            const t = document.getElementById(`save-${el.dataset.prop}`)
-            saveButton.classList.remove("is-loading")
-            t.firstChild.classList.add("is-success")
-
-            setTimeout(() => {
-              t.parentNode.removeChild(t)
-              el.removeAttribute("readonly")
-              el.removeAttribute('data-hassave')
-
-            }, 2000)
-
-          })
-        })
-
-        wrapper.appendChild(saveButton)
-
-        el.parentNode.after(wrapper)
-        el.setAttribute('data-hassave', true)
-      }
-    });
-  })
-
-  document.querySelectorAll(".button.endpoint").forEach(el => {
-    const og = el.textContent
-    el.addEventListener('click', function () {
-      el.classList.add("is-loading")
-      fetch(el.dataset.target, {
-        method: el.dataset.method || 'GET'
-      }).then(response => {
-        if (response.status === 200) {
-          el.classList.remove("is-loading")
-          el.classList.add("is-success")
-          el.textContent = "SUCCESS!"
-          setTimeout(() => {
-            el.classList.remove("is-success")
-            el.textContent = og
-          }, 2000)
-        } else {
-          console.log("test")
-          el.classList.remove("is-loading")
-          el.classList.add("is-danger")
-          el.textContent = "ERROR: ENDPOINT UNREACHABLE"
-          setTimeout(() => {
-            el.classList.remove("is-danger")
-            el.textContent = og
-          }, 2000)
-        }
-      }).catch(e => {
-        el.classList.remove("is-loading")
-        el.classList.add("is-danger")
-        el.textContent = "ERROR: ENDPOINT UNREACHABLE"
-        setTimeout(() => {
-          el.classList.remove("is-danger")
-          el.textContent = og
-        }, 2000)
-      })
-    })
-  })
-
-</script>
+<script src="/assets/scripts/adminToggles.js" defer></script>
 
 {{/extend}}
