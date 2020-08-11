@@ -4,9 +4,23 @@
 
 <a href="https://integirls.org"><img align="right" width="250" src="docs/logo.png" title="inteGIRLS Logo"></a>
 
-Infinity ∞ is a puzzle hunt server written for [inteGIRLS](https://www.integirls.org). It is written in Node.js & PostgreSQL.
+Infinity ∞ is a puzzle hunt server written for [inteGIRLS](https://www.integirls.org).
 
-Please contact me at [hi@mingjie.dev](mailto:hi@mingjie.dev) before reusing this software.
+Please contact [tech@integirls.org](mailto:tech@integirls.org) before reusing this software for a large competition. We may be able to help.
+
+## Tech Stack
+
+These are the technologies and libraries used to make Infinity possible. If you are willing to contribute to this project, it's suggested that you have a basic understanding of most of the tools used.
+
+**Languages Used**: JavaScript used with [Node.js](https://nodejs.org/) for most of the logic, HTML + Sass/Scss to build and style the pages, and [pgSQL](https://www.postgresql.org/docs/12/plpgsql.html) to work around the database.
+
+**Front-End Rendering**: [Handlebars.js](https://handlebarsjs.com/) for templating, and [Bulma](https://bulma.io/) for easy flexbox & responsiveness.
+
+**Back-End Serving**: [Express.js](https://expressjs.com/) for routing, and [Passport.js](http://www.passportjs.org/) as local authentication middleware,.
+
+**Storage**: [PostgreSQL](https://www.postgresql.org/) as main database interfaced with [node-postgres](https://node-postgres.com/), [Redis](https://redis.io/) for key-value persistent storage, and [Airtable API](https://airtable.com/api) for static content storage (puzzles). Some data is cached directly in memory to preserve database I/O.
+
+This is not a "perfect" solution, but Infinity is designed with ease of deployment and management in mind. I wanted it to become a platform that everyone, whether you are technical or not, can deploy within minutes to start hosting their own puzzle hunt competition.
 
 ## Development
 
@@ -30,6 +44,16 @@ A few deployment tips, courtesy of the Puzzle Potluck team:
 - Be aware of the [connection limits](https://cloud.google.com/sql/docs/postgres/quotas#cloud-sql-for-postgresql-connection-limits) of the deployed instance. When scaling up the instance group for the verification server, be sure to set the maximum number of instances allowed to be below the database connection limits, or else the instance group could be thrown into an error loop.
 
 When developing, be sure to reduce the amount of unnecessary database i/o to improve efficiency of the system.
+
+## Bug Reporting
+
+Bug reporting is always welcome!
+
+For issues that are **not security-related** (does not impact data integrity, competition fairness, etc.), please simply create an [issue](/issues/new) in the GitHub Repository.
+
+For **security-related issues**, please directly contact [tech@integirls.org](mailto:tech@integirls.org). Please be aware that any attempt to gain an unfair advantage during a live competition may disqualify you from the event at the organizer's discretion. If you accidentally discovered a security flaw during a competition and would like to retrace it, please follow the deployment guide to create a local instance instead of testing it in production.
+
+Do not attempt to access an account you didn't create, data related to people other than yourself, or teams that you do not belong in. Do not perform any attack that could harm the integrity of our data. Don't perform any attack which could interfere with others' use of the platform. Do not publicly disclose a security-related bug before it has been patched.
 
 ---
 
