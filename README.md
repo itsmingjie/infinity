@@ -63,4 +63,6 @@ Special thanks to [Puzzle Potluck](https://puzzlepotluck.com/)'s @jeevnayak for 
 
 ## License
 
-Copyright (c) 2020 Mingjie Jiang (https://github.com/itsmingjie). Released under MIT License. See [LICENSE](LICENSE) for details.
+Copyright (c) 2020 Mingjie Jiang ([@itsmingjie](https://github.com/itsmingjie)). Commissioned by [inteGIRLS](https://integirls.org), a 501(c)(3) non-profit organization and released under MIT License. See [LICENSE](LICENSE) for details.
+
+In addition to the MIT Licensed distribution, we ask that you credit [inteGIRLS] and link to this repository when reusing/redistributing this software. If you are interested in supporting the organization, please contact [info@integirls.org](mailto:info@integirls.org).
