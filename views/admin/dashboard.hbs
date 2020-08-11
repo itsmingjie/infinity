@@ -1,74 +1,45 @@
 <p>Welcome to the admin dashboard, {{team.displayName}}! All actions are logged via a third-party logging service.
   Please be extra careful when performing maintenance tasks. Your UUID is <code>{{team.id}}</code>.</p>
 
-<p>If you run into a technical issue, please contact tech at <a
-    href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
 <hr />
 
-<h1 class="title is-4">Global Settings</h1>
+<p>If you run into a technical issue, please contact tech at <a
+    href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
 
-<table class="table is-fullwidth is-hoverable">
-  <tbody>
-    <tr>
-      <td>Game Name</td>
-      <td>
-        <div class="field is-grouped">
-          <div class="control is-expanded"><input type="text" class="input" value="{{global.gameName}}"
-              data-prop="gameName" /></div>
+<section class="section">
 
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>Tech Email</td>
-      <td>
-        <div class="field is-grouped">
-          <div class="control is-expanded"><input type="email" class="input" value="{{global.techEmail}}"
-              data-prop="techEmail" /></div>
-        </div>
-      </td>
-    </tr>
+  <h1 class="title is-4">Global Settings</h1>
 
-    <tr>
-      <td>Puzzle Lockdown</td>
-      <td>
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox" data-prop="puzzleLockdown" value="true"
-                {{#if global.puzzleLockdown}}checked{{/if}}>
-              <strong>Prevent unelevated users from accessing puzzles</strong>
-            </label>
-          </div>
-        </div>
-      </td>
-    </tr>
+  <table class="table is-fullwidth is-hoverable">
+    <tbody>
 
-    <tr>
-      <td>Global Custom CSS <a href="https://gist.github.com/" target="_blank">+</a></td>
-      <td>
-        <div class="field is-grouped">
-          <div class="control is-expanded"><input type="url" class="input" value="{{global.customCSS}}"
-              placeholder="https://gist.github.com/..." data-prop="customCSS" /></div>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      {{>adminFields/input label="Game Name" prop="gameName"}}
 
-<h1 class="title is-4">Puzzles</h1>
+      {{>adminFields/input label="Tech Email" prop="techEmail" type="email"}}
 
-<table class="table is-fullwidth is-hoverable">
-  <tbody>
-    <tr>
-      <td>Restock Puzzles</td>
-      <td><a class="button noFloat endpoint" data-target="/admin/restock">Restock</a></td>
-    </tr>
-  </tbody>
-</table>
+      {{>adminFields/checkbox label="Puzzle Lockdown" text="Prevent unelevated users from accessing puzzles" prop="puzzleLockdown" }}
+
+    </tbody>
+  </table>
+
+  <h1 class="title is-4">Customization</h1>
+
+  <table class="table is-fullwidth is-hoverable">
+    <tbody>
+      {{>adminFields/input label='Global Custom CSS <a href="https://gist.github.com/" target="_blank">+</a>' ph="https://gist.github.com/..." type="url"  prop="customCSS" }}
+    </tbody>
+  </table>
+
+  <h1 class="title is-4">Puzzles</h1>
+
+  <table class="table is-fullwidth is-hoverable">
+    <tbody>
+      {{>adminFields/button label="Restock Puzzles" target="/admin/restock" text="Restock" }}
+    </tbody>
+  </table>
+
+</section>
 
 {{#extend "foot-inject"}}
-
 <script src="/assets/scripts/adminToggles.js" defer></script>
-
 {{/extend}}
