@@ -1,5 +1,5 @@
 # Infinity ∞
-
+<a href="https://codeclimate.com/github/itsmingjie/infinity/maintainability"><img src="https://api.codeclimate.com/v1/badges/31c27ce67fc38ef23b3a/maintainability" /></a>
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 <a href="https://integirls.org"><img align="right" width="250" src="docs/logo.png" title="inteGIRLS Logo"></a>
