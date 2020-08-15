@@ -234,7 +234,11 @@ table {
 }
 
 form#submission {
-  margin-top: 2rem;
+  margin: 0.5rem auto;
+
+  .field.is-grouped {
+    margin-bottom: 0;
+  }
 }
 
 div.formattedText {
@@ -265,6 +269,12 @@ div.formattedText {
   li {
     margin-left: 2rem;
     padding-left: 0;
+  }
+}
+
+.input {
+  &.is-allcaps {
+    text-transform: uppercase;
   }
 }
 
