@@ -1,0 +1,23 @@
+<table class="table is-fullwidth is-hoverable">
+  <thead>
+    <td>Team</td>
+    <td>Display</td>
+    <td>Affiliation</td>
+    <td>Score</td>
+    <td>Banned</td>
+    <td>Actions</td>
+  </thead>
+  <tbody>
+    {{#each teams}}
+    <tr>
+      <td title="{{id}}">{{name}}{{#if admin}}{{>adminSymbol}}{{/if}}</td>
+      <td>{{displayName}}</td>
+      <td>{{affiliation}}</td>
+      <td>{{score}}</td>
+      <td>{{banned}}</td>
+      <td><a href="/account/{{id}}">Impersonate</a> &ndash; <a href="#">Ban</a> &ndash; <a href="#">Kill</a></td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+</table>

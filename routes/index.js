@@ -5,7 +5,7 @@ const utils = require('../lib/utils')
 
 app.get('/', (req, res) => {
   res.render('landing', {
-    title: 'Welcome'
+    title: 'Welcome — ' + res.locals.global.gameName
   })
 })
 

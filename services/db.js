@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 const uuidv4 = require('uuid').v4
 
 const config = require('../config')
+const { reject } = require('lodash')
 
 const pool = new Pool({
   connectionString: config.db
@@ -130,4 +131,23 @@ const hashPassword = (password) => {
   })
 }
 
-module.exports = { createUser, validateUser, getUser }
+const listAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query(
+          'SELECT id, "name", "displayName", "affiliation", "admin", "score", "banned" FROM teams'
+        )
+        .then((data) => {
+          client.release()
+          resolve(data.rows)
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
+module.exports = { createUser, validateUser, getUser, listAllUsers }

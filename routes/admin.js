@@ -5,6 +5,7 @@ const app = express.Router()
 
 const restock = require('../routes/game').restock
 const flagger = require('../lib/flagger')
+const db = require('../services/db')
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
@@ -27,6 +28,12 @@ app.post('/flaggen', (req, res) => {
       success: true,
       encrypted: hash
     })
+  })
+})
+
+app.get('/teams', (req, res) => {
+  db.listAllUsers().then((data) => {
+    res.render('admin/teams', { title: 'Team Management', teams: data })
   })
 })
 
