@@ -42,18 +42,22 @@ app.get('/login', (req, res) => {
   }
 })
 
-app.get('/register', (req, res) => {
-  res.render('account/register', {
-    title: 'Register',
-    captcha: config.recaptcha.site
-  })
-})
+app.get(
+  '/register',
+  utils.lockdownCheck('registrationLockdown', true),
+  (req, res) => {
+    res.render('account/register', {
+      title: 'Register',
+      captcha: config.recaptcha.site
+    })
+  }
+)
 
-// Temporary route strictly for internal use, remove later
 app.post(
   '/create',
   recaptcha.middleware.verify,
   captchaFlagMiddleware,
+  utils.lockdownCheck('registrationLockdown', true),
   (req, res) => {
     const name = req.body.name
     const password = req.body.password

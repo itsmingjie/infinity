@@ -17,7 +17,9 @@
 
       {{>adminFields/input label="Tech Email" prop="techEmail" type="email"}}
 
-      {{>adminFields/checkbox label="Puzzle Lockdown" text="Prevent unelevated users from accessing puzzles" prop="puzzleLockdown" }}
+      {{>adminFields/checkbox label="Puzzle Lockdown" text="Prevent unelevated users from accessing puzzles" prop="puzzleLockdown" bypass=true }}
+
+      {{>adminFields/checkbox label="Registration Lockdown" text="Prevent users from creating new accounts" prop="registrationLockdown" bypass=true }}
 
     </tbody>
   </table>

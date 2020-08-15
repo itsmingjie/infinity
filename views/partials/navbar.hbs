@@ -44,9 +44,11 @@
         </div>
       </div>
       {{else}}
+      {{#unless global.registrationLockdown}}
       <a class="navbar-item" href="/account/register">
         Sign up
       </a>
+      {{/unless}}
       <a class="navbar-item" href="/account/login">
         Log in
       </a>

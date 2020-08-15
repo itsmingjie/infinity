@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 app.use(
   '/game',
   utils.authCheck(false),
-  utils.lockdownCheck('puzzleLockdown', false),
+  utils.lockdownCheck('puzzleLockdown', true),
   require('./game').app
 )
 app.use('/admin', utils.authCheck(true), require('./admin'))
