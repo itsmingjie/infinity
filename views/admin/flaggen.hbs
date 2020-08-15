@@ -1,0 +1,71 @@
+<div class="formattedText">
+  <p>This is a utility used to help admins converting the plaintext solutions of puzzles into flags stored in Airtable.
+    <strong>Hashed solutions are not decryptable!</strong> Please always keep a local copy of your puzzle solutions.
+  </p>
+  <p>
+    Yes, it's normal to get different results for the same string. See <a href="#explanation">explanation</a> for
+    details.
+  </p>
+</div>
+<hr />
+<h2 class="title is-4">Hash Solutions</h2>
+<div class="columns">
+
+  <div class="column is-half">
+    <div class="field">
+      <label class="label">Plaintext Solutions</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="One solution per line. Solutions are not case sensitive."
+          id="solutions"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="column is-half">
+    <div class="field">
+      <label class="label" id="explanation">Hashed Solutions (Click to Copy)</label>
+      <div class="control">
+        <textarea class="textarea" id="hashed" readonly></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<h2 class="title is-4">Hashing Concept Explanation</h2>
+<div class="formattedText">
+  <p>This is how the algorithm works to help puzzle organizers protect the solutions to their puzzles easily.
+    Each hashed string generated also carries its own "salt", which is used to randomize the hash generated.
+  </p>
+  <p><strong>Hashing is not encryption.</strong> The hash of a string is only an "identifier" of the string, not a
+    "translatable" duplicate.</p>
+  <p>
+
+  </p>
+</div>
+<br />
+<img src="/assets/images/encryption.png">
+
+{{#extend "foot-inject"}}
+<script>
+  document.getElementById("solutions").addEventListener('change', function () {
+    fetch('/admin/flaggen', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        solutions: this.value
+      })
+    }).then(v => v.json())
+      .then(response => {
+        document.getElementById("hashed").value = response.success ? response.encrypted : "Error"
+      })
+  })
+
+  document.getElementById("hashed").addEventListener("focus", function () {
+    this.select()
+    document.execCommand('copy')
+  })
+</script>
+{{/extend}}

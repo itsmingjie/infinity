@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}} &ndash; {{global.gameName}} Admin</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles/global.css" />
+
+  <!-- Custom CSS Inject -->
+  {{#if global.customCSS}}
+  <link rel="stylesheet" href="{{global.customCSS}}" />
+  {{/if}}
+  <link rel="icon" href="/assets/images/infinity.png" type="image/png" sizes="32x32">
+
+  {{{block 'head-inject'}}}
+</head>
+
+<body>
+  <div class="Site-Content">
+    {{>navbar}}
+
+    <section class="hero is-brand is-{{#if heroSize}}{{heroSize}}{{else}}medium{{/if}}">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Admin &ndash; {{title}}</h1>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="columns">
+        <div class="column is-one-quarter">
+          {{> admin/menu}}
+        </div>
+
+        <div class="column is-three-quarters">
+          <div class="container">
+            {{{body}}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{> footer}}
+
+  <script src="/assets/scripts/global.js" type="text/javascript" defer></script>
+  <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" type="text/javascript" defer></script>
+  {{{block 'foot-inject'}}}
+</body>
+
+</html>

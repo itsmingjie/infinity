@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express.Router()
-const redis = require('../services/redis')
 
 const utils = require('../lib/utils')
 
