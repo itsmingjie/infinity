@@ -4,6 +4,12 @@
 </div>
 {{/if}}
 
+{{#if loginFailure}}
+<div class="notification is-danger is-light">
+    Login failed. Please try again.
+</div>
+{{/if}}
+
 <form action="/account/login" method="POST">
     <div class="field">
         <label class="label">Team Name</label>

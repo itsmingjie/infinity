@@ -57,17 +57,19 @@ const validateUser = (name, password) => {
             if (res.rows[0] == null) {
               reject(new Error('Invalid Login'))
             } else {
-              bcrypt
-                .compare(password, res.rows[0].password)
-                .then((check) => {
-                  resolve({
+              bcrypt.compare(password, res.rows[0].password, (err, cRes) => {
+                client.release()
+                if (err) {
+                  return reject(new Error('Error'))
+                }
+                if (cRes) {
+                  return resolve({
                     id: res.rows[0].id
                   })
-                })
-                .catch((e) => reject(new Error('Invalid Login')))
-                .finally(() => {
-                  client.release()
-                })
+                } else {
+                  return reject(new Error('Invalid Login'))
+                }
+              })
             }
           })
           .catch((e) => reject(e))

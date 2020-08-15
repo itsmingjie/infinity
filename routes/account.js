@@ -27,6 +27,7 @@ app.get('/', utils.authCheck(false), (req, res) => {
 app.get('/login', (req, res) => {
   const requested = req.query.requested
   const path = req.query.path
+  const loginFailure = req.query.loginFailure
 
   if (req.isAuthenticated()) {
     res.redirect('/account')
@@ -34,6 +35,7 @@ app.get('/login', (req, res) => {
     res.render('account/login', {
       title: 'Login',
       captcha: config.recaptcha.site,
+      loginFailure: loginFailure,
       requested: requested,
       path: path
     })
@@ -88,8 +90,7 @@ app.post(
   recaptcha.middleware.verify,
   captchaFlagMiddleware,
   passport.authenticate('local', {
-    successRedirect: '/account',
-    failureRedirect: '/account/login'
+    failureRedirect: '/account/login/?loginFailure=true'
   }),
   (req, res) => {
     if (req.body.remember) {
@@ -98,7 +99,7 @@ app.post(
       req.session.cookie.expires = false
     }
 
-    res.redirect('/')
+    res.redirect(req.body.redirectURL || '/')
   }
 )
 
