@@ -26,6 +26,14 @@
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">{{title}}</h1>
+                    {{#if bypassed}}
+                    <div class="message is-warning">
+                        <div class="message-body">
+                            <p><strong>Warning: </strong>You're accessing a page that is currently only visible to
+                                admins. Lock toggle: <a href="/admin/#{{bypassed}}">{{bypassed}}</a>.</p>
+                        </div>
+                    </div>
+                    {{/if}}
                 </div>
             </div>
         </section>

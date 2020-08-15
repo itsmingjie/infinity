@@ -211,6 +211,10 @@ table {
 
   tr {
     height: 72px;
+
+    &:target {
+      background: #fffacd;
+    }
   }
 }
 
