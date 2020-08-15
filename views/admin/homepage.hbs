@@ -1,0 +1,26 @@
+{{#extend "head-inject"}}
+{{>admin/wysiwygStyle}}
+{{/extend}}
+
+<div class="message is-warning">
+  <div class="message-body">
+    <strong>Warning: </strong> Embedding JavaScript on any page of this site may be dangerous, as it can induce <a
+      href="https://en.wikipedia.org/wiki/Cross-site_scripting" target="_blank">XSS attacks</a> against the verification
+    server. The following field is not sanitized prior to displaying. <strong>Make sure you know what you're doing
+      before
+      proceeding!</strong>
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Homepage Content</label>
+  <div class="control">
+    <textarea id="content" class="textarea">{{{global.homepage}}}</textarea>
+  </div>
+</div>
+
+<button id="save" class="button is-pulled-right" data-prop="homepage">Save</button>
+
+{{#extend "foot-inject"}}
+{{>admin/wysiwygScripts}}
+{{/extend}}

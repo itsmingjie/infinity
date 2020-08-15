@@ -10,7 +10,10 @@ $link: #719df0;
 // Yosemite Gradient
 $gradient-start: #ea8d8d;
 $gradient-end: #a890fe;
+$admin-start: #43cea2;
+$admin-end: #185a9d;
 $yosemite: linear-gradient(45deg, $gradient-start 0%, $gradient-end 100%);
+$xosemite: linear-gradient(45deg, $admin-start 0%, $admin-end 100%);
 
 body {
   display: flex;
@@ -32,6 +35,10 @@ body {
   background: $yosemite;
   animation: gradient 15s ease infinite;
   background-size: 400% 400%;
+
+  &.is-adminBrand {
+    background: $xosemite;
+  }
 
   &.button {
     font-weight: bold;
