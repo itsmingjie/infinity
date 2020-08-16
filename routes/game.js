@@ -5,9 +5,17 @@
 
 const express = require('express')
 const app = express.Router()
+const rateLimit = require('express-rate-limit')
+
 const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
+
+// solving is limited to 5 attempts per minute per IP
+const solveLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5 // limit each IP to 10 attempts per minute
+})
 
 // Cached in memory
 let PUZZLES_CACHE, LEVELS_CACHE
@@ -55,6 +63,10 @@ app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
   } else {
     res.render('message', messages.notFound)
   }
+})
+
+app.post('/solve/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
+  // Placeholder
 })
 
 // repull information from Airtable to memory
