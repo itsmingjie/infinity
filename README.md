@@ -1,4 +1,5 @@
 # Infinity ∞
+
 <a href="https://codeclimate.com/github/itsmingjie/infinity/maintainability"><img src="https://api.codeclimate.com/v1/badges/31c27ce67fc38ef23b3a/maintainability" /></a>
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
@@ -26,10 +27,13 @@ This is not a "perfect" solution, but Infinity is designed with ease of deployme
 
 1. Clone this repo.
 1. Create `.env` with the following configurations:
-   - `DB_URI`: The PostgreSQL Connection URI.
+   - `DATABASE_URL`: The PostgreSQL connection URI.
+   - `REDIS_URL`: The REDIS server connection URI.
+   - `RECAPTCHA_SITEKEY` + `RECAPTCHA_SECRETKEY`: Google reCAPTCHA setup.
    - `PORT`: The port the application should run on. Default `3000`.
    - `AIRTABLE_KEY`: API Key from Airtable.
    - `AIRTABLE_BASE`: Base ID from Airtable, where the problems and solutions are stored.
+   - `BUGSNAG_KEY`: Bugsnag key to collect error data.
 1. Start the initialized PostgreSQL server `service postgresql start`.
    - WIP: Queries to initialize the database will be added in a later update, once all the structures are set in.
 1. Start application with `yarn start`.

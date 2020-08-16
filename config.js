@@ -12,5 +12,8 @@ module.exports = {
   recaptcha: {
     site: process.env.RECAPTCHA_SITEKEY,
     secret: process.env.RECAPTCHA_SECRETKEY
+  },
+  bugsnag: {
+    key: process.env.BUGSNAG_KEY
   }
 }

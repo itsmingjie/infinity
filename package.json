@@ -14,6 +14,8 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "@bugsnag/js": "^7.3.0",
+    "@bugsnag/plugin-express": "^7.3.0",
     "airtable-plus": "^1.0.4",
     "asciify-image": "^0.1.6",
     "bcrypt": "^5.0.0",
