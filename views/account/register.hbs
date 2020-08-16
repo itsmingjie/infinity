@@ -1,4 +1,6 @@
 <form action="/account/create" method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
     <div class="field">
         <label class="label">Team Name</label>
         <div class="control">

@@ -10,6 +10,7 @@ const sassMiddleware = require('node-sass-middleware')
 const minifyHTML = require('express-minify-html')
 const compression = require('compression')
 const asciify = require('asciify-image')
+const csrf = require('csurf')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -26,6 +27,7 @@ app.use(
   })
 )
 app.use(cookieParser())
+app.use(csrf({ cookie: true }))
 app.use(flash())
 app.use(
   session({

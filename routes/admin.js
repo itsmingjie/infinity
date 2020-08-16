@@ -10,6 +10,7 @@ const db = require('../services/db')
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
   res.locals.layout = 'admin'
+  res.locals.csrfToken = req.csrfToken()
 
   next()
 })

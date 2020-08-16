@@ -5,6 +5,7 @@
 
 const express = require('express')
 const app = express.Router()
+
 const config = require('../config')
 const db = require('../services/db')
 const recaptcha = require('../services/recaptcha')
@@ -19,6 +20,13 @@ const captchaFlagMiddleware = (req, res, next) => {
     return next()
   }
 }
+
+// always pass in global configs and user credentials
+app.use(async (req, res, next) => {
+  res.locals.csrfToken = req.csrfToken()
+
+  next()
+})
 
 app.get('/', utils.authCheck(false), (req, res) => {
   res.render('account/team', { title: 'Team Profile' })

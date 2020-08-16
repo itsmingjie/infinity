@@ -49,7 +49,8 @@ app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
   if (puzzle) {
     res.render('game/puzzle', {
       title: `${puzzle.fields.Title} — ${puzzle.fields.Value} pts`,
-      puzzle: puzzle
+      puzzle: puzzle,
+      csrfToken: req.csrfToken()
     })
   } else {
     res.render('message', messages.notFound)

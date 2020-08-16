@@ -31,6 +31,7 @@
 
 <div class="box submitWrapper">
   <form id="submission" method="POST" action="/game/solve/{{../puzzle.id}}">
+    <input type="hidden" name="_csrf" value="{{../csrfToken}}">
     <label class="label">Your Solution &mdash; Solve for {{./Value}} pts!</label>
     <div class="field is-grouped">
       <div class="control is-expanded has-icons-left">
@@ -41,9 +42,9 @@
         <p class="help">Solutions are <strong>not</strong> case sensitive.</p>
       </div>
       <p class="control">
-        <a class="button">
+        <button class="button" type="submit">
           Solve!
-        </a>
+        </button>
       </p>
     </div>
   </form>

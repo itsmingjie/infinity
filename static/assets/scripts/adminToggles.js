@@ -1,3 +1,5 @@
+const csrfToken = document.getElementById('csrfToken').value
+
 /* eslint-disable no-undef */
 document.querySelectorAll('input.input').forEach((el) => {
   el.addEventListener('blur', function (e) {
@@ -17,9 +19,11 @@ document.querySelectorAll('input.input').forEach((el) => {
 
         fetch('/admin/update', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'CSRF-Token': csrfToken
           },
           body: JSON.stringify({
             prop: el.dataset.prop,
@@ -89,9 +93,11 @@ document.querySelectorAll("input[type='checkbox']").forEach((el) => {
   el.addEventListener('change', function (e) {
     fetch('/admin/update', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'CSRF-Token': csrfToken
       },
       body: JSON.stringify({
         prop: el.dataset.prop,
