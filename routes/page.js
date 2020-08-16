@@ -3,6 +3,7 @@ const app = express.Router()
 const rateLimit = require('express-rate-limit')
 
 const fs = require('fs')
+const sanitize = require('sanitize-filename')
 const path = require('path')
 const showdown = require('showdown')
 const converter = new showdown.Converter()
@@ -17,7 +18,7 @@ const limiter = rateLimit({
 app.use(limiter)
 
 app.get('/:pagename', (req, res) => {
-  const pagename = req.params.pagename
+  const pagename = sanitize(req.params.pagename)
 
   fs.readFile(
     path.join(__dirname, `../pages/${pagename}.md`),
