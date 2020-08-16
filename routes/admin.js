@@ -6,6 +6,7 @@ const app = express.Router()
 const restock = require('../routes/game').restock
 const flagger = require('../lib/flagger')
 const db = require('../services/db')
+const config = require('../config')
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
@@ -17,6 +18,13 @@ app.use(async (req, res, next) => {
 
 app.get('/', (req, res) => {
   res.render('admin/dashboard', { title: 'Dashboard' })
+})
+
+app.get('/puzzles', (req, res) => {
+  res.render('admin/puzzles', {
+    title: 'Puzzles',
+    airtable: config.airtable.base
+  })
 })
 
 app.get('/flaggen', (req, res) => {

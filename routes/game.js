@@ -43,6 +43,8 @@ app.get('/:level', cacheCheck(), (req, res) => {
   console.log('Oh look! I can pull puzzles directly from cache!')
   const level = idSearch(req.params.level, LEVELS_CACHE)
 
+  console.log(level)
+
   if (level) {
     res.render('game/level', { title: level.fields.Title, level: level })
   } else {
