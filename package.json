@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.0.0",
     "express-minify-html": "^0.12.0",
+    "express-rate-limit": "^5.1.3",
     "express-recaptcha": "^5.0.2",
     "express-session": "^1.17.1",
     "jpeg-js": "^0.4.0",

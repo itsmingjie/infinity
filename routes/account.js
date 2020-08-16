@@ -5,6 +5,7 @@
 
 const express = require('express')
 const app = express.Router()
+const rateLimit = require('express-rate-limit')
 
 const config = require('../config')
 const db = require('../services/db')
@@ -12,6 +13,13 @@ const recaptcha = require('../services/recaptcha')
 const utils = require('../lib/utils')
 const passport = require('../lib/passport')
 const messages = require('../lib/messages')
+
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10 // limit each IP to 10 attempts per minute
+})
+
+app.use(limiter)
 
 const captchaFlagMiddleware = (req, res, next) => {
   if (req.recaptcha.error) {
