@@ -78,7 +78,8 @@ app.post(
     const name = req.body.name
     const password = req.body.password
 
-    if (name.indexOf('team_') === 0 && password !== '') {
+    //if (name.indexOf('team_') === 0 && password !== '') {
+    if (password !== '') {
       db.createUser(name, password)
         .then(() => {
           res.render('message', {
@@ -92,8 +93,7 @@ app.post(
         })
     } else {
       res.render('message', {
-        message:
-          'Invalid account details. Team ID must start with "team_", and password must not be empty.',
+        message: 'Invalid account details. Password must not be empty.',
         title: 'Error'
       })
     }
