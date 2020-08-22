@@ -10,6 +10,7 @@ const rateLimit = require('express-rate-limit')
 const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
+const flagger = require('../lib/flagger')
 
 // solving is limited to 5 attempts per minute per IP
 const solveLimiter = rateLimit({
@@ -18,13 +19,14 @@ const solveLimiter = rateLimit({
 })
 
 // Cached in memory
-let PUZZLES_CACHE, LEVELS_CACHE
+let PUZZLES_CACHE, LEVELS_CACHE, SOLUTION_CACHE
 
 // middleware to check for valid cache
 const cacheCheck = () => (req, res, next) => {
   if (
     typeof PUZZLES_CACHE === 'undefined' ||
-    typeof LEVELS_CACHE === 'undefined'
+    typeof LEVELS_CACHE === 'undefined' ||
+    typeof SOLUTION_CACHE === 'undefined'
   ) {
     restock().then(() => next())
   } else {
@@ -60,6 +62,7 @@ app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
     res.render('game/puzzle', {
       title: `${puzzle.fields.Title} — ${puzzle.fields.Value} pts`,
       puzzle: puzzle,
+      solved: res.locals.solvedList.includes(req.params.puzzle),
       csrfToken: req.csrfToken()
     })
   } else {
@@ -67,15 +70,58 @@ app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
   }
 })
 
-app.post('/solve/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
-  // Placeholder
+app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
+  if (!res.locals.solvedList.includes(req.params.puzzle)) {
+    const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
+
+    if (puzzle) {
+      flagger
+        .validateHash(req.body.solution, SOLUTION_CACHE[req.params.puzzle])
+        .then((success) => {
+          // log the attempt in the database, also increments the score if applicable
+          db.createAttempt(
+            req.user.id,
+            req.params.puzzle,
+            req.body.solution,
+            puzzle.fields.Value,
+            success
+          ).then((attempt) => {
+            const attemptId = attempt.id
+            const attemptTs = attempt.timestamp
+
+            if (success) {
+              db.updateScore(req.user.id, puzzle.fields.Value).then(() => {
+                res.render('game/solve.hbs', {
+                  title: 'Solved!',
+                  success: true,
+                  message: puzzle.customSuccess,
+                  reference: `${attemptId} @ ${attemptTs}`
+                })
+              })
+            } else {
+              res.render('game/solve.hbs', {
+                title: 'Incorrect Solution!',
+                success: false,
+                message: puzzle.customError,
+                reference: `${attemptId} @ ${attemptTs}`
+              })
+            }
+          })
+        })
+    } else {
+      res.render('message', messages.notFound)
+    }
+  } else {
+    res.render('message', messages.caughtRedHanded)
+  }
 })
 
 // repull information from Airtable to memory
 // note: always restock both caches together to prevent data mismatch
 const restock = async () => {
-  PUZZLES_CACHE = await airtable.getUnlockedPuzzles()
+  PUZZLES_CACHE = await airtable.getUnlockedPuzzles(true)
   LEVELS_CACHE = await airtable.getLevels()
+  SOLUTION_CACHE = {}
 
   LEVELS_CACHE.forEach((level) => {
     if (level.fields.Puzzles) {
@@ -87,6 +133,11 @@ const restock = async () => {
         level.fields.PuzzleLocks
       )
     }
+  })
+
+  // Cache solutions locally
+  PUZZLES_CACHE.forEach((puzzle) => {
+    SOLUTION_CACHE[puzzle.id] = puzzle.fields.Solution
   })
 }
 

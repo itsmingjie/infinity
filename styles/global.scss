@@ -255,7 +255,10 @@ form#submission {
 div.formattedText {
   p {
     font-size: 1em;
-    margin-bottom: 1rem;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
   }
 
   h1,

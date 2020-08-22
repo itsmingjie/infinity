@@ -1,0 +1,59 @@
+<div class="notification {{#if success}}is-success{{else}}is-danger{{/if}} is-light formattedText">
+  {{#if message}}
+  {{message}}
+  {{else}}
+  {{#if success}}
+  <p>Congratulations! Your solution was correct, {{team.name}}. Time to take on the next one?</p>
+  {{else}}
+  <p>Unfortunately, your solution was incorrect.</p>
+  <p>Try again next time? Please know that you are limited to <strong>5 attempts per minute</strong>.</p>
+  {{/if}}
+  {{/if}}
+</div>
+
+<hr />
+<p>Serial: <code>{{reference}}</code>. If you think there has been an error when it comes to
+  validating your attempt, please save the reference and contact <a
+    href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
+
+{{#if success}}
+
+{{#extend "foot-inject"}}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.2.0/dist/confetti.browser.min.js"></script>
+<script>
+  var count = 200;
+  var defaults = {
+    origin: { y: 0.7 }
+  };
+
+  function fire(particleRatio, opts) {
+    confetti(Object.assign({}, defaults, opts, {
+      particleCount: Math.floor(count * particleRatio)
+    }));
+  }
+
+  fire(0.25, {
+    spread: 26,
+    startVelocity: 55,
+  });
+  fire(0.2, {
+    spread: 60,
+  });
+  fire(0.35, {
+    spread: 100,
+    decay: 0.91,
+  });
+  fire(0.1, {
+    spread: 120,
+    startVelocity: 25,
+    decay: 0.92,
+  });
+  fire(0.1, {
+    spread: 120,
+    startVelocity: 45,
+  });
+</script>
+
+{{/extend}}
+
+{{/if}}

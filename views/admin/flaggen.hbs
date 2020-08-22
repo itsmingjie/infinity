@@ -9,6 +9,8 @@
 </div>
 <hr />
 <h2 class="title is-4">Hash Solutions</h2>
+<input type="hidden" id="csrfToken" value="{{csrfToken}}" />
+
 <div class="columns">
 
   <div class="column is-half">
@@ -52,7 +54,8 @@
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'CSRF-Token': document.getElementById("csrfToken").value
       },
       body: JSON.stringify({
         solutions: this.value

@@ -10,6 +10,7 @@ const uuidv4 = require('uuid').v4
 
 const config = require('../config')
 const { reject } = require('lodash')
+const { validateHash } = require('../lib/flagger')
 
 const pool = new Pool({
   connectionString: config.db
@@ -47,6 +48,7 @@ const createUser = (name, password) => {
   })
 }
 
+// validate the login information
 const validateUser = (name, password) => {
   return new Promise((resolve, reject) => {
     pool
@@ -79,6 +81,7 @@ const validateUser = (name, password) => {
   })
 }
 
+// get the user's latest data
 const getUser = (id) => {
   return new Promise((resolve, reject) => {
     pool
@@ -111,6 +114,27 @@ const getUser = (id) => {
           })
       })
       .catch((e) => reject(e))
+  })
+}
+
+// pull a list of puzzles that the user has solved
+const getUserSolved = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query(
+          'SELECT id, action, uid, "puzzle" FROM logs WHERE (uid=$1 AND action=\'solve\')',
+          [id]
+        )
+        .then((data) => {
+          client.release()
+          resolve(data.rows.map((m) => m.puzzle))
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
   })
 }
 
@@ -150,4 +174,75 @@ const listAllUsers = () => {
   })
 }
 
-module.exports = { createUser, validateUser, getUser, listAllUsers }
+const listAllLogs = () => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query('SELECT * FROM logs')
+        .then((data) => {
+          client.release()
+          resolve(data.rows)
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
+const createAttempt = (uid, puzzle, attempt, value, success) => {
+  return new Promise((resolve, reject) => {
+    pool
+      .connect()
+      .then((client) => {
+        client
+          .query(
+            'INSERT INTO logs (id, action, value, uid, puzzle, attempt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [
+              uuidv4(),
+              success ? 'solve' : 'attempt',
+              value,
+              uid,
+              puzzle,
+              attempt
+            ]
+          )
+          .then((res) => {
+            client.query('COMMIT')
+            client.release()
+            resolve(res.rows[0])
+          })
+          .catch((e) => reject(e))
+      })
+      .catch((e) => reject(e))
+  })
+}
+
+const updateScore = (uid, value) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query('UPDATE teams SET score=(score+$1) WHERE id=$2', [value, uid])
+        .then(() => {
+          client.release()
+          resolve()
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
+module.exports = {
+  createUser,
+  validateUser,
+  getUser,
+  listAllUsers,
+  createAttempt,
+  getUserSolved,
+  updateScore,
+  listAllLogs
+}

@@ -1,4 +1,39 @@
 {{#puzzle.fields}}
+<article class="message {{#if ../solved}}is-success{{/if}}">
+  <div class="message-header">
+    {{#if ../solved}}<p>Already Solved!</p>{{else}}Your Solution &mdash; Solve for {{./Value}} pts!{{/if}}
+  </div>
+  <div class="message-body submitWrapper">
+    {{#if ../solved}}
+    {{#if CustomSuccess}}
+    {{CustomSuccess}}
+    {{else}}
+    <p>Congratulations! You've already solved this puzzle, {{../team.name}}. Time to take on the next one?</p>
+    {{/if}}
+    {{else}}
+    <form id="submission" method="POST">
+      <input type="hidden" name="_csrf" value="{{../csrfToken}}">
+      <label class="label"></label>
+      <div class="field is-grouped">
+        <div class="control is-expanded has-icons-left">
+          <input class="input is-allcaps" type="text" placeholder="avada kedavra" name="solution">
+          <span class="icon is-small is-left">
+            <i class="fas fa-key"></i>
+          </span>
+          <p class="help">Solutions are <strong>not</strong> case sensitive.</p>
+        </div>
+        <p class="control">
+          <button class="button" type="submit">
+            Solve!
+          </button>
+        </p>
+      </div>
+    </form>
+    {{/if}}
+  </div>
+</article>
+
+<hr />
 
 <div class="formattedText">
   <p>{{Description}}</p>
@@ -25,30 +60,5 @@
   {{{markdown../ContentText}}}
   {{/eq}}
 </div>
-
-<br />
-<hr />
-
-<div class="box submitWrapper">
-  <form id="submission" method="POST" action="/game/solve/{{../puzzle.id}}">
-    <input type="hidden" name="_csrf" value="{{../csrfToken}}">
-    <label class="label">Your Solution &mdash; Solve for {{./Value}} pts!</label>
-    <div class="field is-grouped">
-      <div class="control is-expanded has-icons-left">
-        <input class="input is-allcaps" type="text" placeholder="avada kedavra">
-        <span class="icon is-small is-left">
-          <i class="fas fa-key"></i>
-        </span>
-        <p class="help">Solutions are <strong>not</strong> case sensitive.</p>
-      </div>
-      <p class="control">
-        <button class="button" type="submit">
-          Solve!
-        </button>
-      </p>
-    </div>
-  </form>
-</div>
-
 
 {{/puzzle.fields}}

@@ -70,4 +70,10 @@ app.get('/restock', (req, res) => {
   res.send('Success!')
 })
 
+app.get('/logs', (req, res) => {
+  db.listAllLogs().then((data) => {
+    res.render('admin/logs', { title: 'Action Logs', logs: data })
+  })
+})
+
 module.exports = app

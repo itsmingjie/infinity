@@ -46,7 +46,7 @@ const getUnlockedPuzzles = (solutions) => {
 }
 
 // Pull all puzzles from Airtable
-const getLevels = (solutions) => {
+const getLevels = () => {
   console.log('Querying Airtable for levels')
 
   return new Promise((resolve, reject) => {
