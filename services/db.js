@@ -174,6 +174,29 @@ const listAllUsers = () => {
   })
 }
 
+// returns a dictionary that maps UUIDs to account names
+const listUserIds = () => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query('SELECT id, "name" FROM teams')
+        .then((data) => {
+          resolve(
+            data.rows.reduce((acc, team) => {
+              acc[team.id] = team.name
+              return acc
+            }, {})
+          )
+          client.release()
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
 const listAllLogs = () => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
@@ -241,6 +264,7 @@ module.exports = {
   validateUser,
   getUser,
   listAllUsers,
+  listUserIds,
   createAttempt,
   getUserSolved,
   updateScore,

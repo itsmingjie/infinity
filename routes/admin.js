@@ -71,8 +71,11 @@ app.get('/restock', (req, res) => {
 })
 
 app.get('/logs', (req, res) => {
-  db.listAllLogs().then((data) => {
-    res.render('admin/logs', { title: 'Action Logs', logs: data })
+  Promise.all([db.listUserIds(), db.listAllLogs()]).then((data) => {
+    const users = data[0]
+    const logs = data[1]
+
+    res.render('admin/logs', { title: 'Action Logs', logs: logs, users: users })
   })
 })
 

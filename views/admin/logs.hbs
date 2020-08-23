@@ -1,1 +1,24 @@
-{{stringify logs}}
+<table class="table is-fullwidth is-hoverable">
+
+  <thead>
+    <td>Timestamp</td>
+    <td>User</td>
+    <td>Value</td>
+    <td>Action</td>
+    <td>Data</td>
+  </thead>
+
+  {{#each logs}}
+
+  <tr>
+    <td title="{{id}}">{{dateFmt timestamp}}</td>
+    <td title="{{uid}}">{{lookup ../users uid}}</td>
+    <td>{{#eq action "attempt"}}={{else}}{{pn ../value}}{{/eq}}</td>
+    <td>{{action}}</td>
+    <td>{{attempt}}</td>
+  </tr>
+
+
+  {{/each}}
+
+</table>
