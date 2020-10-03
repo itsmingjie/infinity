@@ -35,7 +35,7 @@ This is not a "perfect" solution, but Infinity is designed with ease of deployme
    - `AIRTABLE_BASE`: Base ID from Airtable, where the problems and solutions are stored.
    - `BUGSNAG_KEY`: Bugsnag key to collect error data.
 1. Start the initialized PostgreSQL server `service postgresql start`.
-   - WIP: Queries to initialize the database will be added in a later update, once all the structures are set in.
+   - Run the database initialization script located at `db/db_init.sql`.
 1. Start application with `yarn start`.
 
 Note: If hosting a test database on Heroku, Heroku's security policies require that you use SSL to connect to the database. Use a service like ngrok to proxy through.
