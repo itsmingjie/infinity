@@ -179,6 +179,9 @@ div.footer {
     margin-bottom: 2rem;
     border-radius: 4px;
     transition: all 0.3s ease 0s;
+    height: 100%;
+    display: flex!important;
+    flex-direction: column!important;
 
     &:not(.locked):hover {
       box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
@@ -200,8 +203,11 @@ div.footer {
       }
     }
 
-    .card-footer-item {
-      font-weight: bold;
+    .card-footer {
+      margin-top: auto;
+      .card-footer-item {
+        font-weight: bold;
+      }
     }
   }
 }

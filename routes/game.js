@@ -128,7 +128,8 @@ const restock = async () => {
         level.fields.PuzzleNames,
         level.fields.PuzzleDescriptions,
         level.fields.PuzzleValues,
-        level.fields.PuzzleLocks
+        level.fields.PuzzleLocks,
+        level.fields.PuzzleOrders
       )
     }
   })
@@ -149,22 +150,24 @@ const idSearch = (id, root) => {
   return null
 }
 
-const mergeMeta = (ids, titles, descriptions, values, locks) => {
+const mergeMeta = (ids, titles, descriptions, values, locks, orders) => {
   const r = []
 
   for (let i = 0; i < ids.length; i++) {
-    const t = {}
-
-    t.id = ids[i]
-    t.title = titles[i]
-    t.description = descriptions[i]
-    t.value = values[i]
-    t.unlocked = locks[i]
-
-    r.push(t)
+    r.push({
+      id: ids[i],
+      title: titles[i],
+      description: descriptions[i],
+      value: values[i],
+      unlocked: locks[i],
+      order: orders[i]
+    })
   }
 
-  return r
+  // sort array objects by data passed in
+  return r.sort((a, b) => {
+    return a.order - b.order
+  })
 }
 
 module.exports = { app, restock }

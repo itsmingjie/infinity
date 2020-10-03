@@ -38,6 +38,8 @@ This is not a "perfect" solution, but Infinity is designed with ease of deployme
    - WIP: Queries to initialize the database will be added in a later update, once all the structures are set in.
 1. Start application with `yarn start`.
 
+Note: If hosting a test database on Heroku, Heroku's security policies require that you use SSL to connect to the database. Use a service like ngrok to proxy through.
+
 ## Deployment
 
 This system is not 100% resource efficient, which means in production (especially during live competitions), it depends on automatic scaling of the deployment platforms to stay up. It is suggested that this server should be deployed on [Google App Engine](https://cloud.google.com/appengine) for production.

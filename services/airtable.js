@@ -27,9 +27,11 @@ const getUnlockedPuzzles = (solutions) => {
 
   return new Promise((resolve, reject) => {
     Puzzles.read({
-      view: 'Unlocked Puzzles'
+      view: 'Unlocked Puzzles',
+      sort: [{field: 'Order', direction: 'asc'}]
     })
       .then((data) => {
+        console.log(data)
         if (!solutions) {
           // remove all solutions from the fetch
           data.forEach((v) => {

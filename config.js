@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 module.exports = {
+  env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
   db: process.env.DATABASE_URL,
   redis: process.env.REDIS_URL,

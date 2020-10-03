@@ -13,7 +13,8 @@ const { reject } = require('lodash')
 const { validateHash } = require('../lib/flagger')
 
 const pool = new Pool({
-  connectionString: config.db
+  connectionString: config.db,
+  ssl: { rejectUnauthorized: false }
 })
 
 const createUser = (name, password) => {
