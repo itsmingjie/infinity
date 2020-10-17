@@ -212,21 +212,23 @@ div.footer {
   }
 }
 
-table {
-  td {
-    vertical-align: middle !important;
-  }
+.__admin {
+  table {
+    td {
+      vertical-align: middle !important;
+    }
 
-  td:nth-child(1) {
-    font-weight: 800;
-    width: 20%;
-  }
+    td:nth-child(1) {
+      font-weight: 800;
+      width: 20%;
+    }
 
-  tr {
-    height: 72px;
+    tr {
+      height: 72px;
 
-    &:target {
-      background: #fffacd;
+      &:target {
+        background: #fffacd;
+      }
     }
   }
 }
