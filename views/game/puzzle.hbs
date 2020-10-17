@@ -1,3 +1,9 @@
+{{#extend "head-inject"}}
+{{#if ../css}}
+  <link rel="stylesheet" href="{{../css}}">
+{{/if}}
+{{/extend}}
+
 {{#puzzle.fields}}
 <article class="message {{#if ../solved}}is-success{{/if}}">
   <div class="message-header">
