@@ -74,16 +74,17 @@ app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
 app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
   if (!res.locals.solvedList.includes(req.params.puzzle)) {
     const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
+    const solution = parseSolution(req.body.solution)
 
     if (puzzle) {
       flagger
-        .validateHash(req.body.solution, SOLUTION_CACHE[req.params.puzzle])
+        .validateHash(solution, SOLUTION_CACHE[req.params.puzzle])
         .then((success) => {
           // log the attempt in the database, also increments the score if applicable
           db.createAttempt(
             req.user.id,
             req.params.puzzle,
-            req.body.solution,
+            solution,
             puzzle.fields.Value,
             success
           ).then((attempt) => {
@@ -171,6 +172,10 @@ const mergeMeta = (ids, titles, descriptions, values, locks, orders) => {
   return r.sort((a, b) => {
     return a.order - b.order
   })
+}
+
+const parseSolution = (sol) => {
+  return sol.replace(/[^a-zA-Z ]/g, "").toLowerCase()
 }
 
 module.exports = { app, restock }
