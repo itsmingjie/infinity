@@ -10,8 +10,6 @@ const bcrypt = require('bcrypt')
 const uuidv4 = require('uuid').v4
 
 const config = require('../config')
-const { reject } = require('lodash')
-const { validateHash } = require('../lib/flagger')
 
 const pool = new Pool({
   connectionString: config.db,
