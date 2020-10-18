@@ -19,14 +19,15 @@ const solveLimiter = rateLimit({
 })
 
 // Cached in memory
-let PUZZLES_CACHE, LEVELS_CACHE, SOLUTION_CACHE
+let PUZZLES_CACHE, LEVELS_CACHE, SOLUTION_CACHE, HINTS_CACHE
 
 // middleware to check for valid cache
 const cacheCheck = () => (req, res, next) => {
   if (
     typeof PUZZLES_CACHE === 'undefined' ||
     typeof LEVELS_CACHE === 'undefined' ||
-    typeof SOLUTION_CACHE === 'undefined'
+    typeof SOLUTION_CACHE === 'undefined' ||
+    typeof HINTS_CACHE === 'undefined'
   ) {
     restock().then(() => next())
   } else {
@@ -59,6 +60,7 @@ app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
   if (puzzle) {
     res.render('game/puzzle', {
       title: `${puzzle.fields.Title} — ${puzzle.fields.Value} pts`,
+      id: req.params.puzzle,
       puzzle: puzzle,
       css: puzzle.fields['CustomCSS'] || false,
       solved: res.locals.solvedList.includes(req.params.puzzle),
@@ -121,6 +123,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
 const restock = async () => {
   PUZZLES_CACHE = await airtable.getUnlockedPuzzles(true)
   LEVELS_CACHE = await airtable.getLevels()
+  HINTS_CACHE = await airtable.getHints()
   SOLUTION_CACHE = {}
 
   LEVELS_CACHE.forEach((level) => {
@@ -135,6 +138,8 @@ const restock = async () => {
       )
     }
   })
+
+  console.log(HINTS_CACHE)
 
   // Cache solutions locally
   PUZZLES_CACHE.forEach((puzzle) => {

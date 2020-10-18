@@ -250,6 +250,34 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
   })
 }
 
+const createHintIntent = (uid, puzzle, deduction) => {
+  return new Promise((resolve, reject) => {
+    pool
+      .connect()
+      .then((client) => {
+        client
+          .query(
+            'INSERT INTO logs (id, action, value, uid, puzzle, attempt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [
+              uuidv4(),
+              'hint',
+              0 - deduction,
+              uid,
+              puzzle,
+              "Hint Request"
+            ]
+          )
+          .then((res) => {
+            client.query('COMMIT')
+            client.release()
+            resolve(res.rows[0])
+          })
+          .catch((e) => reject(e))
+      })
+      .catch((e) => reject(e))
+  })
+}
+
 const updateScore = (uid, value) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
@@ -275,6 +303,7 @@ module.exports = {
   listAllUsers,
   listUserIds,
   createAttempt,
+  createHintIntent,
   getUserSolved,
   updateScore,
   listAllLogs

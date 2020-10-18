@@ -19,6 +19,12 @@ const Levels = new AirtablePlus({
   tableName: 'Levels'
 })
 
+const Hints = new AirtablePlus({
+  baseID: config.airtable.base,
+  apiKey: config.airtable.key,
+  tableName: 'Hints'
+})
+
 // Pull all puzzles from Airtable
 const getUnlockedPuzzles = (solutions) => {
   console.log(
@@ -60,4 +66,15 @@ const getLevels = () => {
   })
 }
 
-module.exports = { getUnlockedPuzzles, getLevels }
+const getHints = () => {
+  console.log('Querying Airtable for hints')
+
+  return new Promise((resolve, reject) => {
+    Hints.read().then(data => resolve(data))
+    .catch((err) => {
+      reject(err)
+    })
+  })
+}
+
+module.exports = { getUnlockedPuzzles, getLevels, getHints }

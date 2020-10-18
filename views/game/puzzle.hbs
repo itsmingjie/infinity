@@ -35,6 +35,14 @@
         </p>
       </div>
     </form>
+
+      {{#if Hints}}
+      <form method="POST" action="/game/puzzle/{{../id}}/hint" class="has-text-centered">
+            <input type="hidden" name="_csrf" value="{{../csrfToken}}">
+            <button type="submit" class="button">Get Hint</button>
+      </form>
+      {{/if}}
+
     {{/if}}
   </div>
 </article>
