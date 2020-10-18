@@ -6,7 +6,7 @@
   <p class="help">This is the unique identifier of your team. It's your team's login, and it's not public. You cannot
     change it.</p>
 </div>
-
+<br />
 <input type="hidden" id="csrfToken" value="{{csrfToken}}" />
 
 <label class="label">Team Display Name</label>
@@ -15,14 +15,23 @@
     <input class="input" type="text" data-prop="display_name" value="{{team.display_name}}">
   </div>
 </div>
-
-<label class="label">Affiliation (School, Club, etc.) {{>adminSymbol}}</label>
+<br />
+<label class="label">Affiliation (School, Club, etc.) {{#if team.isAdmin}}{{>adminSymbol}}{{/if}}</label>
 <div class="field is-grouped">
   <div class="control is-expanded">
     <input class="input" type="text" data-prop="affiliation" {{#if team.isAdmin}}value="Staff"
       disabled{{else}}value="{{team.affiliation}}" {{/if}}>
   </div>
 </div>
+<br />
+<label class="label">Email Addresses of Team Members (One Per Line)</label>
+<div class="field is-grouped">
+  <div class="control is-expanded">
+    <textarea class="textarea" data-prop="emails">{{renderEmails team.emails}}</textarea>
+  </div>
+</div>
+
+<br />
 
 <!-- Admin Only Section -->
 <!-- WARNING: Be sure to server-check the prvileges when updating user data or users will potentially

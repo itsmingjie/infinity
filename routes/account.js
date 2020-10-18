@@ -127,7 +127,8 @@ app.post(
 
 const KEY_DICT = {
   display_name: "display_name",
-  affiliation: "affiliation"
+  affiliation: "affiliation",
+  emails: "emails"
 }
 
 app.post(
@@ -135,15 +136,34 @@ app.post(
   (req, res) => {
     const id = req.body.id || req.user.id
     const db_key = KEY_DICT[req.body.key] // the key of the database to update
-    const value = req.body.value
+    let value = req.body.value
 
     if (id !== req.user.id && !req.user.isAdmin) {
       // unauthorized access
-      res.render('message', messages.unauthorizedAdmin)
+      res.status(403)
     } else if (db_key === undefined) {
       // user trying to update a key that is not update-able
-      res.render('message', messages.caughtRedHanded)
+      res.status(403)
     } else {
+      if (db_key === "emails") {
+        // split emails into an array by line
+        value = value.replace('|', "").replace(/\r\n/g,"\n").replace("\n", "|").toLowerCase()
+
+        // test if emails are valid
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const value_arr = value.split('|')
+
+        console.log(value_arr)
+        for (i in value_arr) {
+          if (!re.test(value_arr[i])) {
+            res.status(400).json({
+              line: value_arr[i]
+            })
+            return
+          }
+        }
+      }
+
       db.updateUser(id, db_key, value).then((r) => {
         res.status(200).send()
       }).catch((err) => {

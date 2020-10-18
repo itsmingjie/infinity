@@ -89,7 +89,7 @@ const getUser = (id) => {
       .then((client) => {
         client
           .query(
-            'SELECT id, "name", "display_name", "admin", "score", "banned" FROM teams WHERE id=$1',
+            'SELECT id, "name", "display_name", "admin", "score", "emails", "banned" FROM teams WHERE id=$1',
             [id]
           )
           .then((res) => {
@@ -104,6 +104,7 @@ const getUser = (id) => {
                   : null,
                 isAdmin: res.rows[0].admin,
                 isBanned: res.rows[0].banned,
+                emails: res.rows[0].emails,
                 score: res.rows[0].score
               })
             }

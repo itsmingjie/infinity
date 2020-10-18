@@ -1,7 +1,7 @@
 const csrfToken = document.getElementById('csrfToken').value
 
 /* eslint-disable no-undef */
-document.querySelectorAll('input.input').forEach((el) => {
+document.querySelectorAll('input.input, textarea.textarea').forEach((el) => {
   el.addEventListener('blur', function (e) {
     if (!el.dataset.hassave) {
       let wrapper = document.createElement('div')
@@ -30,7 +30,12 @@ document.querySelectorAll('input.input').forEach((el) => {
             value: el.value
           })
         }).then((response) => {
-            console.log(response)
+          console.log(response.json().line)
+          if (response.status === 403) {
+            alert("UNAUTHORIZED ACCESS! What are you trying to pull here?")
+          } else if (response.status === 400) {
+            alert("Invalid email detected! Please double check each line.")
+          }
 
           const t = document.getElementById(`save-${el.dataset.prop}`)
           saveButton.classList.remove('is-loading')
