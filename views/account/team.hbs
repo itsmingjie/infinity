@@ -9,17 +9,16 @@
 
 <input type="hidden" id="csrfToken" value="{{csrfToken}}" />
 
-<div class="field">
-  <label class="label">Team Display Name</label>
-  <div class="control">
+<label class="label">Team Display Name</label>
+<div class="field is-grouped">
+  <div class="control is-expanded">
     <input class="input" type="text" data-prop="display_name" value="{{team.display_name}}">
   </div>
 </div>
 
-
-<div class="field">
-  <label class="label">Affiliation (School, Club, etc.) {{>adminSymbol}}</label>
-  <div class="control">
+<label class="label">Affiliation (School, Club, etc.) {{>adminSymbol}}</label>
+<div class="field is-grouped">
+  <div class="control is-expanded">
     <input class="input" type="text" data-prop="affiliation" {{#if team.isAdmin}}value="Staff"
       disabled{{else}}value="{{team.affiliation}}" {{/if}}>
   </div>
