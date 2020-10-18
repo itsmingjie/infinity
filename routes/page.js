@@ -5,8 +5,7 @@ const rateLimit = require('express-rate-limit')
 const fs = require('fs')
 const sanitize = require('sanitize-filename')
 const path = require('path')
-const showdown = require('showdown')
-const converter = new showdown.Converter()
+const marked = require('marked')
 
 const messages = require('../lib/messages')
 
@@ -29,7 +28,7 @@ app.get('/:pagename', (req, res) => {
       } else {
         res.render('page', {
           layout: 'page',
-          content: converter.makeHtml(data)
+          content: marked(data)
         })
       }
     }
