@@ -6,6 +6,7 @@
 const express = require('express')
 const app = express.Router()
 const rateLimit = require('express-rate-limit')
+const bodyParser = require('body-parser')
 
 const config = require('../config')
 const db = require('../services/db')
@@ -20,6 +21,7 @@ const limiter = rateLimit({
 })
 
 app.use(limiter)
+app.use(bodyParser.json())
 
 const captchaFlagMiddleware = (req, res, next) => {
   if (req.recaptcha.error) {
@@ -123,31 +125,35 @@ app.post(
   }
 )
 
+const KEY_DICT = {
+  display_name: "display_name",
+  affiliation: "affiliation"
+}
+
 app.post(
   '/update',
-  passport.authenticate('local', {
-    successRedirect: '/account',
-    failureRedirect: '/account/login'
-  }),
   (req, res) => {
-    const id = req.query.id
+    const id = req.body.id || req.user.id
+    const db_key = KEY_DICT[req.body.key] // the key of the database to update
+    const value = req.body.value
 
     if (id !== req.user.id && !req.user.isAdmin) {
       // unauthorized access
       res.render('message', messages.unauthorizedAdmin)
+    } else if (db_key === undefined) {
+      // user trying to update a key that is not update-able
+      res.render('message', messages.caughtRedHanded)
     } else {
-      const data = {}
-      if (req.user.isAdmin) {
-        // elevated control (includes permission settings)
-        data.admin = req.body.admin
-        data.verified = req.body.verified
-      }
-
-      // general user control
-      data.displayName = req.body.displayName
-      data.affiliation = req.body.affiliation
+      db.updateUser(id, db_key, value).then((r) => {
+        res.status(200).send()
+      }).catch((err) => {
+        console.log(err)
+        res.status(500).json(err)
+      })
     }
   }
 )
+
+
 
 module.exports = app

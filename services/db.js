@@ -5,6 +5,7 @@
  */
 
 const { Pool } = require('pg')
+const format = require('pg-format');
 const bcrypt = require('bcrypt')
 const uuidv4 = require('uuid').v4
 
@@ -90,7 +91,7 @@ const getUser = (id) => {
       .then((client) => {
         client
           .query(
-            'SELECT id, "name", "displayName", "admin", "score", "banned" FROM teams WHERE id=$1',
+            'SELECT id, "name", "display_name", "admin", "score", "banned" FROM teams WHERE id=$1',
             [id]
           )
           .then((res) => {
@@ -100,8 +101,8 @@ const getUser = (id) => {
               resolve({
                 id: res.rows[0].id,
                 name: res.rows[0].name.trim(),
-                displayName: res.rows[0].displayName
-                  ? res.rows[0].displayName.trim()
+                display_name: res.rows[0].display_name
+                  ? res.rows[0].display_name.trim()
                   : null,
                 isAdmin: res.rows[0].admin,
                 isBanned: res.rows[0].banned,
@@ -139,10 +140,17 @@ const getUserSolved = (id) => {
   })
 }
 
-const updateUser = (id, data) => {
+// Update individual user's data by key
+const updateUser = (id, key, data) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
-      client.query('UPDATE teams SET ')
+      const q = format('UPDATE teams SET %I = %L WHERE id = %L', key, data, id)
+      client.query(q)
+      .then((res) => {
+        resolve(res)
+      }).catch((err) => {
+        reject(err)
+      })
     })
   })
 }
@@ -161,7 +169,7 @@ const listAllUsers = () => {
     pool.connect().then((client) => {
       client
         .query(
-          'SELECT id, "name", "displayName", "affiliation", "admin", "score", "banned" FROM teams'
+          'SELECT id, "name", "display_name", "affiliation", "admin", "score", "banned" FROM teams'
         )
         .then((data) => {
           client.release()
@@ -264,6 +272,7 @@ module.exports = {
   createUser,
   validateUser,
   getUser,
+  updateUser,
   listAllUsers,
   listUserIds,
   createAttempt,

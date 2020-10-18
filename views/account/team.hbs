@@ -7,59 +7,59 @@
     change it.</p>
 </div>
 
-<form action="/api/account/update/{{team.id}}" method="POST">
+<input type="hidden" id="csrfToken" value="{{csrfToken}}" />
+
+<div class="field">
+  <label class="label">Team Display Name</label>
+  <div class="control">
+    <input class="input" type="text" data-prop="display_name" value="{{team.display_name}}">
+  </div>
+</div>
+
+
+<div class="field">
+  <label class="label">Affiliation (School, Club, etc.) {{>adminSymbol}}</label>
+  <div class="control">
+    <input class="input" type="text" data-prop="affiliation" {{#if team.isAdmin}}value="Staff"
+      disabled{{else}}value="{{team.affiliation}}" {{/if}}>
+  </div>
+</div>
+
+<!-- Admin Only Section -->
+<!-- WARNING: Be sure to server-check the prvileges when updating user data or users will potentially
+be able to self-grant admin perms. -->
+
+{{#if team.isAdmin}}
+<div class="adminOnly">
   <div class="field">
-    <label class="label">Team Display Name</label>
+    <label class="label">Team ID</label>
     <div class="control">
-      <input class="input" type="text" name="displayName" value="{{team.displayName}}">
+      <input class="input" type="text" value="{{team.id}}" disabled>
     </div>
+    <p class="help">This string makes zero sense to you, but it's incredibly important for us. Take good care of it,
+      would
+      you?</p>
   </div>
 
-
   <div class="field">
-    <label class="label">Affiliation (School, Club, etc.) {{>adminSymbol}}</label>
+    <label class="label">Special Privileges</label>
     <div class="control">
-      <input class="input" type="text" name="affiliation" {{#if team.isAdmin}}value="Staff"
-        disabled{{else}}value="{{team.affiliation}}" {{/if}}>
-    </div>
-  </div>
-
-  <!-- Admin Only Section -->
-  <!-- WARNING: Be sure to server-check the prvileges when updating user data or users will potentially
-  be able to self-grant admin perms. -->
-
-  {{#if team.isAdmin}}
-  <div class="adminOnly">
-    <div class="field">
-      <label class="label">Team ID</label>
-      <div class="control">
-        <input class="input" type="text" value="{{team.id}}" disabled>
-      </div>
-      <p class="help">This string makes zero sense to you, but it's incredibly important for us. Take good care of it,
-        would
-        you?</p>
+      <label class="checkbox">
+        <input type="checkbox" name="admin" {{#if team.isAdmin}}checked{{/if}}>
+        Admin User &mdash; <span class="is-danger">Be extra careful!</span> {{>adminSymbol}}
+      </label>
     </div>
 
-    <div class="field">
-      <label class="label">Special Privileges</label>
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="admin" {{#if team.isAdmin}}checked{{/if}}>
-          Admin User &mdash; <span class="is-danger">Be extra careful!</span> {{>adminSymbol}}
-        </label>
-      </div>
-
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="banned" {{#if team.isBanned}}checked{{/if}}>
-          User Banned &mdash; Banned users will be locked out of Infinity.
-        </label>
-      </div>
+    <div class="control">
+      <label class="checkbox">
+        <input type="checkbox" name="banned" {{#if team.isBanned}}checked{{/if}}>
+        User Banned &mdash; Banned users will be locked out of Infinity.
+      </label>
     </div>
   </div>
-  {{/if}}
+</div>
+{{/if}}
 
-  <div class="field">
-    <button class="button" type="submit">Save Profile</button>
-  </div>
-</form>
+{{#extend "foot-inject"}}
+  <script src="/assets/scripts/teamFields.js" defer></script>
+{{/extend}}
