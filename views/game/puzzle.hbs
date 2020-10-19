@@ -4,41 +4,37 @@
   {{/if}}
 {{/extend}}
 {{#puzzle.fields}}
-  <article class="message {{#if ../solved}}is-success{{/if}}">
-    <div class="message-header">
-      {{#if ../solved}}
-        <p>Already Solved!</p>
-      {{else}}Your Solution &mdash; Solve for {{./Value}} pts!
-      {{/if}}
-    </div>
-    <div class="message-body submitWrapper">
-      {{#if ../solved}}
-        {{#if CustomSuccess}}
-          {{CustomSuccess}}
+  <article class="message {{#if ../solved}}is-success{{/if}} solve">
+    <div class="message-body">
+      <div class="message-wrapper submitWrapper has-text-centered">
+        {{#if ../solved}}
+          {{#if CustomSuccess}}
+            {{CustomSuccess}}
+          {{else}}
+            <p>Congratulations! You've already solved this puzzle, {{../team.name}}. Time to take on the next one?</p>
+          {{/if}}
         {{else}}
-          <p>Congratulations! You've already solved this puzzle, {{../team.name}}. Time to take on the next one?</p>
-        {{/if}}
-      {{else}}
-        <form id="submission" method="POST">
-          <input type="hidden" name="_csrf" value="{{../csrfToken}}">
-          <label class="label"></label>
-          <div class="field is-grouped">
-            <div class="control is-expanded has-icons-left">
-              <input class="input is-allcaps" type="text" placeholder="avada kedavra" name="solution">
-              <span class="icon is-small is-left">
-                <i class="fas fa-key"></i>
-              </span>
-              <p class="help">Solutions are <strong>not</strong> case sensitive. All special characters and numbers except spaces will be stripped from your attempt.</p>
-            </div>
+          <form id="submission" method="POST">
+            <input type="hidden" name="_csrf" value="{{../csrfToken}}">
+            <label class="label"></label>
+            <div class="field is-grouped">
+              <div class="control is-expanded">
+                <input class="input is-large is-allcaps solver" type="text" placeholder="alohomora" name="solution">
+              </div>
+
             <p class="control">
-              <button class="button" type="submit">
-                Solve!
+              <button class="button is-large low-jump" type="submit">
+                SOLVE!
               </button>
             </p>
-          </div>
-        </form>
-      {{/if}}
+            </div>
+
+          </form>
+          <p class="help mt-5">Solutions are <strong>not</strong> case sensitive. All special characters and numbers will be stripped from your attempt.</p>
+        {{/if}}
+      </div>
     </div>
+    <span class="message-across">SOLVE!</span>
   </article>
   <hr />
   <div class="formattedText">
@@ -63,29 +59,32 @@
 {{/puzzle.fields}}
 <hr />
 {{#unless solved}}
-  <article class="message is-info">
-    <div class="message-header">
-      Hints
-    </div>
-    <div class="message-body submitWrapper">
-      <div>
-        {{#each unlockedHints}}
-        <p class="mb-2" id="{{id}}">Unlocked Hint {{bump @index}}: {{{inlineMarkdown fields.HintText}}}</p>
-        {{/each}}
-
-        {{#unless unlockedHints}}
-        <p>You have no unlocked hints! </p>
-        {{/unless}}
+  {{#if puzzle.fields.Hints}}
+    <article class="message hints">
+      <div class="message-body">
+        <div class="message-wrapper">
+          <table class="table is-narrow is-fullwidth hints">
+            <tbody>
+              {{#each unlockedHints}}
+                <tr id="{{id}}">
+                  <td><span class="tag is-success">Unlocked</span></td>
+                  <td>{{{inlineMarkdown fields.HintText}}}</td>
+                </tr>
+              {{/each}}
+              {{#each puzzle.fields.Hints}}
+                {{#includesId ../unlockedHints this}}
+              {{else}}
+                <tr id="{{id}}">
+                  <td><span class="tag is-danger">Locked</span></td>
+                  <td><a href="/game/puzzle/{{../../id}}/hint/{{../this}}">Get Hint {{bump @index}}</a></td>
+                </tr>
+                {{/includesId}}
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="mt-3">
-        {{#each puzzle.fields.Hints}}
-          {{#includesId ../unlockedHints this}}
-            <a class="button" disabled>Get Hint {{bump @index}}</a>&ensp;
-        {{else}}
-          <a href="/game/puzzle/{{../../id}}/hint/{{../this}}" class="button">Get Hint {{bump @index}}</a>&ensp;
-          {{/includesId}}
-        {{/each}}
-      </div>
-    </div>
-  </article>
+      <span class="message-across">HINTS</span>
+    </article>
+  {{/if}}
 {{/unless}}

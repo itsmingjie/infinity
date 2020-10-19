@@ -81,6 +81,10 @@ a.button {
     box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
     color: #fff;
     transform: translateY(-7px);
+
+    &.low-jump {
+      transform: translateY(-3px);
+    }
   }
 
   &.is-fullwidth {
@@ -184,8 +188,8 @@ div.footer {
     border-radius: 4px;
     transition: all 0.3s ease 0s;
     height: 100%;
-    display: flex!important;
-    flex-direction: column!important;
+    display: flex !important;
+    flex-direction: column !important;
 
     &:not(.locked):hover {
       box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
@@ -212,6 +216,75 @@ div.footer {
       .card-footer-item {
         font-weight: bold;
       }
+    }
+  }
+}
+
+article.message {
+  position: relative;
+  overflow: hidden;
+
+  .message-across {
+    user-select: none;
+    position: absolute;
+    font-size: 4rem;
+    font-weight: bold;
+    z-index: 0;
+  }
+
+  .message-wrapper {
+    position: relative;
+    z-index: 10;
+  }
+
+  .message-header,
+  .message-body {
+    color: #363636;
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  &.solve {
+    .message-across {
+      background: $yosemite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: rotate(-15deg);
+      bottom: 15px;
+      left: 15px;
+    }
+  }
+
+  &.hints {
+    background-color: #fafafa;
+
+    .message-across {
+      background: $yosemite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: rotate(-15deg);
+      top: calc(50% - 3rem);
+      right: 5px;
+    }
+  }
+}
+
+table.table {
+  background-color: transparent;
+
+  &.hints {
+    margin-bottom: 0;
+
+    td {
+      border: none;
+    }
+
+    tr {
+      height: 2.5rem;
+    }
+
+    tr > *:nth-child(1) {
+      width: 10%;
     }
   }
 }
@@ -298,9 +371,35 @@ div.formattedText {
   }
 }
 
-.input {
+input.input {
+  border: none;
+  border-radius: 0.4rem;
+
   &.is-allcaps {
     text-transform: uppercase;
+  }
+
+  &.solver {
+    transition: all 0.3s ease 0s;
+    background: rgba($color: #ffffff, $alpha: .85);
+    color: #121217;
+    outline: none;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    &:focus {
+      box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
+      transform: translateY(-3px);
+      background: $yosemite;
+      color: #fff;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
   }
 }
 
