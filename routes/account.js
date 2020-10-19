@@ -147,7 +147,7 @@ app.post(
     } else {
       if (db_key === "emails") {
         // split emails into an array by line
-        value = value.replace('|', "").replace(/\r\n/g,"\n").replace("\n", "|").toLowerCase()
+        value = value.replace(/|/g, "").replace(/\r\n/g,"\n").replace(/\n/g, "|").toLowerCase()
 
         // test if emails are valid
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
