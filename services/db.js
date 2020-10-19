@@ -81,6 +81,23 @@ const validateUser = (name, password) => {
   })
 }
 
+const logSignin = (uid, ip) => {
+  pool
+    .connect()
+    .then((client) => {
+      client
+        .query(
+          'INSERT INTO logs (id, uid, action, detail) VALUES ($1, $2, $3, $4)',
+          [uuidv4(), uid, 'login', ip]
+        )
+        .then(() => {
+          client.query('COMMIT')
+          client.release()
+        })
+    })
+    .catch((e) => reject(e))
+}
+
 // get the user's latest data
 const getUser = (id) => {
   return new Promise((resolve, reject) => {
@@ -232,7 +249,7 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
       .then((client) => {
         client
           .query(
-            'INSERT INTO logs (id, action, value, uid, puzzle, attempt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            'INSERT INTO logs (id, action, value, uid, puzzle, detail) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [
               uuidv4(),
               success ? 'solve' : 'attempt',
@@ -257,10 +274,7 @@ const getHintCredit = (uid) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
       client
-        .query(
-          'SELECT hint_credit FROM teams WHERE id=$1',
-          [uid]
-        )
+        .query('SELECT hint_credit FROM teams WHERE id=$1', [uid])
         .then((data) => {
           client.release()
           resolve(data.rows[0]['hint_credit'])
@@ -275,25 +289,27 @@ const getHintCredit = (uid) => {
 
 const createHintIntent = (uid, puzzle, hint, deduction) => {
   return new Promise((resolve, reject) => {
-    pool
-      .connect()
-      .then((client) => {
-        // create hint request
-        client.query(
-          'INSERT INTO logs (id, action, value, uid, puzzle, attempt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-          [uuidv4(), 'hint', 0 - deduction, uid, puzzle, `${hint}`]
-        )
+    pool.connect().then((client) => {
+      // create hint request
+      client.query(
+        'INSERT INTO logs (id, action, value, uid, puzzle, detail) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+        [uuidv4(), 'hint', 0 - deduction, uid, puzzle, `${hint}`]
+      )
 
-        // deduct user's hint credit
-        client.query('UPDATE teams SET hint_credit=(hint_credit-1) WHERE id=$1', [uid])
+      // deduct user's hint credit
+      client.query('UPDATE teams SET hint_credit=(hint_credit-1) WHERE id=$1', [
+        uid
+      ])
 
-        client.on("error", (err) => {reject(err)})
+      client.on('error', (err) => {
+        reject(err)
+      })
 
-        client.query('COMMIT').then(res => {
-          client.release()
-          resolve()
-        })
-      });
+      client.query('COMMIT').then((res) => {
+        client.release()
+        resolve()
+      })
+    })
   })
 }
 
@@ -302,12 +318,12 @@ const getUnlockedHints = (uid, puzzle) => {
     pool.connect().then((client) => {
       client
         .query(
-          'SELECT id, puzzle, action, uid, attempt FROM logs WHERE (uid=$1 AND puzzle=$2 AND action=\'hint\')',
+          "SELECT id, puzzle, action, uid, detail FROM logs WHERE (uid=$1 AND puzzle=$2 AND action='hint')",
           [uid, puzzle]
         )
         .then((data) => {
           client.release()
-          resolve(data.rows.map((m) => m.attempt))
+          resolve(data.rows.map((m) => m.detail))
         })
         .catch((err) => {
           client.release()
@@ -337,6 +353,7 @@ const updateScore = (uid, value) => {
 module.exports = {
   createUser,
   validateUser,
+  logSignin,
   getUser,
   updateUser,
   listAllUsers,

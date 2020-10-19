@@ -7,6 +7,7 @@ const express = require('express')
 const app = express.Router()
 const rateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
+const requestIp = require('request-ip');
 
 const config = require('../config')
 const db = require('../services/db')
@@ -120,6 +121,8 @@ app.post(
     } else {
       req.session.cookie.expires = false
     }
+
+    db.logSignin(req.user.id, requestIp.getClientIp(req))
 
     res.redirect(req.body.redirectURL || '/')
   }

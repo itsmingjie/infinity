@@ -13,9 +13,9 @@
   <tr>
     <td title="{{id}}">{{dateFmt timestamp}}</td>
     <td title="{{uid}}">{{lookup ../users uid}}</td>
-    <td>{{#eq action "attempt"}}={{else}}{{pn ../value}}{{/eq}}</td>
+    <td>{{#eq action "solve"}}{{pn ../value}}{{else}}={{/eq}}</td>
     <td>{{action}}</td>
-    <td>{{attempt}}</td>
+    <td>{{detail}}</td>
   </tr>
 
 
