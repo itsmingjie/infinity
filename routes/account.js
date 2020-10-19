@@ -153,7 +153,6 @@ app.post(
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const value_arr = value.split('|')
 
-        console.log(value_arr)
         for (i in value_arr) {
           if (!re.test(value_arr[i])) {
             res.status(400).json({

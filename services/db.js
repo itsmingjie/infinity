@@ -5,7 +5,7 @@
  */
 
 const { Pool } = require('pg')
-const format = require('pg-format');
+const format = require('pg-format')
 const bcrypt = require('bcrypt')
 const uuidv4 = require('uuid').v4
 
@@ -89,7 +89,7 @@ const getUser = (id) => {
       .then((client) => {
         client
           .query(
-            'SELECT id, "name", "display_name", "admin", "score", "emails", "banned" FROM teams WHERE id=$1',
+            'SELECT id, "name", "display_name", "admin", "score", "emails", "banned", hint_credit FROM teams WHERE id=$1',
             [id]
           )
           .then((res) => {
@@ -105,7 +105,8 @@ const getUser = (id) => {
                 isAdmin: res.rows[0].admin,
                 isBanned: res.rows[0].banned,
                 emails: res.rows[0].emails,
-                score: res.rows[0].score
+                score: res.rows[0].score,
+                hint_credit: res.rows[0].hint_credit
               })
             }
           })
@@ -144,12 +145,14 @@ const updateUser = (id, key, data) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
       const q = format('UPDATE teams SET %I = %L WHERE id = %L', key, data, id)
-      client.query(q)
-      .then((res) => {
-        resolve(res)
-      }).catch((err) => {
-        reject(err)
-      })
+      client
+        .query(q)
+        .then((res) => {
+          resolve(res)
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   })
 }
@@ -250,31 +253,67 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
   })
 }
 
-const createHintIntent = (uid, puzzle, deduction) => {
+const getHintCredit = (uid) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query(
+          'SELECT hint_credit FROM teams WHERE id=$1',
+          [uid]
+        )
+        .then((data) => {
+          client.release()
+          resolve(data.rows[0]['hint_credit'])
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
+const createHintIntent = (uid, puzzle, hint, deduction) => {
   return new Promise((resolve, reject) => {
     pool
       .connect()
       .then((client) => {
-        client
-          .query(
-            'INSERT INTO logs (id, action, value, uid, puzzle, attempt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [
-              uuidv4(),
-              'hint',
-              0 - deduction,
-              uid,
-              puzzle,
-              "Hint Request"
-            ]
-          )
-          .then((res) => {
-            client.query('COMMIT')
-            client.release()
-            resolve(res.rows[0])
-          })
-          .catch((e) => reject(e))
-      })
-      .catch((e) => reject(e))
+        // create hint request
+        client.query(
+          'INSERT INTO logs (id, action, value, uid, puzzle, attempt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+          [uuidv4(), 'hint', 0 - deduction, uid, puzzle, `${hint}`]
+        )
+
+        // deduct user's hint credit
+        client.query('UPDATE teams SET hint_credit=(hint_credit-1) WHERE id=$1', [uid])
+
+        client.on("error", (err) => {reject(err)})
+
+        client.query('COMMIT').then(res => {
+          client.release()
+          resolve()
+        })
+      });
+  })
+}
+
+const getUnlockedHints = (uid, puzzle) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query(
+          'SELECT id, puzzle, action, uid, attempt FROM logs WHERE (uid=$1 AND puzzle=$2 AND action=\'hint\')',
+          [uid, puzzle]
+        )
+        .then((data) => {
+          client.release()
+          resolve(data.rows.map((m) => m.attempt))
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
   })
 }
 
@@ -303,6 +342,8 @@ module.exports = {
   listAllUsers,
   listUserIds,
   createAttempt,
+  getUnlockedHints,
+  getHintCredit,
   createHintIntent,
   getUserSolved,
   updateScore,

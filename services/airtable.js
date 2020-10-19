@@ -37,7 +37,6 @@ const getUnlockedPuzzles = (solutions) => {
       sort: [{field: 'Order', direction: 'asc'}]
     })
       .then((data) => {
-        console.log(data)
         if (!solutions) {
           // remove all solutions from the fetch
           data.forEach((v) => {

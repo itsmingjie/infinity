@@ -53,15 +53,17 @@ app.get('/:level', cacheCheck(), (req, res) => {
   }
 })
 
-app.get('/puzzle/:puzzle', cacheCheck(), (req, res) => {
+app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
   console.log('Oh look! I can pull the puzzle directly from cache!')
   const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
+  const unlockedHints = await db.getUnlockedHints(req.user.id, req.params.puzzle)
 
   if (puzzle) {
     res.render('game/puzzle', {
       title: `${puzzle.fields.Title} — ${puzzle.fields.Value} pts`,
       id: req.params.puzzle,
       puzzle: puzzle,
+      unlockedHints: unlockedHints.map((h) => idSearch(h, HINTS_CACHE)),
       css: puzzle.fields['CustomCSS'] || false,
       solved: res.locals.solvedList.includes(req.params.puzzle),
       csrfToken: req.csrfToken()
@@ -118,6 +120,30 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
   }
 })
 
+app.get(
+  '/puzzle/:puzzle/hint/:hint',
+  solveLimiter,
+  cacheCheck(),
+  async (req, res) => {
+    const userCredits = await db.getHintCredit(req.user.id)
+    const unlockedHints = await db.getUnlockedHints(req.user.id, req.params.puzzle)
+
+    if (unlockedHints.includes(req.params.hint)) {
+      res.render('message', messages.hintAlreadyUnlocked)
+    } else if (userCredits < 1) {
+      res.render('message', messages.outOfHintCredit)
+    } else {
+      db.createHintIntent(req.user.id, req.params.puzzle, req.params.hint, 0)
+        .then(() => {
+          res.redirect(req.get('referer') + "#" + req.params.hint)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+)
+
 // repull information from Airtable to memory
 // note: always restock both caches together to prevent data mismatch
 const restock = async () => {
@@ -138,8 +164,6 @@ const restock = async () => {
       )
     }
   })
-
-  console.log(HINTS_CACHE)
 
   // Cache solutions locally
   PUZZLES_CACHE.forEach((puzzle) => {
@@ -178,7 +202,7 @@ const mergeMeta = (ids, titles, descriptions, values, locks, orders) => {
 }
 
 const parseSolution = (sol) => {
-  return sol.replace(/[^a-zA-Z ]/g, "").toLowerCase()
+  return sol.replace(/[^a-zA-Z ]/g, '').toLowerCase()
 }
 
 module.exports = { app, restock }

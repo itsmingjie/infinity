@@ -7,7 +7,8 @@ create table if not exists teams (
     affiliation char(64),
     score integer default 0 not null,
     banned boolean default false,
-    emails text
+    emails text,
+    hint_credit integer default 0
 );
 
 create unique index if not exists teams_name_uindex on teams (name);
