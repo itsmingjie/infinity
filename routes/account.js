@@ -122,7 +122,8 @@ app.post(
       req.session.cookie.expires = false
     }
 
-    db.logSignin(req.user.id, requestIp.getClientIp(req))
+    if (config.env !== "development")
+      db.logSignin(req.user.id, requestIp.getClientIp(req))
 
     res.redirect(req.body.redirectURL || '/')
   }
@@ -150,7 +151,7 @@ app.post(
     } else {
       if (db_key === "emails") {
         // split emails into an array by line
-        value = value.replace(/|/g, "").replace(/\r\n/g,"\n").replace(/\n/g, "|").toLowerCase()
+        value = value.replace(/\|/g, "").replace(/\r\n/g,"\n").replace(/\n/g, "|").toLowerCase()
 
         // test if emails are valid
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
