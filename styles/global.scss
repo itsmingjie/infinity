@@ -245,13 +245,18 @@ article.message {
   }
 
   &.solve {
-    .message-across {
-      background: $yosemite;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      transform: rotate(-15deg);
-      bottom: 15px;
-      left: 15px;
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,.8) 70%, rgba(255,255,255,0) 100%);
+    background-color: transparent;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 3.25rem;
+    overflow: visible;
+    z-index: 100;
+    padding-bottom: 1rem;
+
+    .message-body {
+      padding: 0;
+      border: none;
     }
   }
 
@@ -374,20 +379,24 @@ div.formattedText {
 input.input {
   border: none;
   border-radius: 0.4rem;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  transition: all 0.2s ease 0s;
+
+  &:focus {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
 
   &.is-allcaps {
     text-transform: uppercase;
   }
 
   &.solver {
-    transition: all 0.3s ease 0s;
-    background: rgba($color: #ffffff, $alpha: .85);
+    background: #ffffff;
     color: #121217;
     outline: none;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 
     &::placeholder {
-      color: rgba(0, 0, 0, 0.5);
+      color: rgba(0, 0, 0, 0.3);
     }
 
     &:focus {
@@ -401,6 +410,10 @@ input.input {
       }
     }
   }
+}
+
+section.section {
+  padding-top: 1rem;
 }
 
 @import '../node_modules/bulma/bulma.sass';
