@@ -1216,7 +1216,7 @@ eslint-config-standard-jsx@8.1.0:
   resolved "https://registry.yarnpkg.com/eslint-config-standard-jsx/-/eslint-config-standard-jsx-8.1.0.tgz#314c62a0e6f51f75547f89aade059bec140edfc7"
   integrity sha512-ULVC8qH8qCqbU792ZOO6DaiaZyHNS/5CZt3hKqHkEhVlhPEPN3nfBqqxJCyp59XrjIBZPu1chMYe9T2DXZ7TMw==
 
-eslint-config-standard@14.1.1, eslint-config-standard@^14.1.1:
+eslint-config-standard@14.1.1:
   version "14.1.1"
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.1.tgz#830a8e44e7aef7de67464979ad06b406026c56ea"
   integrity sha512-Z9B+VR+JIXRxz21udPTL9HpFMyoMUEeX1G251EQ6e05WD9aPVtVBn09XUmZ259wCMlCDmYDSZG62Hhm+ZTJcUg==
@@ -2302,6 +2302,11 @@ map-obj@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-3.1.0.tgz#3be9810d926db2f8612c728a2e95e03b7f109241"
   integrity sha512-Xg1iyYz/+iIW6YoMldux47H/e5QZyDSB41Kb0ev+YYHh3FJnyyzY0vTk/WbVeWcCvdXd70cOriUBmhP8alUFBA==
+
+marked@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-1.2.0.tgz#7221ce2395fa6cf6d722e6f2871a32d3513c85ca"
+  integrity sha512-tiRxakgbNPBr301ihe/785NntvYyhxlqcL3YaC8CaxJQh7kiaEtrN9B/eK2I2943Yjkh5gw25chYFDQhOMCwMA==
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -3509,13 +3514,6 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-showdown@^1.9.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/showdown/-/showdown-1.9.1.tgz#134e148e75cd4623e09c21b0511977d79b5ad0ef"
-  integrity sha512-9cGuS382HcvExtf5AHk7Cb4pAeQQ+h0eTr33V1mu+crYWV4KvWAw6el92bDrqGEk5d46Ai/fhbEUwqJ/mTCNEA==
-  dependencies:
-    yargs "^14.2"
-
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
@@ -4178,14 +4176,6 @@ yargs-parser@^13.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@^15.0.1:
-  version "15.0.1"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-15.0.1.tgz#54786af40b820dcb2fb8025b11b4d659d76323b3"
-  integrity sha512-0OAMV2mAZQrs3FkNpDQcBk1x5HXb8X4twADss4S0Iuk+2dGnLOE/fRHrsYm542GduMveyA77OF4wrNJuanRCWw==
-  dependencies:
-    camelcase "^5.0.0"
-    decamelize "^1.2.0"
-
 yargs@^13.3.2:
   version "13.3.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.2.tgz#ad7ffefec1aa59565ac915f82dccb38a9c31a2dd"
@@ -4201,20 +4191,3 @@ yargs@^13.3.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
-
-yargs@^14.2:
-  version "14.2.3"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.2.3.tgz#1a1c3edced1afb2a2fea33604bc6d1d8d688a414"
-  integrity sha512-ZbotRWhF+lkjijC/VhmOT9wSgyBQ7+zr13+YLkhfsSiTriYsMzkTUFP18pFhWwBeMa5gUc1MzbhrO6/VB7c9Xg==
-  dependencies:
-    cliui "^5.0.0"
-    decamelize "^1.2.0"
-    find-up "^3.0.0"
-    get-caller-file "^2.0.1"
-    require-directory "^2.1.1"
-    require-main-filename "^2.0.0"
-    set-blocking "^2.0.0"
-    string-width "^3.0.0"
-    which-module "^2.0.0"
-    y18n "^4.0.0"
-    yargs-parser "^15.0.1"

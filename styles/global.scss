@@ -72,7 +72,11 @@ a.button {
   transition: all 0.3s ease 0s;
   outline: none;
 
-  &:hover {
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover:not([disabled]) {
     background: $yosemite;
     box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
     color: #fff;
