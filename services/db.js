@@ -6,6 +6,7 @@
 
 const { Pool } = require('pg')
 const format = require('pg-format')
+const json2csv = require('json2csv')
 const bcrypt = require('bcrypt')
 const uuidv4 = require('uuid').v4
 
@@ -372,6 +373,24 @@ const updateScore = (uid, value) => {
   })
 }
 
+const exportLogs = (res) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client.query('SELECT * FROM logs', (err, result) => {
+        if (err) {
+          console.log(err.stack)
+        } else {
+          const data = json2csv.parse(result.rows)
+
+          res.header('Content-Type', 'text/csv')
+          res.attachment("infinity-log-" + Date.now() + "-exported.csv")
+          res.send(data)
+        }
+      })
+    })
+  })
+}
+
 module.exports = {
   createUser,
   validateUser,
@@ -387,5 +406,6 @@ module.exports = {
   createHintIntent,
   getUserSolved,
   updateScore,
-  listAllLogs
+  listAllLogs,
+  exportLogs
 }

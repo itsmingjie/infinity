@@ -79,4 +79,8 @@ app.get('/logs', (req, res) => {
   })
 })
 
+app.get('/logs/export', (req, res) => {
+  db.exportLogs(res)
+})
+
 module.exports = app

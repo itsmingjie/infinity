@@ -32,6 +32,7 @@
     "express-recaptcha": "^5.0.2",
     "express-session": "^1.17.1",
     "jpeg-js": "^0.4.0",
+    "json2csv": "^5.0.3",
     "lodash": "^4.17.19",
     "lodash.merge": "^4.6.2",
     "marked": "^1.2.0",
