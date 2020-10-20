@@ -1,0 +1,18 @@
+<h1 class="subtitle">Distribute Hint Credits</h1>
+
+<form method="POST" action="/admin/hints/bump">
+    <input type="hidden" id="csrfToken" name="_csrf" value="{{csrfToken}}" />
+    <div class="field">
+        <label class="label">Specific User UUID</label>
+        <div class="control is-expanded">
+            <input class="input" name="uid" placeholder="Optional, Default to All" />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Amount</label>
+        <div class="control is-expanded">
+            <input class="input" type="number" min="1" name="amount" placeholder="Optional, Default 1" />
+        </div>
+    </div>
+    <button class="button low-jump" type="submit">Grant Credits!</button>
+</form>

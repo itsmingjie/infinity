@@ -293,6 +293,36 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
   })
 }
 
+const giveHintCredit = (staffId, uid, amount) => {
+  amount = amount || 1
+
+  pool.connect().then((client) => {
+    if (uid) {
+      // bump hint credit of one user
+      client.query(
+        'UPDATE teams SET hint_credit=(hint_credit+$1) WHERE id=$2',
+        [amount, uid]
+      )
+
+      client.query(
+        'INSERT INTO logs (id, action, value, uid, detail) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [uuidv4(), 'admin', amount, uid, `Granted ${amount} credit to user by ${staffId}`]
+      )
+    } else {
+      // bump hint credit of all users
+      client.query(
+        'UPDATE teams SET hint_credit=(hint_credit+$1)',
+        [amount]
+      )
+
+      client.query(
+        'INSERT INTO logs (id, action, value, uid, detail) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [uuidv4(), 'admin', amount, staffId, `Granted ${amount} credit to all`]
+      )
+    }
+  })
+}
+
 const getHintCredit = (uid) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
@@ -383,7 +413,7 @@ const exportLogs = (res) => {
           const data = json2csv.parse(result.rows)
 
           res.header('Content-Type', 'text/csv')
-          res.attachment("infinity-log-" + Date.now() + "-exported.csv")
+          res.attachment('infinity-log-' + Date.now() + '-exported.csv')
           res.send(data)
         }
       })
@@ -403,6 +433,7 @@ module.exports = {
   createAttempt,
   getUnlockedHints,
   getHintCredit,
+  giveHintCredit,
   createHintIntent,
   getUserSolved,
   updateScore,

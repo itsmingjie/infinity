@@ -7,6 +7,7 @@ const restock = require('../routes/game').restock
 const flagger = require('../lib/flagger')
 const db = require('../services/db')
 const config = require('../config')
+const messages = require('../lib/messages')
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
@@ -81,6 +82,16 @@ app.get('/logs', (req, res) => {
 
 app.get('/logs/export', (req, res) => {
   db.exportLogs(res)
+})
+
+app.get('/hints', (req, res) => {
+  res.render('admin/hints', { title: 'Hints' })
+})
+
+app.post('/hints/bump', (req, res) => {
+  db.giveHintCredit(res.locals.team.id, req.body.uid, req.body.amount)
+
+  res.render('message', messages.hintDistributed)
 })
 
 module.exports = app
