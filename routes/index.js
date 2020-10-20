@@ -18,5 +18,6 @@ app.use(
 app.use('/admin', utils.authCheck(true), require('./admin'))
 app.use('/account', require('./account'))
 app.use('/page', require('./page'))
+app.use('/leaderboard', require('./leaderboard'))
 
 module.exports = app

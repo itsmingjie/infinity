@@ -16,11 +16,18 @@
   </div>
 </div>
 <br />
-<label class="label">Affiliation (School, Club, etc.) {{#if team.isAdmin}}{{>adminSymbol}}{{/if}}</label>
+<label class="label">Division</label>
+<div class="field">
+  <div class="control is-expanded">
+    <input class="input" type="text" value="{{division team.division true}}" disabled>
+  </div>
+  <p class="help">You cannot change your own division. If you believe this is an error, please contact an organizer!</p>
+</div>
+<br />
+<label class="label">Affiliation (School, Club, etc.)</label>
 <div class="field is-grouped">
   <div class="control is-expanded">
-    <input class="input" type="text" data-prop="affiliation" {{#if team.isAdmin}}value="Staff"
-      disabled{{else}}value="{{team.affiliation}}" {{/if}}>
+    <input class="input" type="text" data-prop="affiliation" value="{{team.affiliation}}">
   </div>
 </div>
 <br />

@@ -1,0 +1,25 @@
+<p>Last generated: {{dateFmt updated}}. Updating every {{msConv timeout}}min.</p>
+
+<div class="columns mt-5">
+  <div class="column">
+    <h1 class="title">{{name}}</h1>
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <td>Rank</td>
+        <td>Team</td>
+        <td>Affiliation</td>
+        <td>Score</td>
+      </thead>
+      <tbody>
+        {{#each board}}
+          <tr>
+            <td>{{bump @index}}</td>
+            <td>{{display_name}}</td>
+            <td>{{affiliation}}</td>
+            <td>{{score}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

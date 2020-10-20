@@ -391,22 +391,22 @@ input.input {
   }
 
   &.solver {
-    background: #ffffff;
-    color: #121217;
+    background: $yosemite;
+    color: #fff;
     outline: none;
 
     &::placeholder {
-      color: rgba(0, 0, 0, 0.3);
+      color: rgba(255, 255, 255, 0.5);
     }
 
     &:focus {
       box-shadow: 0 15px 20px rgba(234, 141, 141, 0.4);
       transform: translateY(-3px);
-      background: $yosemite;
-      color: #fff;
+      background: #ffffff;
+      color: #121217;
 
       &::placeholder {
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(0, 0, 0, 0.3);
       }
     }
   }

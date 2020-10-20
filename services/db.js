@@ -106,7 +106,7 @@ const getUser = (id) => {
       .then((client) => {
         client
           .query(
-            'SELECT id, "name", "display_name", "admin", "score", "emails", "banned", hint_credit FROM teams WHERE id=$1',
+            'SELECT id, name, display_name, admin, affiliation, division, score, emails, banned, hint_credit FROM teams WHERE id=$1',
             [id]
           )
           .then((res) => {
@@ -119,6 +119,8 @@ const getUser = (id) => {
                 display_name: res.rows[0].display_name
                   ? res.rows[0].display_name.trim()
                   : null,
+                affiliation: res.rows[0].affiliation,
+                division: res.rows[0].division,
                 isAdmin: res.rows[0].admin,
                 isBanned: res.rows[0].banned,
                 emails: res.rows[0].emails,
@@ -189,6 +191,26 @@ const listAllUsers = () => {
       client
         .query(
           'SELECT id, "name", "display_name", "affiliation", "admin", "score", "banned" FROM teams'
+        )
+        .then((data) => {
+          client.release()
+          resolve(data.rows)
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
+const listUserByDivisions = (division) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query(
+          'SELECT id, display_name, affiliation, score, division FROM teams WHERE division=$1 ORDER BY score DESC',
+          [division]
         )
         .then((data) => {
           client.release()
@@ -357,6 +379,7 @@ module.exports = {
   getUser,
   updateUser,
   listAllUsers,
+  listUserByDivisions,
   listUserIds,
   createAttempt,
   getUnlockedHints,
