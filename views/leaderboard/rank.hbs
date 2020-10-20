@@ -1,25 +1,42 @@
-<p>Last generated: {{dateFmt updated}}. Updating every {{msConv timeout}}min.</p>
-
-<div class="columns mt-5">
-  <div class="column">
-    <h1 class="title">{{name}}</h1>
-    <table class="table is-fullwidth is-hoverable">
-      <thead>
-        <td>Rank</td>
-        <td>Team</td>
-        <td>Affiliation</td>
-        <td>Score</td>
-      </thead>
-      <tbody>
-        {{#each board}}
-          <tr>
-            <td>{{bump @index}}</td>
-            <td>{{display_name}}</td>
-            <td>{{affiliation}}</td>
-            <td>{{score}}</td>
-          </tr>
+<div class="columns">
+  <div class="column is-one-quarter">
+    <aside class="menu">
+      <p class="menu-label">
+        Divisions
+      </p>
+      <ul class="menu-list">
+        {{#each divisions}}
+          <li><a href="/leaderboard/division/{{bump @index}}">{{this}}</a></li>
         {{/each}}
-      </tbody>
-    </table>
+      </ul>
+    </aside>
   </div>
-</div>
+  <div class="column is-three-quarters">
+    <p>This leaderboard is for reference only. Please refer to the competition <a href="/rules">rules</a> for how the winners are determined. </p>
+
+    <div class="columns">
+      <div class="column">
+        <h1 class="title">{{name}}</h1>
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <td>Rank</td>
+            <td>Team</td>
+            <td>Affiliation</td>
+            <td>Score</td>
+          </thead>
+          <tbody>
+            {{#each board}}
+              <tr>
+                <td>{{bump @index}}</td>
+                <td>{{display_name}}</td>
+                <td>{{affiliation}}</td>
+                <td>{{score}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p>Last generated: {{dateFmt updated}}. Updating every {{msConv timeout}}min.</p>
+  </div>
