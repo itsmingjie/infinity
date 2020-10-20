@@ -9,10 +9,13 @@
           <li><a href="/leaderboard/division/{{bump @index}}">{{this}}</a></li>
         {{/each}}
       </ul>
+      <p class="menu-label">Updated: {{dateFmt updated}}</p>
+      <p class="menu-label">Updating every {{msConv timeout}} min</p>
     </aside>
   </div>
   <div class="column is-three-quarters">
-    <p>This leaderboard is for reference only. Please refer to the competition <a href="/rules">rules</a> for how the winners are determined. </p>
+    <p>This leaderboard is for reference only. Winners will be announced after the competition ends. 
+      Please refer to the competition <a href="/page/rules">rules</a> for how the winners are determined. </p>
 
     <div class="columns">
       <div class="column">
@@ -37,6 +40,4 @@
         </table>
       </div>
     </div>
-
-    <p>Last generated: {{dateFmt updated}}. Updating every {{msConv timeout}}min.</p>
   </div>

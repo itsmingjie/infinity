@@ -251,7 +251,7 @@ const listAllLogs = () => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
       client
-        .query('SELECT * FROM logs')
+        .query('SELECT * FROM logs ORDER BY timestamp DESC')
         .then((data) => {
           client.release()
           resolve(data.rows)

@@ -3,21 +3,20 @@
   <thead>
     <td>Timestamp</td>
     <td>User</td>
-    <td>Value</td>
+    <td>Puzzle</td>
     <td>Action</td>
     <td>Data</td>
   </thead>
 
   {{#each logs}}
 
-  <tr>
+  <tr class="log">
     <td title="{{id}}">{{dateFmt timestamp}}</td>
     <td title="{{uid}}">{{lookup ../users uid}}</td>
-    <td>{{#eq action "solve"}}{{pn ../value}}{{else}}={{/eq}}</td>
-    <td>{{action}}</td>
+    <td>{{#if puzzle}}<a href="/game/puzzle/{{puzzle}}"><span class="tag is-info">View Puzzle</span></a>{{else}}N/A{{/if}}</td>
+    <td>{{action}}{{#eq action "solve"}}: {{pn ../value}}{{/eq}}</td>
     <td>{{detail}}</td>
   </tr>
-
 
   {{/each}}
 

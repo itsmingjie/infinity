@@ -308,6 +308,10 @@ table.table {
     tr {
       height: 72px;
 
+      &.log {
+        height: 42px;
+      }
+
       &:target {
         background: #fffacd;
       }
@@ -382,7 +386,7 @@ input.input {
   box-shadow: 0 8px 15px rgba(0,0,0,0.1);
   transition: all 0.2s ease 0s;
 
-  &:focus {
+  &:focus, &:active, &:read-only {
     box-shadow: 0 3px 10px rgba(0,0,0,0.2);
   }
 
