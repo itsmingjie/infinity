@@ -21,7 +21,8 @@ app.use(async (req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-  const currentDiv = res.locals.team ? res.locals.team.division : 1
+  const currentDiv = res.locals.team ? res.locals.team.division === 0 ? 1 : res.locals.team.division : 1
+
   res.redirect('/leaderboard/division/' + currentDiv)
 })
 
@@ -34,7 +35,7 @@ app.get('/division/:id', (req, res) => {
   const ranked = RANK_CACHE.leaderboard[Number(req.params.id)]
 
   if (!ranked) {
-      res.redirect('/leaderboard')
+      res.render('message', messages.notFound)
       return
   }
 
