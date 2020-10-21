@@ -18,10 +18,11 @@ const getSettings = async () => {
   else return await flushSettings()
 }
 
-const flushSettings = () => {
+const flushSettings = async () => {
   return new Promise((resolve, reject) => {
     client.get('settings', (err, reply) => {
-      if (err || !reply) reject(err || 'Not found')
+      if (err) reject(err)
+      else if (!reply) client.set('settings', JSON.stringify({}), redis.print)
 
       settings = JSON.parse(reply)
       resolve(JSON.parse(reply))
@@ -31,7 +32,7 @@ const flushSettings = () => {
 
 const updateSettings = async (key, value) => {
   settings[key] = value
-  await client.set('settings', JSON.stringify(settings), redis.print)
+  client.set('settings', JSON.stringify(settings), redis.print)
 }
 
 module.exports = { getSettings, flushSettings, updateSettings }
