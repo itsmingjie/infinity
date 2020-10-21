@@ -16,7 +16,7 @@ const pool = new Pool({
   connectionString: config.db
 })
 
-const createUser = (name, password) => {
+const createUser = (name, password, division) => {
   return new Promise((resolve, reject) => {
     hashPassword(password).then((passHash) => {
       pool
@@ -30,8 +30,8 @@ const createUser = (name, password) => {
               } else {
                 client
                   .query(
-                    'INSERT INTO teams (id, name, password) VALUES ($1, $2, $3)',
-                    [uuidv4(), name, passHash]
+                    'INSERT INTO teams (id, name, password, division) VALUES ($1, $2, $3, $4)',
+                    [uuidv4(), name, passHash, division]
                   )
                   .then((res) => {
                     client.query('COMMIT')

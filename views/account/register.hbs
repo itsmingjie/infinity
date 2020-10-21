@@ -1,13 +1,11 @@
 <form action="/account/create" method="POST">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
-
     <div class="field">
         <label class="label">Team Name</label>
         <div class="control">
             <input class="input" type="text" placeholder="team_999" name="name" required>
         </div>
     </div>
-
     <div class="field">
         <label class="label">Password</label>
         <div class="control">
@@ -15,17 +13,27 @@
         </div>
     </div>
 
+    <div class="field">
+    <label class="label">Division</label>
+    <div class="control">
+        <div class="select">
+        <select name="division">
+            {{#each divisions}}
+            <option value="{{bump @index}}">{{this}}</option>
+            {{/each}}
+        </select>
+        </div>
+    </div>
+    </div>
+
     <p>By registering for this competition, you agree to the <a href="/page/rules">competition rules</a>. </p>
-
-    <button class="button is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit'
-        data-action='submit'>Create Account</button>
+    <button class="button is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit' data-action='submit'>Create Account</button>
 </form>
-
 {{#extend "foot-inject"}}
-<script src="https://www.google.com/recaptcha/api.js" defer></script>
-<script>
-    function onSubmit(token) {
-        document.querySelector("form").submit();
-    }
-</script>
+    <script src="https://www.google.com/recaptcha/api.js" defer></script>
+    <script>
+        function onSubmit(token) {
+            document.querySelector("form").submit();
+        }
+    </script>
 {{/extend}}

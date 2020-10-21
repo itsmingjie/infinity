@@ -7,7 +7,7 @@ const express = require('express')
 const app = express.Router()
 const rateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
-const requestIp = require('request-ip');
+const requestIp = require('request-ip')
 
 const config = require('../config')
 const db = require('../services/db')
@@ -15,6 +15,7 @@ const recaptcha = require('../services/recaptcha')
 const utils = require('../lib/utils')
 const passport = require('../lib/passport')
 const messages = require('../lib/messages')
+const divisions = require('../lib/divisions')
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
@@ -67,6 +68,9 @@ app.get(
   (req, res) => {
     res.render('account/register', {
       title: 'Register',
+      divisions: Object.entries(divisions)
+        .map((arr) => arr[1][1])
+        .slice(1),
       captcha: config.recaptcha.site
     })
   }
@@ -80,10 +84,11 @@ app.post(
   (req, res) => {
     const name = req.body.name
     const password = req.body.password
+    const division = req.body.division
 
     //if (name.indexOf('team_') === 0 && password !== '') {
     if (password !== '') {
-      db.createUser(name, password)
+      db.createUser(name, password, division)
         .then(() => {
           res.render('message', {
             message:
@@ -122,7 +127,7 @@ app.post(
       req.session.cookie.expires = false
     }
 
-    if (config.env !== "development")
+    if (config.env !== 'development')
       db.logSignin(req.user.id, requestIp.getClientIp(req))
 
     res.redirect(req.body.redirectURL || '/')
@@ -130,53 +135,54 @@ app.post(
 )
 
 const KEY_DICT = {
-  display_name: "display_name",
-  affiliation: "affiliation",
-  emails: "emails"
+  display_name: 'display_name',
+  affiliation: 'affiliation',
+  emails: 'emails'
 }
 
-app.post(
-  '/update',
-  (req, res) => {
-    const id = req.body.id || req.user.id
-    const db_key = KEY_DICT[req.body.key] // the key of the database to update
-    let value = req.body.value
+app.post('/update', (req, res) => {
+  const id = req.body.id || req.user.id
+  const db_key = KEY_DICT[req.body.key] // the key of the database to update
+  let value = req.body.value
 
-    if (id !== req.user.id && !req.user.isAdmin) {
-      // unauthorized access
-      res.status(403)
-    } else if (db_key === undefined) {
-      // user trying to update a key that is not update-able
-      res.status(403)
-    } else {
-      if (db_key === "emails") {
-        // split emails into an array by line
-        value = value.replace(/\|/g, "").replace(/\r\n/g,"\n").replace(/\n/g, "|").toLowerCase()
+  if (id !== req.user.id && !req.user.isAdmin) {
+    // unauthorized access
+    res.status(403)
+  } else if (db_key === undefined) {
+    // user trying to update a key that is not update-able
+    res.status(403)
+  } else {
+    if (db_key === 'emails') {
+      // split emails into an array by line
+      value = value
+        .replace(/\|/g, '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\n/g, '|')
+        .toLowerCase()
 
-        // test if emails are valid
-        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        const value_arr = value.split('|')
+      // test if emails are valid
+      const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+      const value_arr = value.split('|')
 
-        for (i in value_arr) {
-          if (!re.test(value_arr[i])) {
-            res.status(400).json({
-              line: value_arr[i]
-            })
-            return
-          }
+      for (i in value_arr) {
+        if (!re.test(value_arr[i])) {
+          res.status(400).json({
+            line: value_arr[i]
+          })
+          return
         }
       }
+    }
 
-      db.updateUser(id, db_key, value).then((r) => {
+    db.updateUser(id, db_key, value)
+      .then((r) => {
         res.status(200).send()
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err)
         res.status(500).json(err)
       })
-    }
   }
-)
-
-
+})
 
 module.exports = app
