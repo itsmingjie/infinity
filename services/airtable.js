@@ -28,13 +28,15 @@ const Hints = new AirtablePlus({
 // Pull all puzzles from Airtable
 const getUnlockedPuzzles = (solutions) => {
   console.log(
-    `Querying Airtable for puzzles ${solutions ? 'with' : 'without'} solutions`
+    `Querying Airtable for puzzles ${
+      solutions ? 'with' : 'without'
+    } solutions...`
   )
 
   return new Promise((resolve, reject) => {
     Puzzles.read({
       view: 'Unlocked Puzzles',
-      sort: [{field: 'Order', direction: 'asc'}]
+      sort: [{ field: 'Order', direction: 'asc' }]
     })
       .then((data) => {
         if (!solutions) {
@@ -44,6 +46,7 @@ const getUnlockedPuzzles = (solutions) => {
           })
         }
 
+        console.log('Airtable puzzles loaded.')
         resolve(data)
       })
       .catch((err) => {
@@ -54,11 +57,14 @@ const getUnlockedPuzzles = (solutions) => {
 
 // Pull all puzzles from Airtable
 const getLevels = () => {
-  console.log('Querying Airtable for levels')
+  console.log('Querying Airtable for levels...')
 
   return new Promise((resolve, reject) => {
     Levels.read()
-      .then((data) => resolve(data))
+      .then((data) => {
+        console.log('Airtable levels loaded.')
+        resolve(data)
+      })
       .catch((err) => {
         reject(err)
       })
@@ -66,13 +72,17 @@ const getLevels = () => {
 }
 
 const getHints = () => {
-  console.log('Querying Airtable for hints')
+  console.log('Querying Airtable for hints...')
 
   return new Promise((resolve, reject) => {
-    Hints.read().then(data => resolve(data))
-    .catch((err) => {
-      reject(err)
-    })
+    Hints.read()
+      .then((data) => {
+        console.log('Airtable hints loaded.')
+        resolve(data)
+      })
+      .catch((err) => {
+        reject(err)
+      })
   })
 }
 

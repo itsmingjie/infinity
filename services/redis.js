@@ -7,7 +7,7 @@ client.on('error', (error) => {
 })
 
 client.on('connect', () => {
-  console.log(`The Redis instance at ${client.address} has been connected.`)
+  console.log(`Connected to Redis.`)
 })
 
 // settings cache

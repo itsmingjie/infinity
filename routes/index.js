@@ -19,6 +19,6 @@ app.use('/admin', utils.authCheck(true), require('./admin'))
 app.use('/account', require('./account'))
 app.use('/page', require('./page'))
 app.use('/announcements', require('./announcements').app)
-app.use('/leaderboard', utils.lockdownCheck('leaderboardLockdown', true),require('./leaderboard'))
+app.use('/leaderboard', utils.lockdownCheck('leaderboardLockdown', true),require('./leaderboard').app)
 
 module.exports = app

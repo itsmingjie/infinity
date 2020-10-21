@@ -9,7 +9,6 @@ const session = require('express-session')
 const sassMiddleware = require('node-sass-middleware')
 const minifyHTML = require('express-minify-html')
 const compression = require('compression')
-const asciify = require('asciify-image')
 const csrf = require('csurf')
 const redisStore = require('connect-redis')(session)
 
@@ -26,7 +25,7 @@ require('./services/socketio').init(http)
 if (config.env !== 'development') {
   const Bugsnag = require('@bugsnag/js')
   const BugsnagPluginExpress = require('@bugsnag/plugin-express')
-  
+
   // Set up Bugsnag for data capturing
   Bugsnag.start({
     apiKey: config.bugsnag.key,
@@ -49,9 +48,9 @@ app.use(flash())
 app.use(
   session({
     secret: config.sessionSecret,
-    name: "_infinitySession",
+    name: '_infinitySession',
     store: new redisStore({ client: redis.client }),
-    cookie: { secure: false, maxAge:86400000 },
+    cookie: { secure: false, maxAge: 86400000 },
     resave: true,
     saveUninitialized: true
   })
@@ -102,19 +101,27 @@ app.use(require('./routes/index'))
 
 // Launch Server
 http.listen(config.port, () => {
-  asciify(
-    './static/assets/images/infinity.png',
-    {
-      fit: 'box',
-      width: 15,
-      height: 15
-    },
-    (err, asciified) => {
-      if (err) throw err
+  console.log(`Infinity is running on *:${config.port}`)
+  console.log('I hope your code works...')
+  console.log('--------------------------')
+  console.log("====STARTING INIT TEST====")
+  console.log('--------------------------')
 
-      console.log(asciified)
-      console.log('\n')
-      console.log(`Infinity is running on *:${config.port}`)
-    }
-  )
+  Promise.all([
+    require('./services/db').testConnection(),
+    require('./routes/game').restock(),
+    require('./routes/announcements').updateAnnouncements(),
+    require('./routes/leaderboard').updateRank()
+  ])
+    .then(() => {
+      console.log('---------------------------')
+      console.log('====INIT TEST COMPLETED====')
+      console.log('---------------------------')
+      console.log('Nothing catastrophically wrong (yet). What a miracle.')
+      console.log('Welcome to Infinity ∞, glhf!')
+    })
+    .catch((e) => {
+      console.error(e)
+      process.exit(-1)
+    })
 })

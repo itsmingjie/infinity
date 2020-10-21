@@ -33,6 +33,8 @@ app.get('/:id', (req, res) => {
 const updateAnnouncements = async () => {
   console.log('Refreshing announcements...')
   ANNOUNCEMENT_CACHE = await db.getAnnouncements()
+
+  console.log(`Announcements updated, found ${ANNOUNCEMENT_CACHE.length} announcements.`)
 }
 
 const idSearch = (id, root) => {

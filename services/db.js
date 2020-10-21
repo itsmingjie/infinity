@@ -16,6 +16,16 @@ const pool = new Pool({
   connectionString: config.db
 })
 
+const testConnection = () => {
+  pool.connect().then((client) => {
+    console.log(`Database at ${client.host} connected.`)
+    client.end()
+  }).catch(() => {
+    console.error("PostgreSQL initialization failed. Check database connection.")
+    process.exit(-1)
+  })
+}
+
 const createUser = (name, password, division) => {
   return new Promise((resolve, reject) => {
     hashPassword(password).then((passHash) => {
@@ -305,14 +315,17 @@ const giveHintCredit = (staffId, uid, amount) => {
 
       client.query(
         'INSERT INTO logs (id, action, value, uid, detail) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [uuidv4(), 'admin', amount, uid, `Granted ${amount} credit to user by ${staffId}`]
+        [
+          uuidv4(),
+          'admin',
+          amount,
+          uid,
+          `Granted ${amount} credit to user by ${staffId}`
+        ]
       )
     } else {
       // bump hint credit of all users
-      client.query(
-        'UPDATE teams SET hint_credit=(hint_credit+$1)',
-        [amount]
-      )
+      client.query('UPDATE teams SET hint_credit=(hint_credit+$1)', [amount])
 
       client.query(
         'INSERT INTO logs (id, action, value, uid, detail) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -423,13 +436,17 @@ const exportLogs = (res) => {
 const createAnnouncement = (title, content, author) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
-      client.query('INSERT INTO announcements (title, content, author) VALUES ($1, $2, $3) RETURNING *', [title, content, author], (err, result) => {
-        if (err) {
-          console.log(err.stack)
-        } else {
-          resolve(result.rows[0].id)
+      client.query(
+        'INSERT INTO announcements (title, content, author) VALUES ($1, $2, $3) RETURNING *',
+        [title, content, author],
+        (err, result) => {
+          if (err) {
+            console.log(err.stack)
+          } else {
+            resolve(result.rows[0].id)
+          }
         }
-      })
+      )
     })
   })
 }
@@ -438,9 +455,7 @@ const getAnnouncements = () => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
       client
-        .query(
-          'SELECT * FROM announcements ORDER BY timestamp DESC'
-        )
+        .query('SELECT * FROM announcements ORDER BY timestamp DESC')
         .then((data) => {
           client.release()
           resolve(data.rows)
@@ -454,6 +469,7 @@ const getAnnouncements = () => {
 }
 
 module.exports = {
+  testConnection,
   createUser,
   validateUser,
   logSignin,

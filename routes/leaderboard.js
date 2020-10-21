@@ -67,6 +67,8 @@ const updateRank = async () => {
     ts: Date.now(),
     leaderboard
   }
+
+  console.log(`Leaderboard refreshed at ${RANK_CACHE.ts}.`)
 }
 
-module.exports = app
+module.exports = { app, updateRank }
