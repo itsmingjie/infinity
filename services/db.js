@@ -13,8 +13,7 @@ const uuidv4 = require('uuid').v4
 const config = require('../config')
 
 const pool = new Pool({
-  connectionString: config.db,
-  ssl: { rejectUnauthorized: false }
+  connectionString: config.db
 })
 
 const createUser = (name, password) => {
