@@ -245,7 +245,12 @@ article.message {
   }
 
   &.solve {
-    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,.8) 70%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0.8) 70%,
+      rgba(255, 255, 255, 0) 100%
+    );
     background-color: transparent;
     position: -webkit-sticky; /* Safari */
     position: sticky;
@@ -383,11 +388,13 @@ div.formattedText {
 input.input {
   border: none;
   border-radius: 0.4rem;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease 0s;
 
-  &:focus, &:active, &:read-only {
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  &:focus,
+  &:active,
+  &:read-only {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   }
 
   &.is-allcaps {
@@ -418,6 +425,37 @@ input.input {
 
 section.section {
   padding-top: 1rem;
+}
+
+span.tag {
+  &#socket-status {
+    &.alerted {
+      cursor: pointer;
+      background-color: hsl(348, 100%, 61%);
+      -webkit-animation-name: tagFlash;
+      -webkit-animation-duration: 800ms;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+    }
+  }
+}
+
+@-webkit-keyframes tagFlash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.announcement {
+  p {
+    line-height: 2;
+  }
 }
 
 @import '../node_modules/bulma/bulma.sass';

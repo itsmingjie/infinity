@@ -1,0 +1,21 @@
+<h1 class="subtitle">Sitewide Announcements</h1>
+<p>There are currently {{userCount}} users online and connected to the announcements engine.</p>
+
+<hr />
+
+<form method="POST" action="/admin/announcement">
+    <input type="hidden" id="csrfToken" name="_csrf" value="{{csrfToken}}" />
+    <div class="field">
+        <label class="label">Title</label>
+        <div class="control is-expanded">
+            <input class="input" name="title" placeholder="" />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Content (Markdown Supported)</label>
+        <div class="control is-expanded">
+            <textarea class="textarea" name="content"></textarea>
+        </div>
+    </div>
+    <button class="button low-jump" type="submit">Send Announcement!</button>
+</form>

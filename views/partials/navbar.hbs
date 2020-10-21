@@ -19,6 +19,9 @@
       <a class="navbar-item" href="/leaderboard">
         Leaderboard
       </a>
+      <a class="navbar-item" href="/announcements">
+        Announcements
+      </a>
       <a class="navbar-item" href="/page/rules">
         Rules
       </a>
@@ -26,6 +29,10 @@
 
 
     <div class="navbar-end">
+      <div class="navbar-item">
+        <span class="tag is-warning" id="socket-status">Connecting...</span>
+      </div>
+
       {{#if team}}
       <div class="navbar-item">
         Hints Left: {{team.hint_credit}}

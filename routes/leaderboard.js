@@ -3,7 +3,6 @@ const app = express.Router()
 
 const db = require('../services/db')
 const divisions = require('../lib/divisions')
-const { range } = require('lodash')
 
 const CACHE_TIMEOUT = 30 * 60 * 1000 // in ms
 

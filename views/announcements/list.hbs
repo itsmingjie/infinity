@@ -1,0 +1,9 @@
+{{#each announcements}}
+    <div class="card mb-5">
+        <div class="card-content announcement">
+            <h1 class="title mb-2 is-size-4"><a href="/announcements/{{id}}">{{title}}</a></h1>
+            <p style="color: gray" class="mb-3">Posted {{dateFmt timestamp}} by {{author}}</p>
+            <p>{{{markdown content}}}</p>
+        </div>
+    </div>
+{{/each}}

@@ -94,4 +94,25 @@ app.post('/hints/bump', (req, res) => {
   res.render('message', messages.hintDistributed)
 })
 
+app.get('/announcement', (req, res) => {
+
+  const userCount = require('../services/socketio').numUsersOnline()
+
+  res.render('admin/announcement', { title: 'Announcement', userCount })
+})
+
+app.post('/announcement', (req, res) => {
+  const title = req.body.title
+  const content = req.body.content
+
+  db.createAnnouncement(title, content, res.locals.team.display_name).then((id) => {
+    const io = require('../services/socketio').interface()
+    io.emit('announcement', id)
+
+    require('./announcements').updateAnnouncements().then(() => {
+      res.redirect('/announcements/' + id)
+    })
+  })
+})
+
 module.exports = app

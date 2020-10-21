@@ -420,6 +420,39 @@ const exportLogs = (res) => {
   })
 }
 
+const createAnnouncement = (title, content, author) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client.query('INSERT INTO announcements (title, content, author) VALUES ($1, $2, $3) RETURNING *', [title, content, author], (err, result) => {
+        if (err) {
+          console.log(err.stack)
+        } else {
+          resolve(result.rows[0].id)
+        }
+      })
+    })
+  })
+}
+
+const getAnnouncements = () => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client
+        .query(
+          'SELECT * FROM announcements ORDER BY timestamp DESC'
+        )
+        .then((data) => {
+          client.release()
+          resolve(data.rows)
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+    })
+  })
+}
+
 module.exports = {
   createUser,
   validateUser,
@@ -437,5 +470,7 @@ module.exports = {
   getUserSolved,
   updateScore,
   listAllLogs,
-  exportLogs
+  exportLogs,
+  createAnnouncement,
+  getAnnouncements
 }
