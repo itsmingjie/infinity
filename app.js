@@ -11,6 +11,7 @@ const minifyHTML = require('express-minify-html')
 const compression = require('compression')
 const asciify = require('asciify-image')
 const csrf = require('csurf')
+const redisStore = require('connect-redis')(session)
 
 const app = express()
 const http = require('http').createServer(app)
@@ -47,6 +48,9 @@ app.use(flash())
 app.use(
   session({
     secret: config.sessionSecret,
+    name: "_infinitySession",
+    store: new redisStore({ client: redis.client }),
+    cookie: { secure: false, maxAge:86400000 },
     resave: true,
     saveUninitialized: true
   })

@@ -35,4 +35,4 @@ const updateSettings = async (key, value) => {
   client.set('settings', JSON.stringify(settings), redis.print)
 }
 
-module.exports = { getSettings, flushSettings, updateSettings }
+module.exports = { getSettings, flushSettings, updateSettings, client }
