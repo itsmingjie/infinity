@@ -47,10 +47,6 @@ app.get('/teams', (req, res) => {
   })
 })
 
-app.get('/homepage', (req, res) => {
-  res.render('admin/homepage', { title: 'Homepage' })
-})
-
 app.post('/update', (req, res) => {
   const prop = req.body.prop
   const value = req.body.value

@@ -18,24 +18,15 @@
 <body>
     <div class="Site-Content">
         {{>navbar}}
-        <section class="hero is-brand is-{{#if heroSize}}{{heroSize}}{{else}}medium{{/if}}">
+        <section class="hero is-fullheight landing-hero">
             <div class="hero-body">
-                <div class="container">
-                    <h1 class="title">{{title}}</h1>
-                    {{#if bypassed}}
-                        <div class="message is-warning">
-                            <div class="message-body">
-                                <p><strong>Warning: </strong>You're accessing a page that is currently only visible to
-                                    admins. Lock toggle: <a href="/admin/#{{bypassed}}">{{bypassed}}</a>.</p>
-                            </div>
-                        </div>
-                    {{/if}}
+                <div class="landing-wall"></div>
+                <div class="container has-text-centered">
+                    <div class="landing-titles">
+                        <h1 class="title">{{title}}</h1>
+                        <h2 class="subtitle mt-1">{{tagline}}</h2>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                {{{body}}}
             </div>
         </section>
     </div>
