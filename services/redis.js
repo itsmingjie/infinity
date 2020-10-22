@@ -12,22 +12,35 @@ client.on('connect', () => {
 })
 
 // settings cache
-const cache_expiration = 10 * 60 * 1000 // in ms
-let settings, timestamp
+let settings
+let flushFlag = false
 
 const getSettings = async () => {
-  if (settings && Date.now() - timestamp <= cache_expiration) return settings
+  if (!flushFlag && settings) {
+    reflag()
+    return settings
+  }
   else return await flushSettings()
 }
 
+const reflag = () => {
+  client.get('flushFlag', (err, reply) => {
+    flushFlag = (reply === true)
+  })
+}
+
 const flushSettings = async () => {
+  console.log("Flushing settings...")
+
   return new Promise((resolve, reject) => {
     client.get('settings', (err, reply) => {
       if (err) reject(err)
       else if (!reply) client.set('settings', JSON.stringify({}), redis.print)
 
       settings = JSON.parse(reply)
-      timestamp = Date.now()
+      flushFlag = false
+
+      console.log("Settings flushed.")
       resolve(JSON.parse(reply))
     })
   })
@@ -36,7 +49,9 @@ const flushSettings = async () => {
 const updateSettings = (key, value) => {
   settings[key] = value
   client.set('settings', JSON.stringify(settings), redis.print)
-  flushSettings()
+
+  flushFlag = true
+  client.set('flushFlag', true)
 }
 
 module.exports = { getSettings, flushSettings, updateSettings, client }
