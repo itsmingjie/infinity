@@ -224,7 +224,7 @@ const listUserByDivisions = (division) => {
     pool.connect().then((client) => {
       client
         .query(
-          'SELECT id, display_name, affiliation, score, division FROM teams WHERE division=$1 ORDER BY score DESC',
+          'SELECT id, display_name, affiliation, score, division, banned FROM teams WHERE division=$1 AND banned=false ORDER BY score DESC',
           [division]
         )
         .then((data) => {
