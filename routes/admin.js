@@ -47,14 +47,14 @@ app.get('/teams', (req, res) => {
   })
 })
 
-app.post('/update', (req, res) => {
+app.post('/update', async (req, res) => {
   const prop = req.body.prop
   const value = req.body.value
   const redis = require('../services/redis')
 
   redis.updateSettings(prop, value)
     .then(() => {
-      res.locals.global = redis.getSettings()
+      res.locals.global = await redis.getSettings()
       res.send('OK')
       console.log('Success')
     })
