@@ -1,7 +1,3 @@
-# Rules
-
-... [WIP]
-
 ## Use of Platform
 
 **Infinity** is the platform designed and used by inteGIRLS to host, run, and maintain the puzzle hunt competition. You're subject to the following rules when participating in the competition:

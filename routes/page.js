@@ -16,6 +16,8 @@ const limiter = rateLimit({
 
 app.use(limiter)
 
+const PAGES = {}
+
 app.get('/:pagename', (req, res) => {
   const pagename = sanitize(req.params.pagename)
 
@@ -27,8 +29,14 @@ app.get('/:pagename', (req, res) => {
         res.render('message', messages.notFound)
       } else {
         res.render('page', {
-          layout: 'page',
-          content: marked(data)
+          title: PAGES[pagename]
+            ? PAGES[pagename].title
+            : pagename
+                .toLowerCase()
+                .split(' ')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' '),
+          content: data
         })
       }
     }

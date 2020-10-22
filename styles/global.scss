@@ -120,6 +120,10 @@ td .field {
   }
 }
 
+.navbar {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
 div.navbar-dropdown {
   border-radius: 4px;
 }
@@ -354,6 +358,7 @@ form#submission {
 div.formattedText {
   p {
     font-size: 1em;
+    line-height: 2;
 
     &:not(:last-child) {
       margin-bottom: 1rem;
@@ -375,13 +380,25 @@ div.formattedText {
   }
 
   h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   ul,
   li {
     margin-left: 2rem;
     padding-left: 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    tr {
+      height: 36px;
+      td {
+        padding: 0 2rem 0 0;
+      }
+    }
   }
 }
 
@@ -435,7 +452,7 @@ span.tag {
       -webkit-animation-name: tagFlash;
       -webkit-animation-duration: 800ms;
       -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+      -webkit-animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
     }
   }
 }
