@@ -14,8 +14,9 @@ client.on('connect', () => {
 let settings
 
 const getSettings = async () => {
-  if (settings) return settings
-  else return await flushSettings()
+  // if (settings) return settings
+  // else return await flushSettings()
+  return await flushSettings()
 }
 
 const flushSettings = async () => {
