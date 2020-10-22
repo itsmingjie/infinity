@@ -91,6 +91,7 @@ app.use(async (req, res, next) => {
   res.locals.team = req.user ? await db.getUser(req.user.id) : null
   res.locals.solvedList = req.user ? await db.getUserSolved(req.user.id) : null
   res.locals.global = await redis.getSettings()
+  res.locals.environment = config.env
 
   next()
 })
