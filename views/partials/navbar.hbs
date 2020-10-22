@@ -3,14 +3,12 @@
     <a class="navbar-item" href="/">
       <img src="/assets/images/infinity.png">
     </a>
-
     <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
   </div>
-
   <div id="navbar-menu" class="navbar-menu">
     <div class="navbar-start">
       <a class="navbar-item" href="/game">
@@ -19,52 +17,46 @@
       <a class="navbar-item" href="/leaderboard">
         Leaderboard
       </a>
-      <a class="navbar-item" href="/announcements">
-        Announcements
-      </a>
       <a class="navbar-item" href="/page/rules">
         Rules
       </a>
+      <a class="navbar-item" id="announcement-item" href="/announcements">
+        Announcements&nbsp;
+        <span class="dot is-warning" id="socket-status"></span>
+      </a>
     </div>
-
-
     <div class="navbar-end">
-      <div class="navbar-item">
-        <span class="tag is-warning" id="socket-status">Connecting...</span>
-      </div>
-
       {{#if team}}
-      <div class="navbar-item">
-        Hints Left: {{team.hint_credit}}
-      </div>
-      <div class="navbar-item">
-        Score: {{team.score}}
-      </div>
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link is-light" href="/account">
-          {{#if team.isAdmin}}{{>adminSymbol}}{{/if}}{{team.name}}
-        </a>
-        <div class="navbar-dropdown">
-          {{#if team.isAdmin}}
-          <a class="navbar-item" href="/admin">
-            {{>adminSymbol}}Admin
-          </a>
-          {{/if}}
-
-          <a class="navbar-item" href="/account/logout">
-            Log Out
-          </a>
+        <div class="navbar-item">
+          Hints Left: {{team.hint_credit}}
         </div>
-      </div>
+        <div class="navbar-item">
+          Score: {{team.score}}
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link is-light" href="/account">
+            {{#if team.isAdmin}}{{>adminSymbol}}{{/if}}{{team.name}}
+          </a>
+          <div class="navbar-dropdown">
+            {{#if team.isAdmin}}
+              <a class="navbar-item" href="/admin">
+                {{>adminSymbol}}Admin
+              </a>
+            {{/if}}
+            <a class="navbar-item" href="/account/logout">
+              Log Out
+            </a>
+          </div>
+        </div>
       {{else}}
-      {{#unless global.registrationLockdown}}
-      <a class="navbar-item" href="/account/register">
-        Sign up
-      </a>
-      {{/unless}}
-      <a class="navbar-item" href="/account/login">
-        Log in
-      </a>
+        {{#unless global.registrationLockdown}}
+          <a class="navbar-item" href="/account/register">
+            Sign up
+          </a>
+        {{/unless}}
+        <a class="navbar-item" href="/account/login">
+          Log in
+        </a>
       {{/if}}
     </div>
   </div>

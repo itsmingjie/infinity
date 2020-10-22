@@ -443,16 +443,17 @@ section.section {
   padding-top: 1rem;
 }
 
-span.tag {
-  &#socket-status {
-    &.alerted {
-      cursor: pointer;
-      background-color: hsl(348, 100%, 61%);
-      -webkit-animation-name: tagFlash;
-      -webkit-animation-duration: 800ms;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
-    }
+.navbar-item.alerted {
+  cursor: pointer;
+  background-color: hsl(348, 100%, 61%);
+  color: #ffffff;
+  -webkit-animation-name: tagFlash;
+  -webkit-animation-duration: 800ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
+
+  #socket-status {
+    display: none;
   }
 }
 
@@ -531,6 +532,22 @@ span.tag {
     h2 {
       font-size: 1.5rem;
     }
+  }
+}
+
+span.dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 2px;
+
+  &.is-warning {
+    background-color: #ea8d8d;
+  }
+
+  &.is-success {
+    background-color: #43cea2;
   }
 }
 
