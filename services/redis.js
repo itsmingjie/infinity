@@ -1,3 +1,4 @@
+const { times } = require('lodash')
 const redis = require('redis')
 const config = require('../config')
 const client = redis.createClient(config.redis)
@@ -11,12 +12,12 @@ client.on('connect', () => {
 })
 
 // settings cache
-let settings
+const cache_expiration = 10 * 60 * 1000 // in ms
+let settings, timestamp
 
 const getSettings = async () => {
-  // if (settings) return settings
-  // else return await flushSettings()
-  return await flushSettings()
+  if (settings && Date.now() - timestamp <= cache_expiration) return settings
+  else return await flushSettings()
 }
 
 const flushSettings = async () => {
@@ -26,16 +27,16 @@ const flushSettings = async () => {
       else if (!reply) client.set('settings', JSON.stringify({}), redis.print)
 
       settings = JSON.parse(reply)
+      timestamp = Date.now()
       resolve(JSON.parse(reply))
     })
   })
 }
 
-const updateSettings = async (key, value) => {
+const updateSettings = (key, value) => {
   settings[key] = value
   client.set('settings', JSON.stringify(settings), redis.print)
-
-  return await flushSettings()
+  flushSettings()
 }
 
 module.exports = { getSettings, flushSettings, updateSettings, client }
