@@ -33,6 +33,8 @@ const flushSettings = async () => {
 const updateSettings = async (key, value) => {
   settings[key] = value
   client.set('settings', JSON.stringify(settings), redis.print)
+
+  return await flushSettings()
 }
 
 module.exports = { getSettings, flushSettings, updateSettings, client }
