@@ -15,7 +15,13 @@
       <td>{{affiliation}}</td>
       <td>{{score}}</td>
       <td>{{banned}}</td>
-      <td><a href="/account/{{id}}">Impersonate</a> &ndash; <a href="#">Ban</a> &ndash; <a href="#">Kill</a></td>
+      <td>
+        {{#if banned}}
+          <a href="/admin/unban/{{id}}">Unban</a>
+        {{else}}
+          <a href="/admin/ban/{{id}}">Ban</a>
+        {{/if}}
+      </td>
     </tr>
     {{/each}}
 

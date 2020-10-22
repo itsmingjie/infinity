@@ -17,13 +17,18 @@ const pool = new Pool({
 })
 
 const testConnection = () => {
-  pool.connect().then((client) => {
-    console.log(`Database at ${client.host} connected.`)
-    client.end()
-  }).catch(() => {
-    console.error("PostgreSQL initialization failed. Check database connection.")
-    process.exit(-1)
-  })
+  pool
+    .connect()
+    .then((client) => {
+      console.log(`Database at ${client.host} connected.`)
+      client.end()
+    })
+    .catch(() => {
+      console.error(
+        'PostgreSQL initialization failed. Check database connection.'
+      )
+      process.exit(-1)
+    })
 }
 
 const createUser = (name, password, division) => {
@@ -468,6 +473,25 @@ const getAnnouncements = () => {
   })
 }
 
+const banUser = (uid, ban, staffId) => {
+  pool
+    .connect()
+    .then((client) => {
+      client.query('UPDATE teams SET banned=$1 WHERE id=$2', [
+        ban === true,
+        uid
+      ])
+
+      client.query(
+        'INSERT INTO logs (id, action, value, uid, detail) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [uuidv4(), `${ban ? 'ban' : 'unban'}`, 0, uid, `${ban ? 'Banned' : 'Unbanned'} by ${staffId}`]
+      )
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
 module.exports = {
   testConnection,
   createUser,
@@ -488,5 +512,6 @@ module.exports = {
   listAllLogs,
   exportLogs,
   createAnnouncement,
-  getAnnouncements
+  getAnnouncements,
+  banUser
 }

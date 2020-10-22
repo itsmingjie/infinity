@@ -4,5 +4,5 @@
         href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
 
 {{#unless noback}}
-<a class="button mt-5 low-jump" href="javascript:history.back()">Go Back</a>
+<a class="button mt-5 low-jump" href="javascript:window.location.href = document.referrer">Go Back</a>
 {{/unless}}

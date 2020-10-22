@@ -115,4 +115,18 @@ app.post('/announcement', (req, res) => {
   })
 })
 
+app.get('/ban/:id', (req, res) => {
+  const uid = req.params.id
+  db.banUser(uid, true, res.locals.team.name)
+
+  res.render('message', messages.success)
+})
+
+app.get('/unban/:id', (req, res) => {
+  const uid = req.params.id
+  db.banUser(uid, false, res.locals.team.name)
+
+  res.render('message', messages.success)
+})
+
 module.exports = app
