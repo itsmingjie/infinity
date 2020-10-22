@@ -50,10 +50,11 @@ app.get('/teams', (req, res) => {
 app.post('/update', (req, res) => {
   const prop = req.body.prop
   const value = req.body.value
+  const redis = require('../services/redis')
 
-  require('../services/redis')
-    .updateSettings(prop, value)
+  redis.updateSettings(prop, value)
     .then(() => {
+      res.locals.global = redis.getSettings()
       res.send('OK')
       console.log('Success')
     })
