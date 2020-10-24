@@ -50,7 +50,11 @@ app.get('/:level', cacheCheck(), (req, res) => {
   const level = idSearch(req.params.level, LEVELS_CACHE)
 
   if (level) {
-    res.render('game/level', { title: level.fields.Title, level: level })
+    res.render('game/level', {
+      title: level.fields.Title,
+      level: level,
+      metas: level.fields.Meta
+    })
   } else {
     res.render('message', messages.notFound)
   }
@@ -66,7 +70,9 @@ app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
 
   if (puzzle) {
     res.render('game/puzzle', {
-      title: `${puzzle.fields.Title} — ${puzzle.fields.Value} pts`,
+      title: `${puzzle.fields.Meta ? '[META] ' : ''}${puzzle.fields.Title} — ${
+        puzzle.fields.Value
+      } pts`,
       id: req.params.puzzle,
       puzzle: puzzle,
       unlockedHints: unlockedHints.map((h) => idSearch(h, HINTS_CACHE)),
@@ -96,8 +102,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
             req.params.puzzle,
             solution,
             puzzle.fields.Value,
-            success,
-            isMeta
+            success
           ).then((attempt) => {
             const attemptId = attempt.id
             const attemptTs = attempt.timestamp

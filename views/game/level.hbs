@@ -1,45 +1,43 @@
 {{#level.fields}}
-<div class="columns is-multiline is-mobile cards">
-  {{#each Puzzles}}
-    {{#eq title "<Placeholder>"}}    
-    <div class="column is-one-third">
-      <div class="card placeholder is-brand">
-        <div class="card-content">
-          <div class="content">
+  <div class="columns is-multiline is-mobile cards">
+    {{#each Puzzles}}
+      {{#eq title "<Placeholder>"}}
+        <div class="column is-one-third">
+          <div class="card placeholder is-brand">
+            <div class="card-content">
+              <div class="content">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
     {{else}}
-    <div class="column is-one-third">
-      <div class="card{{#unless ../unlocked}} locked{{/unless}}">
-        <header class="card-header is-brand">
-          <p class="card-header-title">
-            {{../title}}
-          </p>
-
-          <p class="card-header-icon">
-            {{../value}} pts
-          </p>
-        </header>
-
-        <div class="card-content">
-          <div class="content">
-            {{../description}}
+      {{#notInclude ../../../metas ../id}}
+      <div class="column is-one-third">
+        <div class="card{{#unless ../unlocked}} locked{{/unless}}">
+          <header class="card-header is-brand">
+            <p class="card-header-title">
+              {{../title}}
+            </p>
+            <p class="card-header-icon">
+              {{../value}} pts
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              {{../description}}
+            </div>
           </div>
+          <footer class="card-footer">
+            {{#if ../unlocked}}
+              <a href="/game/puzzle/{{../id}}" class="card-footer-item">Solve</a>
+            {{else}}
+              <p class="is-hint card-footer-item">This puzzle is locked.</p>
+            {{/if}}
+          </footer>
         </div>
-
-        <footer class="card-footer">
-          {{#if ../unlocked}}
-          <a href="/game/puzzle/{{../id}}" class="card-footer-item">Solve</a>
-          {{else}}
-          <p class="is-hint card-footer-item">This puzzle is locked.</p>
-          {{/if}}
-        </footer>
       </div>
-    </div>
-    {{/eq}}
-  {{/each}}
-</div>
-
+      {{/notInclude}}
+      {{/eq}}
+    {{/each}}
+  </div>
 {{/level.fields}}
