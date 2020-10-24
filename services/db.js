@@ -176,9 +176,10 @@ const getUserSolved = (id) => {
 
 // Update individual user's data by key
 const updateUser = (id, key, data) => {
+  console.log("start|" + data + "|end")
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
-      const q = format('UPDATE teams SET %I = %L WHERE id = %L', key, data, id)
+      const q = format('UPDATE teams SET %I = TRIM(%L) WHERE id = %L', key, data.trim(), id)
       client
         .query(q)
         .then((res) => {

@@ -43,6 +43,11 @@ body {
   &.button {
     font-weight: bold;
     color: #fff !important;
+
+    &.is-success {
+      background: none;
+      background-color: #48c774;
+    }
   }
 
   &.hero {

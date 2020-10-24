@@ -8,7 +8,6 @@
 </div>
 <br />
 <input type="hidden" id="csrfToken" value="{{csrfToken}}" />
-
 <label class="label">Team Display Name</label>
 <div class="field is-grouped">
   <div class="control is-expanded">
@@ -37,44 +36,16 @@
     <textarea class="textarea" data-prop="emails">{{renderEmails team.emails}}</textarea>
   </div>
 </div>
-
 <br />
-
-<!-- Admin Only Section -->
-<!-- WARNING: Be sure to server-check the prvileges when updating user data or users will potentially
-be able to self-grant admin perms. -->
-
-{{#if team.isAdmin}}
-<div class="adminOnly">
-  <div class="field">
-    <label class="label">Team ID</label>
-    <div class="control">
-      <input class="input" type="text" value="{{team.id}}" disabled>
-    </div>
-    <p class="help">This string makes zero sense to you, but it's incredibly important for us. Take good care of it,
-      would
-      you?</p>
+<div class="field">
+  <label class="label">Team Server Identifier</label>
+  <div class="control">
+    <input class="input" type="text" value="{{team.id}}" disabled>
   </div>
-
-  <div class="field">
-    <label class="label">Special Privileges</label>
-    <div class="control">
-      <label class="checkbox">
-        <input type="checkbox" name="admin" {{#if team.isAdmin}}checked{{/if}}>
-        Admin User &mdash; <span class="is-danger">Be extra careful!</span> {{>adminSymbol}}
-      </label>
-    </div>
-
-    <div class="control">
-      <label class="checkbox">
-        <input type="checkbox" name="banned" {{#if team.isBanned}}checked{{/if}}>
-        User Banned &mdash; Banned users will be locked out of Infinity.
-      </label>
-    </div>
-  </div>
+  <p class="help">This string makes zero sense to you, but it's incredibly important for us. Take good care of it,
+    would
+    you? (Sometimes we may ask you to share this with us)</p>
 </div>
-{{/if}}
-
 {{#extend "foot-inject"}}
   <script src="/assets/scripts/teamFields.js" defer></script>
 {{/extend}}

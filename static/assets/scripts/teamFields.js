@@ -30,7 +30,6 @@ document.querySelectorAll('input.input, textarea.textarea').forEach((el) => {
             value: el.value
           })
         }).then((response) => {
-          console.log(response.json().line)
           if (response.status === 403) {
             alert("UNAUTHORIZED ACCESS! What are you trying to pull here?")
           } else if (response.status === 400) {

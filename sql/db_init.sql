@@ -1,10 +1,10 @@
 create table if not exists teams (
     id uuid not null constraint users_pkey primary key,
-    name char(64),
+    name text,
     password varchar(64),
-    display_name char(64),
+    display_name text,
     admin boolean,
-    affiliation char(64),
+    affiliation text,
     score integer default 0 not null,
     banned boolean default false,
     emails text,
@@ -25,3 +25,13 @@ create table if not exists logs (
 );
 
 create unique index if not exists attempts_id_uindex on logs (id);
+
+create table if not exists announcements (
+    id serial not null constraint announcements_pk primary key,
+    timestamp timestamp default CURRENT_TIMESTAMP not null,
+    title text not null,
+    content text not null,
+    author text not null
+);
+
+create unique index if not exists announcements_id_uindex on announcements (id);
