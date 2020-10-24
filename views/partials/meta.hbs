@@ -1,0 +1,6 @@
+<!-- When user is logged in, always clear out constants for client side JS -->
+{{#if team}}
+    <script>
+        const TEAM_UUID = "{{team.id}}"
+    </script>
+{{/if}}

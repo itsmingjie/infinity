@@ -13,10 +13,11 @@
   {{/if}}
   <link rel="icon" href="/assets/images/infinity.png" type="image/png" sizes="32x32">
   {{{block 'head-inject'}}}
+  {{>meta}}
 </head>
 
 <body>
-  <div class="Site-Content __admin">
+  <div class="Site-Content __admin mb-6">
     {{>navbar}}
     <section class="hero is-brand is-adminBrand is-{{#if heroSize}}{{heroSize}}{{else}}medium{{/if}}">
       <div class="hero-body">
@@ -39,10 +40,12 @@
     </div>
   </div>
   {{> footer}}
-    {{> sticker}}
+  {{> sticker}}
   <script src="/assets/scripts/socketio.slim.js" type="text/javascript" defer></script>
   <script src="/assets/scripts/global.js" type="text/javascript" defer></script>
   <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" type="text/javascript" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js" defer></script>
   {{{block 'foot-inject'}}}
 </body>
 

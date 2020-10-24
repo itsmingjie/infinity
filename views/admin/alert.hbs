@@ -1,0 +1,26 @@
+<h1 class="subtitle">Send Alert Popups</h1>
+<p class="mb-3">There are currently {{userCount}} users online and connected to the real-time communications engine.</p>
+<p class="mb-3">Before you do anything... Here's the deal. It's actually a really bad idea to send a popup to your competition teams, as it can be very disruptive. 
+    Therefore, <span style="color: red">please avoid using this system as much as possible.</span> This system is reserved for very important communications, 
+    such as potential server downtime, a change in scheduling, or other emergencies. 
+</p>
+<p>You can also use this tool to catch a team's attention, asking them to reach out to you.</p>
+<hr />
+
+
+<form method="POST" action="/admin/alert">
+    <input type="hidden" id="csrfToken" name="_csrf" value="{{csrfToken}}" />
+    <div class="field">
+        <label class="label">ID</label>
+        <div class="control is-expanded">
+            <input class="input" name="id" placeholder="UUID string of team, defaults to EVERYONE (CAREFUL!!!)" />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Message</label>
+        <div class="control is-expanded">
+            <textarea class="textarea" name="message" placeholder="Alert content" required></textarea>
+        </div>
+    </div>
+    <button class="button low-jump" type="submit">Send Alert!</button>
+</form>

@@ -19,27 +19,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // socket.io announcements
 const socket = io({
-  transports: [ 'websocket' ]
-});
-const statusEl = document.getElementById("socket-status")
-const announceItem = document.getElementById("announcement-item")
+  transports: ['websocket']
+})
+const statusEl = document.getElementById('socket-status')
+const announceItem = document.getElementById('announcement-item')
 
 socket.on('connect', () => {
   statusEl.classList.remove('is-warning')
   statusEl.classList.add('is-success')
 
-  console.log("Connected to the announcements engine!")
+  if (TEAM_UUID) {
+    // user is logged in, join room
+    socket.emit('join', TEAM_UUID)
+  }
 })
 
 socket.on('disconnect', () => {
   statusEl.classList.add('is-warning')
   statusEl.classList.remove('is-success')
 
-  console.log("Disconnected from the announcements engine. Attempting to reconnect...")
+  console.log(
+    'Disconnected from the announcements engine. Attempting to reconnect...'
+  )
 })
 
 socket.on('announcement', (id) => {
   announceItem.classList.add('alerted')
-  announceItem.innerText = "New Announcement"
-  announceItem.href = "/announcements/" + id
+  announceItem.innerText = 'New Announcement'
+  announceItem.href = '/announcements/' + id
+})
+
+socket.on('alert', (content) => {
+  Swal.fire('Alert!', content, 'warning')
 })

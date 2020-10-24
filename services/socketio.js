@@ -10,6 +10,13 @@ const init = (http) => {
   io = require('socket.io')(http)
   io.adapter(redisAdapter({ pubClient: pub, subClient: sub }))
 
+  io.on('connection', (socket) => {
+    socket.on('join', (id) => {
+      // user who logged in connected
+      socket.join(id)
+    })
+  })
+
   return io
 }
 

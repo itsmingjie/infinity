@@ -8,6 +8,7 @@ const flagger = require('../lib/flagger')
 const db = require('../services/db')
 const config = require('../config')
 const messages = require('../lib/messages')
+const io = require('../services/socketio').interface()
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
@@ -52,7 +53,8 @@ app.post('/update', (req, res) => {
   const value = req.body.value
   const redis = require('../services/redis')
 
-  redis.updateSettings(prop, value)
+  redis
+    .updateSettings(prop, value)
     .then(async () => {
       res.locals.global = await redis.getSettings()
       res.send('OK')
@@ -92,9 +94,7 @@ app.post('/hints/bump', (req, res) => {
 })
 
 app.get('/announcement', (req, res) => {
-
   const userCount = require('../services/socketio').numUsersOnline()
-
   res.render('admin/announcement', { title: 'Announcement', userCount })
 })
 
@@ -102,14 +102,17 @@ app.post('/announcement', (req, res) => {
   const title = req.body.title
   const content = req.body.content
 
-  db.createAnnouncement(title, content, res.locals.team.display_name).then((id) => {
-    const io = require('../services/socketio').interface()
-    io.emit('announcement', id)
+  db.createAnnouncement(title, content, res.locals.team.display_name).then(
+    (id) => {
+      io.emit('announcement', id)
 
-    require('./announcements').updateAnnouncements().then(() => {
-      res.redirect('/announcements/' + id)
-    })
-  })
+      require('./announcements')
+        .updateAnnouncements()
+        .then(() => {
+          res.redirect('/announcements/' + id)
+        })
+    }
+  )
 })
 
 app.get('/ban/:id', (req, res) => {
@@ -124,6 +127,39 @@ app.get('/unban/:id', (req, res) => {
   db.banUser(uid, false, res.locals.team.name)
 
   res.render('message', messages.success)
+})
+
+app.get('/alert', (req, res) => {
+  const userCount = require('../services/socketio').numUsersOnline()
+  res.render('admin/alert', { title: 'Alert Team', userCount })
+})
+
+app.post('/alert', (req, res) => {
+  const id = req.body.id
+
+  if (id) {
+    // cast to the team only
+    if (io.sockets.adapter.rooms[id]) {
+      io.to(id).emit('alert', req.body.message)
+      res.render('message', {
+        title: 'Success!',
+        message: `An alert has been sent to all members of ${id} who are currently online.`
+      })
+    } else {
+      // room does not exist
+      res.render('message', {
+        title: 'No Clients Found',
+        message: `The team you're trying to reach may be currently offline, because the room ${id} does not exist.`
+      })
+    }
+  } else {
+    // cast to EVERYONE
+    io.emit('alert', req.body.message)
+    res.render('message', {
+      title: 'Success!',
+      message: `An alert has been sent to all teams ${id} who are currently online.`
+    })
+  }
 })
 
 module.exports = app

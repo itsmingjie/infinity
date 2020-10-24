@@ -6,11 +6,12 @@
     <td>Score</td>
     <td>Banned</td>
     <td>Actions</td>
+    <td>UUID (Server Identifier)</td>
   </thead>
   <tbody>
     {{#each teams}}
     <tr>
-      <td title="{{id}}">{{name}}{{#if admin}}{{>adminSymbol}}{{/if}}</td>
+      <td>{{name}}{{#if admin}} {{>adminSymbol}}{{/if}}</td>
       <td>{{display_name}}</td>
       <td>{{affiliation}}</td>
       <td>{{score}}</td>
@@ -22,6 +23,7 @@
           <a href="/admin/ban/{{id}}">Ban</a>
         {{/if}}
       </td>
+      <td><span>{{id}}</span></td>
     </tr>
     {{/each}}
 
