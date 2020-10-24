@@ -4,9 +4,9 @@
   {{/if}}
 {{/extend}}
 {{#puzzle.fields}}
-  <article class="message {{#if ../solved}}is-success{{/if}} solve">
+  <article class="message {{#if ../solved}}is-success{{/if}} solve" id="solve-article">
     <div class="message-body">
-      <div class="message-wrapper submitWrapper has-text-centered">
+      <div class="message-wrapper submitWrapper has-text-centered" id="solve-wrapper">
         {{#if ../solved}}
           {{#if CustomSuccess}}
             {{CustomSuccess}}
@@ -14,19 +14,18 @@
             <p>Congratulations! You've already solved this puzzle, {{../team.name}}. Time to take on the next one?</p>
           {{/if}}
         {{else}}
-          <form id="submission" method="POST">
-            <input type="hidden" name="_csrf" value="{{../csrfToken}}">
+          <form id="submission">
+            <input type="hidden" name="_csrf" id="csrfToken" value="{{../csrfToken}}">
             <label class="label"></label>
             <div class="field is-grouped">
               <div class="control is-expanded">
-                <input class="input is-large is-allcaps solver" type="text" placeholder="SOLUTION" name="solution">
+                <input class="input is-large is-allcaps solver" type="text" placeholder="SOLUTION" id="solution">
               </div>
-
-            <p class="control">
-              <button class="button is-large low-jump" type="submit">
-                SOLVE!
-              </button>
-            </p>
+              <p class="control">
+                <button class="button is-large low-jump" id="solveButton">
+                  SOLVE!
+                </button>
+              </p>
             </div>
           </form>
         {{/if}}
@@ -84,3 +83,16 @@
     </article>
   {{/if}}
 {{/unless}}
+{{#extend "foot-inject"}}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+
+  {{#unless ../solved}}
+  <script>
+    // METADATA OF CURRENT PUZZLE
+    const PUZZLE_ID = "{{../puzzle.id}}"
+    const TEAM_NAME = "{{../team.name}}"
+  </script>
+  <script src="/assets/scripts/solve.js" defer></script>
+  {{/unless}}
+{{/extend}}

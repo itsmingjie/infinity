@@ -279,7 +279,7 @@ const listAllLogs = () => {
   })
 }
 
-const createAttempt = (uid, puzzle, attempt, value, success) => {
+const createAttempt = (uid, puzzle, attempt, value, success, meta) => {
   return new Promise((resolve, reject) => {
     pool
       .connect()
@@ -289,7 +289,7 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
             'INSERT INTO logs (id, action, value, uid, puzzle, detail) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [
               uuidv4(),
-              success ? 'solve' : 'attempt',
+              success ? meta ? 'solve-meta' : 'solve' : 'attempt',
               value,
               uid,
               puzzle,

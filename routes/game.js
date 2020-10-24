@@ -6,11 +6,14 @@
 const express = require('express')
 const app = express.Router()
 const rateLimit = require('express-rate-limit')
+const bodyParser = require('body-parser')
 
 const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
 const flagger = require('../lib/flagger')
+
+app.use(bodyParser.json())
 
 // solving is limited to 5 attempts per minute per IP
 const solveLimiter = rateLimit({
@@ -56,7 +59,10 @@ app.get('/:level', cacheCheck(), (req, res) => {
 app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
   console.log('Oh look! I can pull the puzzle directly from cache!')
   const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
-  const unlockedHints = await db.getUnlockedHints(req.user.id, req.params.puzzle)
+  const unlockedHints = await db.getUnlockedHints(
+    req.user.id,
+    req.params.puzzle
+  )
 
   if (puzzle) {
     res.render('game/puzzle', {
@@ -79,6 +85,8 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
     const solution = parseSolution(req.body.solution)
 
     if (puzzle) {
+      const isMeta = puzzle.fields.meta // whether the puzzle is a metapuzzle
+
       flagger
         .validateHash(solution, SOLUTION_CACHE[req.params.puzzle])
         .then((success) => {
@@ -88,35 +96,45 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
             req.params.puzzle,
             solution,
             puzzle.fields.Value,
-            success
+            success,
+            isMeta
           ).then((attempt) => {
             const attemptId = attempt.id
             const attemptTs = attempt.timestamp
 
             if (success) {
               db.updateScore(req.user.id, puzzle.fields.Value).then(() => {
-                res.render('game/solve.hbs', {
-                  title: 'Solved!',
+                res.json({
                   success: true,
-                  message: puzzle.customSuccess,
-                  reference: `${attemptId} @ ${attemptTs}`
+                  message:
+                    puzzle.fields.CustomSuccess ||
+                    'Congratulations! Your solution was correct. Time to take on the next one?',
+                  reference: `${attemptId} @ ${attemptTs}`,
+                  isMeta
                 })
               })
             } else {
-              res.render('game/solve.hbs', {
-                title: 'Incorrect Solution!',
+              res.json({
                 success: false,
-                message: puzzle.customError,
+                message:
+                  (puzzle.fields.CustomError || 'Try again next time?') +
+                  ' Please know that you are limited to 5 attempts per minute.',
                 reference: `${attemptId} @ ${attemptTs}`
               })
             }
           })
         })
     } else {
-      res.render('message', messages.notFound)
+      res.json({
+        success: false,
+        message: messages.notFound.message
+      })
     }
   } else {
-    res.render('message', messages.caughtRedHanded)
+    res.json({
+      success: false,
+      message: messages.caughtRedHanded.message
+    })
   }
 })
 
@@ -126,7 +144,10 @@ app.get(
   cacheCheck(),
   async (req, res) => {
     const userCredits = await db.getHintCredit(req.user.id)
-    const unlockedHints = await db.getUnlockedHints(req.user.id, req.params.puzzle)
+    const unlockedHints = await db.getUnlockedHints(
+      req.user.id,
+      req.params.puzzle
+    )
 
     if (unlockedHints.includes(req.params.hint)) {
       res.render('message', messages.hintAlreadyUnlocked)
@@ -135,7 +156,7 @@ app.get(
     } else {
       db.createHintIntent(req.user.id, req.params.puzzle, req.params.hint, 0)
         .then(() => {
-          res.redirect(req.get('referer') + "#" + req.params.hint)
+          res.redirect(req.get('referer') + '#' + req.params.hint)
         })
         .catch((err) => {
           console.log(err)
