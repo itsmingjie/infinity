@@ -90,6 +90,10 @@ a.button {
   &.is-fullwidth {
     width: 100%;
   }
+
+  &.is-fullheight {
+    height: 100%;
+  }
 }
 
 .field {
@@ -401,7 +405,7 @@ div.formattedText {
   }
 }
 
-input.input {
+input.input, textarea.textarea {
   border: none;
   border-radius: 0.4rem;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
@@ -412,7 +416,9 @@ input.input {
   &:read-only {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   }
+}
 
+input.input {
   &.is-allcaps {
     text-transform: uppercase;
   }

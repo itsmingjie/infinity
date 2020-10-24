@@ -2,16 +2,16 @@ const csrfToken = document.getElementById('csrfToken').value
 
 /* eslint-disable no-undef */
 document.querySelectorAll('input.input, textarea.textarea').forEach((el) => {
-  el.addEventListener('blur', function (e) {
+  el.addEventListener('input', function (e) {
     if (!el.dataset.hassave) {
       let wrapper = document.createElement('div')
       wrapper.setAttribute('class', 'control')
       wrapper.setAttribute('id', `save-${el.dataset.prop}`)
 
       let saveButton = document.createElement('a')
-      saveButton.setAttribute('class', 'button noFloat')
+      saveButton.setAttribute('class', 'button is-brand noFloat is-fullheight')
       saveButton.setAttribute('id', `button-${el.dataset.prop}`)
-      saveButton.innerHTML = '<i class="fas fa-check"></i>'
+      saveButton.innerHTML = '<i class="fas fa-check"></i>&ensp;SAVE'
       saveButton.addEventListener('click', () => {
         console.log(`Set ${el.dataset.prop} to ${el.value}`)
         el.setAttribute('readonly', true)

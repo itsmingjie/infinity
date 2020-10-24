@@ -2,7 +2,7 @@ const csrfToken = document.getElementById('csrfToken').value
 
 /* eslint-disable no-undef */
 document.querySelectorAll('input.input').forEach((el) => {
-  el.addEventListener('blur', function (e) {
+  el.addEventListener('input', function (e) {
     if (!el.dataset.hassave) {
       let wrapper = document.createElement('div')
       wrapper.setAttribute('class', 'control')
