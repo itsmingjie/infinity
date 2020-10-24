@@ -1,5 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const fetch = require('node-fetch')
+const url = require('url')
 
 const app = express.Router()
 
@@ -8,7 +10,6 @@ const flagger = require('../lib/flagger')
 const db = require('../services/db')
 const config = require('../config')
 const messages = require('../lib/messages')
-const io = require('../services/socketio').interface()
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
@@ -94,8 +95,7 @@ app.post('/hints/bump', (req, res) => {
 })
 
 app.get('/announcement', (req, res) => {
-  const userCount = require('../services/socketio').numUsersOnline()
-  res.render('admin/announcement', { title: 'Announcement', userCount })
+  res.render('admin/announcement', { title: 'Announcement' })
 })
 
 app.post('/announcement', (req, res) => {
@@ -104,12 +104,23 @@ app.post('/announcement', (req, res) => {
 
   db.createAnnouncement(title, content, res.locals.team.display_name).then(
     (id) => {
-      io.emit('announcement', id)
-
-      require('./announcements')
-        .updateAnnouncements()
-        .then(() => {
-          res.redirect('/announcements/' + id)
+      fetch(url.resolve(config.euler_url, '/api/announcement'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: config.euler_token
+        },
+        body: JSON.stringify({
+          id
+        })
+      })
+        .then((data) => data.json())
+        .then((result) => {
+          require('./announcements')
+            .updateAnnouncements()
+            .then(() => {
+              res.redirect('/announcements/' + id)
+            })
         })
     }
   )
@@ -130,36 +141,31 @@ app.get('/unban/:id', (req, res) => {
 })
 
 app.get('/alert', (req, res) => {
-  const userCount = require('../services/socketio').numUsersOnline()
-  res.render('admin/alert', { title: 'Alert Team', userCount })
+  res.render('admin/alert', { title: 'Alert Team' })
 })
 
 app.post('/alert', (req, res) => {
   const id = req.body.id
+  const message = req.body.message
 
-  if (id) {
-    // cast to the team only
-    if (io.sockets.adapter.rooms[id]) {
-      io.to(id).emit('alert', req.body.message)
-      res.render('message', {
-        title: 'Success!',
-        message: `An alert has been sent to all members of ${id} who are currently online.`
-      })
-    } else {
-      // room does not exist
-      res.render('message', {
-        title: 'No Clients Found',
-        message: `The team you're trying to reach may be currently offline, because the room ${id} does not exist.`
-      })
-    }
-  } else {
-    // cast to EVERYONE
-    io.emit('alert', req.body.message)
-    res.render('message', {
-      title: 'Success!',
-      message: `An alert has been sent to all teams ${id} who are currently online.`
+  fetch(url.resolve(config.euler_url, '/api/alert'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: config.euler_token
+    },
+    body: JSON.stringify({
+      id,
+      message
     })
-  }
+  })
+    .then((data) => data.json())
+    .then((result) => {
+      res.render('message', result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 })
 
 module.exports = app

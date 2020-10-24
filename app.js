@@ -20,7 +20,6 @@ const hbs = exphbs.create({ helpers: helpers, extname: '.hbs' })
 const db = require('./services/db')
 const redis = require('./services/redis')
 const config = require('./config')
-require('./services/socketio').init(http)
 
 if (config.env !== 'development') {
   const Bugsnag = require('@bugsnag/js')
@@ -92,6 +91,7 @@ app.use(async (req, res, next) => {
   res.locals.solvedList = req.user ? await db.getUserSolved(req.user.id) : null
   res.locals.global = await redis.getSettings()
   res.locals.environment = config.env
+  res.locals.euler_url = config.euler_url
 
   next()
 })

@@ -16,5 +16,7 @@ module.exports = {
   },
   bugsnag: {
     key: process.env.BUGSNAG_KEY
-  }
+  },
+  euler_url: process.env.EULER_URL,
+  euler_token: process.env.EULER_TOKEN
 }

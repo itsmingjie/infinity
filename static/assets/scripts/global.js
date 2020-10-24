@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // socket.io announcements
-const socket = io({
+const socket = io(EULER_URL ,{
   transports: ['websocket']
 })
 const statusEl = document.getElementById('socket-status')
