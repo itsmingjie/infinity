@@ -105,14 +105,15 @@ http.listen(config.port, () => {
   console.log(`Infinity is running on *:${config.port}`)
   console.log('I hope your code works...')
   console.log('--------------------------')
-  console.log("====STARTING INIT TEST====")
+  console.log('====STARTING INIT TEST====')
   console.log('--------------------------')
 
   Promise.all([
     require('./services/db').testConnection(),
     require('./routes/game').restock(),
     require('./routes/announcements').updateAnnouncements(),
-    require('./routes/leaderboard').updateRank()
+    require('./routes/leaderboard').updateRank(),
+    require('./lib/utils').eulerTest()
   ])
     .then(() => {
       console.log('---------------------------')
