@@ -414,7 +414,7 @@ div.formattedText {
   }
 }
 
-input.input, textarea.textarea {
+input.input, textarea.textarea, select.select {
   border: none;
   border-radius: 0.4rem;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
@@ -430,6 +430,10 @@ input.input, textarea.textarea {
 input.input {
   &.is-allcaps {
     text-transform: uppercase;
+  }
+
+  &.is-danger {
+    border: 2px solid #ea8d8d;
   }
 
   &.solver {
@@ -451,6 +455,12 @@ input.input {
         color: rgba(0, 0, 0, 0.3);
       }
     }
+  }
+}
+
+select.select {
+  &.is-danger {
+    border: 2px solid #ea8d8d;
   }
 }
 

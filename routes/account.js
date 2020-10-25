@@ -85,10 +85,21 @@ app.post(
     const name = req.body.name
     const password = req.body.password
     const division = req.body.division
+    const affiliation = req.body.affiliation || ""
+    const display_name = req.body.display_name
+
+    const usernamePattern = new RegExp(/[ !@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?]/g)
+
+    if (usernamePattern.test(name)) {
+      return res.render('message', {
+        message: 'Invalid account details. Username cannot contain special characters.',
+        title: 'Error'
+      })
+    }
 
     //if (name.indexOf('team_') === 0 && password !== '') {
     if (password !== '') {
-      db.createUser(name, password, division)
+      db.createUser(name, password, division, affiliation, display_name)
         .then(() => {
           res.render('message', {
             message:
@@ -122,7 +133,8 @@ app.post(
   }),
   (req, res) => {
     if (req.body.remember) {
-      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000
+      const hours = 48 // cookie expiration
+      req.session.cookie.maxAge = 360000 * hours
     } else {
       req.session.cookie.expires = false
     }

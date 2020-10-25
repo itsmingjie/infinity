@@ -28,7 +28,7 @@ socket.on('connect', () => {
   statusEl.classList.remove('is-warning')
   statusEl.classList.add('is-success')
 
-  if (TEAM_UUID) {
+  if (typeof TEAM_UUID !== 'undefined') {
     // user is logged in, join room
     socket.emit('join', TEAM_UUID)
   }

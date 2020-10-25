@@ -1,9 +1,26 @@
-<form action="/account/create" method="POST">
+<p>Welcome to <strong>{{global.gameName}}</strong>! You will be able to fill in individual team members' information once you're registered.</p>
+<p class="mt-3">If you have pre-registered with us on our website, a login details email has already been emailed to you. <strong>There's no need to register again!</strong></p>
+<hr />
+<form class="mt-3" action="/account/create" method="POST" id="register-form">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <div class="field">
-        <label class="label">Team Name</label>
+        <label class="label">Team Login</label>
         <div class="control">
-            <input class="input" type="text" placeholder="team_999" name="name" required>
+            <input class="input" type="text" placeholder="integirls_team" name="name" required>
+        </div>
+        <p class="help">This is what your team will use to log in. It is private to you. Letters, numbers & underscores (_) only.</p>
+    </div>
+    <div class="field">
+        <label class="label">Team Display Name</label>
+        <div class="control">
+            <input class="input" type="text" placeholder="inteGIRLS Team" name="display_name" required>
+        </div>
+        <p class="help">This is what shows up on the leaderboard.</p>
+    </div>
+    <div class="field">
+        <label class="label">Team Affiliation (Optional)</label>
+        <div class="control">
+            <input class="input" type="text" placeholder="Acme High School" name="affiliation">
         </div>
     </div>
     <div class="field">
@@ -12,28 +29,42 @@
             <input class="input" type="password" placeholder="********" name="password" required>
         </div>
     </div>
-
-    <div class="field">
-    <label class="label">Division</label>
-    <div class="control">
-        <div class="select">
-        <select name="division">
-            {{#each divisions}}
-            <option value="{{bump @index}}">{{this}}</option>
-            {{/each}}
-        </select>
+    <hr />
+    <div class="field mt-4">
+        <label class="label">Division (you will NOT be able to change this)</label>
+        <div class="control">
+            <div class="select">
+                <select name="division" class="select" required>
+                    <option></option>
+                    {{#each divisions}}
+                        <option value="{{bump @index}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
         </div>
     </div>
-    </div>
-
+    <hr />
+    <button class="button is-brand is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit' data-action='submit'>Create Account</button>
     <p>By registering for this competition, you agree to the <a href="/page/rules">competition rules</a>. </p>
-    <button class="button is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit' data-action='submit'>Create Account</button>
+    <p class="mt-3">Already Registered? <a href="/account/login">Log In »</a></p>
 </form>
 {{#extend "foot-inject"}}
     <script src="https://www.google.com/recaptcha/api.js" defer></script>
     <script>
         function onSubmit(token) {
-            document.querySelector("form").submit();
+            const form = document.getElementById('register-form')
+            let flag = false
+
+            for (var i = 0; i < form.elements.length; i++) {
+                if (form.elements[i].value === '' && form.elements[i].hasAttribute('required')) {
+                    form.elements[i].classList.add('is-danger')
+                    flag = true
+                } else {
+                    form.elements[i].classList.remove('is-danger')
+                }
+            }
+
+            return flag ? false : document.querySelector("form").submit()
         }
     </script>
 {{/extend}}

@@ -1,50 +1,57 @@
 {{#if requested}}
-<div class="notification is-danger is-light">
-    You must be logged in to access <code>{{path}}</code>.
-</div>
+    <div class="notification is-warning is-light">
+        You must be logged in to access <code>{{path}}</code>.
+    </div>
 {{/if}}
-
 {{#if loginFailure}}
-<div class="notification is-danger is-light">
-    Login failed. Please try again.
-</div>
+    <div class="notification is-danger is-light">
+        Login failed. Please try again.
+    </div>
 {{/if}}
-
-<form action="/account/login" method="POST">
+<p>If you have pre-registered with us on our website, a login details email has already been emailed to you. <strong>There's no need to register again!</strong></p>
+<hr />
+<form action="/account/login" method="POST" id="login-form">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
-
     <div class="field">
         <label class="label">Team Name</label>
         <div class="control">
             <input class="input" type="text" placeholder="team_999" name="name" required>
         </div>
     </div>
-
     <div class="field">
         <label class="label">Password</label>
         <div class="control">
             <input class="input" type="password" placeholder="********" name="password" required>
         </div>
     </div>
-
     {{#if requested}}
-    <input class="input is-hidden" type="text" name="redirectURL" value="{{path}}" required>
+        <input class="input is-hidden" type="text" name="redirectURL" value="{{path}}" required>
     {{/if}}
-
     <label class="checkbox">
         <input type="checkbox" name="remember">
         Remember me
     </label>
-
-    <button class="button is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit'
-        data-action='submit'>Login</button>
+    <button class="button is-brand is-pulled-right g-recaptcha" data-sitekey="{{captcha}}" data-callback='onSubmit' data-action='submit'>Login</button>
+    <p class="mt-3">No Account Yet? <a href="/account/register">Register »</a></p>
 </form>
-
 {{#extend "foot-inject"}}
-<script src="https://www.google.com/recaptcha/api.js" defer></script>
-<script>
-    function onSubmit(token) {
-        document.querySelector("form").submit();
-    }
-</script>
+    <script src="https://www.google.com/recaptcha/api.js" defer></script>
+    <script>
+        function onSubmit(token) {
+            console.log('invoked')
+            const form = document.getElementById('login-form')
+            let flag = false
+
+            for (var i = 0; i < form.elements.length; i++) {
+                if (form.elements[i].value === '' && form.elements[i].hasAttribute('required')) {
+                    form.elements[i].classList.add('is-danger')
+                    flag = true
+                } else {
+                    form.elements[i].classList.remove('is-danger')
+                }
+            }
+            
+            return flag ? false : form.submit() 
+        }
+    </script>
 {{/extend}}
