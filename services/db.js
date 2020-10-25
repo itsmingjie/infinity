@@ -41,7 +41,7 @@ const createUser = (name, password, division, affiliation, display_name) => {
             .query('SELECT id FROM "teams" WHERE "name"=$1', [name])
             .then((res) => {
               if (res.rows[0]) {
-                reject(new Error('Duplicated team login'))
+                reject(new Error(`Duplicated team login: a team with the name "${name}" already exists. Try logging in?`))
               } else {
                 client
                   .query(
