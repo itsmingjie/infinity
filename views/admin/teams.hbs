@@ -1,3 +1,4 @@
+<h1 class="title is-4">Team Management</h1>
 <table class="table is-fullwidth is-hoverable">
   <thead>
     <td>Team</td>
@@ -10,22 +11,21 @@
   </thead>
   <tbody>
     {{#each teams}}
-    <tr>
-      <td>{{name}}{{#if admin}} {{>adminSymbol}}{{/if}}</td>
-      <td>{{display_name}}</td>
-      <td>{{affiliation}}</td>
-      <td>{{score}}</td>
-      <td>{{banned}}</td>
-      <td>
-        {{#if banned}}
-          <a href="/admin/unban/{{id}}">Unban</a>
-        {{else}}
-          <a href="/admin/ban/{{id}}">Ban</a>
-        {{/if}}
-      </td>
-      <td><span>{{id}}</span></td>
-    </tr>
+      <tr>
+        <td>{{name}}{{#if admin}} {{>adminSymbol}}{{/if}}</td>
+        <td>{{display_name}}</td>
+        <td>{{affiliation}}</td>
+        <td>{{score}}</td>
+        <td>{{banned}}</td>
+        <td>
+          {{#if banned}}
+            <a href="/admin/unban/{{id}}">Unban</a>
+          {{else}}
+            <a href="/admin/ban/{{id}}">Ban</a>
+          {{/if}}
+        </td>
+        <td><span>{{id}}</span></td>
+      </tr>
     {{/each}}
-
   </tbody>
 </table>

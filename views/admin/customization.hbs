@@ -1,0 +1,13 @@
+<input type="hidden" id="csrfToken" value="{{csrfToken}}" />
+<h1 class="title is-4">Customization</h1>
+<table class="table is-fullwidth is-hoverable">
+    <tbody>
+        {{>adminFields/input label="Game Name" prop="gameName"}}
+        {{>adminFields/input label="Tagline" prop="tagline"}}
+        {{>adminFields/input label="Tech Email" prop="techEmail" type="email"}}
+        {{>adminFields/input label='Global Custom CSS <a href="https://gist.github.com/" target="_blank">+</a>' ph="https://gist.github.com/..." type="url"  prop="customCSS" }}
+    </tbody>
+</table>
+{{#extend "foot-inject"}}
+    <script src="/assets/scripts/adminToggles.js" defer></script>
+{{/extend}}

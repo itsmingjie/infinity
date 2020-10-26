@@ -34,15 +34,18 @@
           Score: {{team.score}}
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link is-light" href="/account">
+          <span class="navbar-link is-light">
             {{#if team.isAdmin}}{{>adminSymbol}}{{/if}}{{team.name}}
-          </a>
+          </span>
           <div class="navbar-dropdown">
             {{#if team.isAdmin}}
               <a class="navbar-item" href="/admin">
-                {{>adminSymbol}}Admin
+                Admin
               </a>
             {{/if}}
+            <a class="navbar-item" href="/account">
+              Edit Team
+            </a>
             <a class="navbar-item" href="/account/logout">
               Log Out
             </a>

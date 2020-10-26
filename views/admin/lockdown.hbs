@@ -1,0 +1,13 @@
+<input type="hidden" id="csrfToken" value="{{csrfToken}}" />
+<h1 class="title is-4">Lockdown</h1>
+<table class="table is-fullwidth is-hoverable">
+    <tbody>
+        {{>adminFields/checkbox label="Puzzle Lockdown" text="Prevent unelevated users from accessing puzzles" prop="puzzleLockdown" bypass=true }}
+        {{>adminFields/checkbox label="Registration Lockdown" text="Prevent users from creating new accounts" prop="registrationLockdown" bypass=true }}
+        {{>adminFields/checkbox label="Leaderboard Lockdown" text="Prevent users from accessing the leaderboards" prop="leaderboardLockdown" bypass=true }}
+    </tbody>
+</table>
+
+{{#extend "foot-inject"}}
+  <script src="/assets/scripts/adminToggles.js" defer></script>
+{{/extend}}

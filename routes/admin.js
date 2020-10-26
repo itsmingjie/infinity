@@ -23,6 +23,14 @@ app.get('/', (req, res) => {
   res.render('admin/dashboard', { title: 'Dashboard' })
 })
 
+app.get('/customization', (req, res) => {
+  res.render('admin/customization', { title: 'Customization' })
+})
+
+app.get('/lockdown', (req, res) => {
+  res.render('admin/lockdown', { title: 'Lockdown' })
+})
+
 app.get('/puzzles', (req, res) => {
   res.render('admin/puzzles', {
     title: 'Puzzles',

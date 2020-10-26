@@ -1,53 +1,15 @@
 <p>Welcome to the admin dashboard, {{team.name}}! All actions are logged via a third-party logging service.
   Please be extra careful when performing maintenance tasks. Your UUID is <code>{{team.id}}</code>.</p>
-
+<p class="mt-3">If you run into a technical issue, please contact tech at <a href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
 <hr />
-
-<p>If you run into a technical issue, please contact tech at <a
-    href="mailto:{{global.techEmail}}">{{global.techEmail}}</a>.</p>
-
 <input type="hidden" id="csrfToken" value="{{csrfToken}}" />
-
-<section class="section">
-
-  <h1 class="title is-4">Global Settings</h1>
-
-  <table class="table is-fullwidth is-hoverable">
-    <tbody>
-
-      {{>adminFields/input label="Game Name" prop="gameName"}}
-
-      {{>adminFields/input label="Tagline" prop="tagline"}}
-
-      {{>adminFields/input label="Tech Email" prop="techEmail" type="email"}}
-
-      {{>adminFields/checkbox label="Puzzle Lockdown" text="Prevent unelevated users from accessing puzzles" prop="puzzleLockdown" bypass=true }}
-
-      {{>adminFields/checkbox label="Registration Lockdown" text="Prevent users from creating new accounts" prop="registrationLockdown" bypass=true }}
-
-      {{>adminFields/checkbox label="Leaderboard Lockdown" text="Prevent users from accessing the leaderboards" prop="leaderboardLockdown" bypass=true }}
-
-    </tbody>
-  </table>
-
-  <h1 class="title is-4">Customization</h1>
-
-  <table class="table is-fullwidth is-hoverable">
-    <tbody>
-      {{>adminFields/input label='Global Custom CSS <a href="https://gist.github.com/" target="_blank">+</a>' ph="https://gist.github.com/..." type="url"  prop="customCSS" }}
-    </tbody>
-  </table>
-
-  <h1 class="title is-4">Puzzles</h1>
-
-  <table class="table is-fullwidth is-hoverable">
-    <tbody>
-      {{>adminFields/button label="Restock Puzzles" target="/admin/restock" text="Restock" }}
-    </tbody>
-  </table>
-
-</section>
+<h1 class="title is-4">Quick Actions</h1>
+<table class="table is-fullwidth is-hoverable">
+  <tbody>
+    {{>adminFields/button label="Restock Puzzles" target="/admin/restock" text="Restock" }}
+  </tbody>
+</table>
 
 {{#extend "foot-inject"}}
-<script src="/assets/scripts/adminToggles.js" defer></script>
+  <script src="/assets/scripts/adminToggles.js" defer></script>
 {{/extend}}
