@@ -35,7 +35,7 @@ http.listen(config.port, () => {
 app.use((req, res, next) => {
   if (!INITIALIZED) {
     // server not initialized yet
-    res.status(502).send("The server is still initializing (it's not ready yet)! Please give it a few more seconds, and refresh the page to proceed.")
+    res.send("The server is still initializing (it's not ready yet)! Please give it a few more seconds, and refresh the page to proceed.")
   } else {
     next()
   }
