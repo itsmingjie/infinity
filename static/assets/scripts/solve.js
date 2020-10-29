@@ -24,7 +24,14 @@ const solve = (e) => {
       solution
     })
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.status === 429) {
+        // rate limited!
+        Swal.fire('Whoa, slow down!', 'You are having a little too much fun! Only 5 attempts per minute per team is allowed.', 'error')
+        throw new Error("Too many requests!")
+      }
+      return response.json()
+    })
     .then((res) => {
       if (res.success) {
         Swal.fire('Correct!', res.message, 'success')

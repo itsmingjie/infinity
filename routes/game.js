@@ -17,11 +17,14 @@ const redisClient = require('../services/redis').client
 
 app.use(bodyParser.json())
 
-// solving is limited to 5 attempts per minute per IP
+// solving is limited to 5 attempts per minute per team
 const solveLimiter = rateLimit({
   store: new LimitStore({
     client: redisClient
   }),
+  keyGenerator: function (req) {
+    return req.user.id
+  },
   windowMs: 60 * 1000, // 1 minute
   max: 5 // limit each IP to 10 attempts per minute
 })
@@ -128,7 +131,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                 success: false,
                 message:
                   (puzzle.fields.CustomError || 'Try again next time?') +
-                  ' Please know that you are limited to 5 attempts per minute.',
+                  ' Please know that you are limited to 5 attempts per team per minute.',
                 reference: `${attemptId} @ ${attemptTs}`
               })
             }
