@@ -9,3 +9,15 @@
     STAGING MODE
 </div>
 {{/eq}}
+
+{{#eq environment "testing"}}
+<div class="env-sticker testing-session report" style="left: 2px; user-select: unset; -webkit-user-drag: all; pointer-events: all; padding: 0.4rem 1rem">
+    <a class="button low-jump" href="#!" id="report-bug">Testing Mode: Report</a>
+
+    <script>
+        document.getElementById("report-bug").addEventListener('click', () => {
+            window.location.href = "https://airtable.com/shr4vHiLzAVNNi2ow?prefill_UUID={{../team.id}}&prefill_Team%20Name={{../team.name}}&prefill_UA=" + navigator.userAgent
+        })
+    </script>
+</div>
+{{/eq}}
