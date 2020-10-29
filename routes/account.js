@@ -8,6 +8,7 @@ const app = express.Router()
 const rateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
 const requestIp = require('request-ip')
+const LimitStore = require('rate-limit-redis')
 
 const config = require('../config')
 const db = require('../services/db')
@@ -16,8 +17,12 @@ const utils = require('../lib/utils')
 const passport = require('../lib/passport')
 const messages = require('../lib/messages')
 const divisions = require('../lib/divisions')
+const redisClient = require('../services/redis').client
 
 const limiter = rateLimit({
+  store: new LimitStore({
+    client: redisClient
+  }),
   windowMs: 60 * 1000, // 1 minute
   max: 10 // limit each IP to 10 attempts per minute
 })

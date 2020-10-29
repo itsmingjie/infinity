@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express.Router()
 const rateLimit = require('express-rate-limit')
+const LimitStore = require('rate-limit-redis')
 
 const fs = require('fs')
 const sanitize = require('sanitize-filename')
@@ -8,8 +9,12 @@ const path = require('path')
 const marked = require('marked')
 
 const messages = require('../lib/messages')
+const redisClient = require('../services/redis').client
 
 const limiter = rateLimit({
+  store: new LimitStore({
+    client: redisClient
+  }),
   windowMs: 15 * 60 * 1000, // 1 minute
   max: 200 // limit each IP to 10 attempts per minute
 })

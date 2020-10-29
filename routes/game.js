@@ -7,16 +7,21 @@ const express = require('express')
 const app = express.Router()
 const rateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
+const LimitStore = require('rate-limit-redis')
 
 const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
 const flagger = require('../lib/flagger')
+const redisClient = require('../services/redis').client
 
 app.use(bodyParser.json())
 
 // solving is limited to 5 attempts per minute per IP
 const solveLimiter = rateLimit({
+  store: new LimitStore({
+    client: redisClient
+  }),
   windowMs: 60 * 1000, // 1 minute
   max: 5 // limit each IP to 10 attempts per minute
 })
