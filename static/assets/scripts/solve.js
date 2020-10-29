@@ -6,11 +6,8 @@ const solve = (e) => {
   const csrfToken = document.getElementById('csrfToken').value
   const solution = solutionBox.value
 
-  console.log(
-    JSON.stringify({
-      solution
-    })
-  )
+  if (solution == null || solution === "")
+    return
 
   fetch(`/game/puzzle/${PUZZLE_ID}`, {
     method: 'POST',
