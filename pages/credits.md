@@ -8,17 +8,24 @@ If you are interested in supporting the organization, please contact info@integi
 
 ## Open Source Licenses
 
-Infinity ∞ could not have been possible without the following open-source projects:
+Infinity ∞ could not have been possible without more than a dozen open-source projects, most notably projects like...
 
-| Project            | Author            | License      | Repository                                                         |
-| ------------------ | ----------------- | ------------ | ------------------------------------------------------------------ |
-| airtable-plus      | victorhahn        | MIT          | [GitHub](https://github.com/victorhahn/airtable-plus)              |
-| bulma              | Jeremy Thomas     | MIT          | [GitHub](https://github.com/jgthms/bulma)                          |
-| express            | OpenJS Foundation | MIT          | [GitHub](https://github.com/expressjs/express)                     |
-| express-handlebars | Eric Ferraiuolo   | BSD-3-Clause | [GitHub](https://github.com/express-handlebars/express-handlebars) |
-| passport           | Jared Hanson      | MIT          | [GitHub](https://github.com/jaredhanson/passport)                  |
-| node-postgres      | Brian C           | MIT          | [GitHub](https://github.com/brianc/node-postgres)                  |
-| node-redis         | Matt Ranney       | MIT          | [GitHub](https://github.com/NodeRedis/node-redis)                  |
-| socket.io          | Guillermo Rauch   | MIT          | [GitHub](https://github.com/socketio/socket.io)                    |
+| Project            | Author(s)                               | License              | Repository                                                                      |
+| ------------------ | --------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
+| airtable-plus      | victorhahn                              | MIT                  | [GitHub](https://github.com/victorhahn/airtable-plus)                           |
+| bulma              | Jeremy Thomas                           | MIT                  | [GitHub](https://github.com/jgthms/bulma)                                       |
+| express            | TJ Holowaychuk                          | MIT                  | [GitHub](https://github.com/expressjs/express)                                  |
+|                    | Roman Shtylman                          |                      |                                                                                 |
+|                    | Douglas Christopher Wilson              |                      |                                                                                 |
+| express-handlebars | Yahoo Inc.                              | BSD-3-Clause         | [GitHub](https://github.com/express-handlebars/express-handlebars)              |
+| passport           | Jared Hanson                            | MIT                  | [GitHub](https://github.com/jaredhanson/passport)                               |
+| postgresql         | PostgreSQL Global Development Group     | PostgreSQL License   | [postgresql.git](https://git.postgresql.org/gitweb/?p=postgresql.git;a=summary) |
+|                    | Regents of the University of California |                      |                                                                                 |
+| redis              | Salvatore Sanfilippo                    | BSD 3-Clause Revised | [GitHub](https://github.com/redis/redis)                                        |
+| marked             | Christopher Jeffrey                     | MIT                  | [GitHub](https://github.com/markedjs/marked)                                    |
+| node.bcrypt.js     | Nicholas Campbell                       | MIT                  | [GitHub](https://github.com/kelektiv/node.bcrypt.js)                            |
+| node-postgres      | Brian C                                 | MIT                  | [GitHub](https://github.com/brianc/node-postgres)                               |
+| node-redis         | Matt Ranney                             | MIT                  | [GitHub](https://github.com/NodeRedis/node-redis)                               |
+| socket.io          | Automattic                              | MIT                  | [GitHub](https://github.com/socketio/socket.io)                                 |
 
-... and so many more included in [package.json](https://github.com/itsmingjie/infinity/blob/main/package.json).
+... and so many more included in [package.json](https://github.com/itsmingjie/infinity/blob/main/package.json). **Thank you!**
