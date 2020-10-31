@@ -373,8 +373,36 @@ div.formattedText {
     line-height: 2;
 
     &:not(:last-child) {
-      margin-bottom: 1rem;
+      margin: 0 0 1.3em;
     }
+  }
+
+  ol {
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    margin-left: 0;
+    line-height: 2;
+
+    li {
+      list-style-type: disc;
+    }
+
+    ul {
+      margin-left: 1.5rem;
+
+      li {
+        list-style-type: circle;
+      }
+    }
+  }
+
+  li {
+    margin: 0 0 0.2em;
+    padding-left: 0.3em;
+    line-height: 2;
+    list-style-position: inside;
   }
 
   h1,
@@ -384,6 +412,7 @@ div.formattedText {
   h5 {
     font-weight: 600;
     margin-bottom: 1rem;
+    margin-top: 1rem;
   }
 
   h1 {
@@ -393,12 +422,6 @@ div.formattedText {
 
   h2 {
     font-size: 1.6rem;
-  }
-
-  ul,
-  li {
-    margin-left: 2rem;
-    padding-left: 0;
   }
 
   table {
@@ -414,7 +437,9 @@ div.formattedText {
   }
 }
 
-input.input, textarea.textarea, select.select {
+input.input,
+textarea.textarea,
+select.select {
   border: none;
   border-radius: 0.4rem;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);

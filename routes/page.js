@@ -21,7 +21,9 @@ const limiter = rateLimit({
 
 app.use(limiter)
 
-const PAGES = {}
+const PAGES = {
+  credits: 'Platform Credits'
+}
 
 app.get('/:pagename', (req, res) => {
   const pagename = sanitize(req.params.pagename)
@@ -34,13 +36,13 @@ app.get('/:pagename', (req, res) => {
         res.render('message', messages.notFound)
       } else {
         res.render('page', {
-          title: PAGES[pagename]
-            ? PAGES[pagename].title
-            : pagename
-                .toLowerCase()
-                .split(' ')
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' '),
+          title:
+            PAGES[pagename] ||
+            pagename
+              .toLowerCase()
+              .split(' ')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
           content: data
         })
       }
