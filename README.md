@@ -5,7 +5,7 @@
 
 <a href="https://integirls.org"><img align="right" width="250" src="docs/logo.png" title="inteGIRLS Logo"></a>
 
-Infinity ∞ is a puzzle hunt server written for [inteGIRLS](https://www.integirls.org).
+Infinity ∞ is a puzzle hunt server written for [inteGIRLS](https://www.integirls.org). It can also be used as a lightweight alternative to CTF platforms like CTFd.
 
 Please contact [tech@integirls.org](mailto:tech@integirls.org) before reusing this software for a large competition. We may be able to help.
 
