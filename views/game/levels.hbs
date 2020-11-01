@@ -1,6 +1,6 @@
 <div class="columns cards">
   {{#each levels}}
-    {{#includesAll ../solvedList fields.Prereq}}
+    {{#includesAll ../solvedList Prereq}}
       <div class="column is-half">
         <div class="card{{#unless ../Unlocked}} locked{{/unless}}">
           <header class="card-header is-brand">
