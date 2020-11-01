@@ -13,26 +13,8 @@ client.on('connect', () => {
 
 // settings cache
 let settings
-let flushFlag = false
 
-const getSettings = async () => {
-  // if (!flushFlag && settings) {
-  //   reflag()
-  //   return settings
-  // }
-  // else return await flushSettings()
-
-  // reload settings live
-  return await flushSettings()
-}
-
-const reflag = () => {
-  client.get('flushFlag', (err, reply) => {
-    flushFlag = reply === true
-  })
-}
-
-const flushSettings = async () => {
+const getSettings = () => {
   return new Promise((resolve, reject) => {
     client.get('settings', (err, reply) => {
       if (err) {
@@ -42,19 +24,14 @@ const flushSettings = async () => {
       }
 
       settings = JSON.parse(reply)
-      flushFlag = false
-
-      resolve(JSON.parse(reply))
+      resolve(settings)
     })
   })
 }
 
-const updateSettings = (key, value) => {
+const updateSettings = async (key, value) => {
   settings[key] = value
-  client.set('settings', JSON.stringify(settings), redis.print)
-
-  flushFlag = true
-  client.set('flushFlag', true)
+  await client.set('settings', JSON.stringify(settings), redis.print)
 }
 
-module.exports = { getSettings, flushSettings, updateSettings, client }
+module.exports = { getSettings, updateSettings, client }

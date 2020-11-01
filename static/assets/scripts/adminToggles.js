@@ -39,6 +39,8 @@ document.querySelectorAll('input.input').forEach((el) => {
             el.removeAttribute('readonly')
             el.removeAttribute('data-hassave')
           }, 2000)
+        }).catch((err) => {
+          console.log(err)
         })
       })
 

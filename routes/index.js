@@ -34,7 +34,7 @@ app.use((req, res) => {
   res.status(404).render('message', messages.notFound)
 })
 app.use((error, req, res, next) => {
-  res.status(500).render('message', messages.serverError)
+  res.status(500).render('message', messages.serverError + ": " + error)
 });
 
 module.exports = app
