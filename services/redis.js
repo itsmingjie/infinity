@@ -16,31 +16,34 @@ let settings
 let flushFlag = false
 
 const getSettings = async () => {
-  if (!flushFlag && settings) {
-    reflag()
-    return settings
-  }
-  else return await flushSettings()
+  // if (!flushFlag && settings) {
+  //   reflag()
+  //   return settings
+  // }
+  // else return await flushSettings()
+
+  // reload settings live
+  return await flushSettings()
 }
 
 const reflag = () => {
   client.get('flushFlag', (err, reply) => {
-    flushFlag = (reply === true)
+    flushFlag = reply === true
   })
 }
 
 const flushSettings = async () => {
-  console.log("Flushing settings...")
-
   return new Promise((resolve, reject) => {
     client.get('settings', (err, reply) => {
-      if (err) reject(err)
-      else if (!reply) client.set('settings', JSON.stringify({}), redis.print)
+      if (err) {
+        return reject(err)
+      } else if (!reply) {
+        return resolve({})
+      }
 
       settings = JSON.parse(reply)
       flushFlag = false
 
-      console.log("Settings flushed.")
       resolve(JSON.parse(reply))
     })
   })
