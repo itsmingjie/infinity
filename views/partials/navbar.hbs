@@ -11,19 +11,23 @@
   </div>
   <div id="navbar-menu" class="navbar-menu">
     <div class="navbar-start">
+      {{#if team}}
       <a class="navbar-item" href="/game">
         Puzzles
       </a>
+      {{/if}}
       <a class="navbar-item" href="/leaderboard">
         Leaderboard
       </a>
       <a class="navbar-item" href="/page/rules">
         Rules
       </a>
+      {{#if team}}
       <a class="navbar-item" id="announcement-item" href="/announcements">
         Announcements&nbsp;
         <span class="dot is-success" id="socket-status"></span>
       </a>
+      {{/if}}
     </div>
     <div class="navbar-end">
       {{#if team}}
