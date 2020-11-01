@@ -135,6 +135,13 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                 reference: `${attemptId} @ ${attemptTs}`
               })
             }
+          }).catch((err) => {
+            console.log(err)
+            res.json({
+              success: false,
+              message: "An unknown error occured.",
+              reference: err
+            })
           })
         })
     } else {
