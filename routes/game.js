@@ -85,7 +85,7 @@ app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
 
   if (puzzle) {
     res.render('game/puzzle', {
-      title: `${puzzle.Title} — ${puzzle.Value} pts`,
+      title: `${puzzle.Meta ? 'META — ' : ''}${puzzle.Title} — ${puzzle.Value} pts`,
       id: req.params.puzzle,
       puzzle,
       unlockedHints: unlockedHintsData,

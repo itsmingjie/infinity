@@ -1,30 +1,33 @@
 <div class="columns is-multiline cards">
   {{#each puzzles}}
-  {{#fields}}
-    <div class="column is-one-third">
-      <div class="card{{#unless Unlocked}} locked{{/unless}}">
-        <header class="card-header is-brand">
-          <p class="card-header-title">
+    {{#fields}}
+      <div class="column is-one-third">
+        <div class="card{{#unless Unlocked}} locked{{/unless}}">
+          <header class="card-header is-brand">
+            <p class="card-header-title">
+            {{#if Meta}}
+              META &mdash;
+            {{/if}}
             {{Title}}
-          </p>
-          <p class="card-header-icon">
-            {{Value}} {{plural Value "pt" "pts"}}
-          </p>
-        </header>
-        <div class="card-content">
-          <div class="content">
-            {{Description}}
+            </p>
+            <p class="card-header-icon">
+              {{Value}} {{plural Value "pt" "pts"}}
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              {{Description}}
+            </div>
           </div>
+          <footer class="card-footer">
+            {{#if Unlocked}}
+              <a href="/game/puzzle/{{../id}}" class="card-footer-item">Solve</a>
+            {{else}}
+              <p class="is-hint card-footer-item">This puzzle is locked.</p>
+            {{/if}}
+          </footer>
         </div>
-        <footer class="card-footer">
-          {{#if Unlocked}}
-            <a href="/game/puzzle/{{../id}}" class="card-footer-item">Solve</a>
-          {{else}}
-            <p class="is-hint card-footer-item">This puzzle is locked.</p>
-          {{/if}}
-        </footer>
       </div>
-    </div>
     {{/fields}}
   {{/each}}
 </div>

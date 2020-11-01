@@ -213,6 +213,11 @@ div.footer {
       user-select: none;
     }
 
+    .card-content {
+      position: relative;
+      height: 100%;
+    }
+
     .card-header {
       border-radius: 4px;
       box-shadow: none;
