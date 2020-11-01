@@ -12,7 +12,7 @@ client.on('connect', () => {
 })
 
 // settings cache
-let settings
+let settings = {}
 
 const getSettings = () => {
   return new Promise((resolve, reject) => {
