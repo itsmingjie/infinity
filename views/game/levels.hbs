@@ -2,34 +2,32 @@
   {{#each levels}}
     {{#includesAll ../solvedList fields.Prereq}}
       <div class="column is-half">
-        {{#../fields}}
-          <div class="card{{#unless Unlocked}} locked{{/unless}}">
-            <header class="card-header is-brand">
-              <p class="card-header-title">
-                World {{bump @index}} &mdash; {{Title}}
-              </p>
-              {{#unless Unlocked}}
-                <span class="card-header-icon" aria-label="Locked">
-                  <i class="fas fa-lock" aria-hidden="true"></i>
-                </span>
-              {{/unless}}
-            </header>
-            <div class="card-content">
-              <div class="content">
-                {{Description}}
-              </div>
+        <div class="card{{#unless ../Unlocked}} locked{{/unless}}">
+          <header class="card-header is-brand">
+            <p class="card-header-title">
+              World {{bump @index}} &mdash; {{../Title}}
+            </p>
+            {{#unless ../Unlocked}}
+              <span class="card-header-icon" aria-label="Locked">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+              </span>
+            {{/unless}}
+          </header>
+          <div class="card-content">
+            <div class="content">
+              {{../Description}}
             </div>
-            <footer class="card-footer">
-              {{#if Unlocked}}
-                <a href="/game/{{../../id}}" class="card-footer-item">Enter World</a>
-                {{#if Meta}}<a href="/game/puzzle/{{Meta}}" class="card-footer-item">Meta Puzzle</a>{{/if}}
-              {{else}}
-                <p class="is-hint card-footer-item">This level is currently locked! </p>
-              {{/if}}
-            </footer>
-        {{/../fields}}
+          </div>
+          <footer class="card-footer">
+            {{#if ../Unlocked}}
+              <a href="/game/{{@key}}" class="card-footer-item">Enter World</a>
+              {{#if ../Meta}}<a href="/game/puzzle/{{../Meta}}" class="card-footer-item">Meta Puzzle</a>{{/if}}
+            {{else}}
+              <p class="is-hint card-footer-item">This level is currently locked! </p>
+            {{/if}}
+          </footer>
+        </div>
       </div>
-</div>
-{{/includesAll}}
-{{/each}}
+    {{/includesAll}}
+  {{/each}}
 </div>

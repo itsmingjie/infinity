@@ -13,6 +13,7 @@ const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
 const flagger = require('../lib/flagger')
+const { forEach } = require('lodash')
 const redisClient = require('../services/redis').client
 
 app.use(bodyParser.json())
@@ -49,19 +50,19 @@ const cacheCheck = () => (req, res, next) => {
 
 app.get('/', cacheCheck(), (req, res) => {
   console.log('Oh look! I can pull levels directly from cache!')
-
   res.render('game/levels', { title: 'Levels', levels: LEVELS_CACHE })
 })
 
 app.get('/:level', cacheCheck(), (req, res) => {
   console.log('Oh look! I can pull puzzles directly from cache!')
-  const level = idSearch(req.params.level, LEVELS_CACHE)
+  const level = LEVELS_CACHE[req.params.level]
+  console.log(level)
 
   if (level) {
     res.render('game/level', {
-      title: level.fields.Title,
-      level: level,
-      metas: level.fields.Meta
+      title: level.Title,
+      puzzles: level.puzzleList,
+      metas: level.Meta
     })
   } else {
     res.render('message', messages.notFound)
@@ -69,22 +70,26 @@ app.get('/:level', cacheCheck(), (req, res) => {
 })
 
 app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
-  console.log('Oh look! I can pull the puzzle directly from cache!')
-  const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
+  const puzzle = PUZZLES_CACHE[req.params.puzzle]
   const unlockedHints = await db.getUnlockedHints(
     req.user.id,
     req.params.puzzle
   )
 
+  const unlockedHintsData = unlockedHints.map((h) => {
+    return {
+      id: h,
+      text: HINTS_CACHE[req.params.puzzle][h]
+    }
+  })
+
   if (puzzle) {
     res.render('game/puzzle', {
-      title: `${puzzle.fields.Meta ? '[META] ' : ''}${puzzle.fields.Title} — ${
-        puzzle.fields.Value
-      } pts`,
+      title: `${puzzle.Title} — ${puzzle.Value} pts`,
       id: req.params.puzzle,
-      puzzle: puzzle,
-      unlockedHints: unlockedHints.map((h) => idSearch(h, HINTS_CACHE)),
-      css: puzzle.fields['CustomCSS'] || false,
+      puzzle,
+      unlockedHints: unlockedHintsData,
+      css: puzzle['CustomCSS'] || false,
       solved: res.locals.solvedList.includes(req.params.puzzle),
       csrfToken: req.csrfToken()
     })
@@ -95,11 +100,11 @@ app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
 
 app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
   if (!res.locals.solvedList.includes(req.params.puzzle)) {
-    const puzzle = idSearch(req.params.puzzle, PUZZLES_CACHE)
+    const puzzle = PUZZLES_CACHE[req.params.puzzle]
     const solution = parseSolution(req.body.solution)
 
     if (puzzle) {
-      const isMeta = puzzle.fields.meta // whether the puzzle is a metapuzzle
+      const isMeta = puzzle.meta // whether the puzzle is a metapuzzle
 
       flagger
         .validateHash(solution, SOLUTION_CACHE[req.params.puzzle])
@@ -109,40 +114,42 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
             req.user.id,
             req.params.puzzle,
             solution,
-            puzzle.fields.Value,
+            puzzle.Value,
             success
-          ).then((attempt) => {
-            const attemptId = attempt.id
-            const attemptTs = attempt.timestamp
+          )
+            .then((attempt) => {
+              const attemptId = attempt.id
+              const attemptTs = attempt.timestamp
 
-            if (success) {
-              db.updateScore(req.user.id, puzzle.fields.Value).then(() => {
-                res.json({
-                  success: true,
-                  message:
-                    puzzle.fields.CustomSuccess ||
-                    'Congratulations! Your solution was correct. Time to take on the next one?',
-                  reference: `${attemptId} @ ${attemptTs}`,
-                  isMeta
+              if (success) {
+                db.updateScore(req.user.id, puzzle.Value).then(() => {
+                  res.json({
+                    success: true,
+                    message:
+                      puzzle.CustomSuccess ||
+                      'Congratulations! Your solution was correct. Time to take on the next one?',
+                    reference: `${attemptId} @ ${attemptTs}`,
+                    isMeta
+                  })
                 })
-              })
-            } else {
+              } else {
+                res.json({
+                  success: false,
+                  message:
+                    (puzzle.CustomError || 'Try again next time?') +
+                    ' Please know that you are limited to 5 attempts per team per minute.',
+                  reference: `${attemptId} @ ${attemptTs}`
+                })
+              }
+            })
+            .catch((err) => {
+              console.log(err)
               res.json({
                 success: false,
-                message:
-                  (puzzle.fields.CustomError || 'Try again next time?') +
-                  ' Please know that you are limited to 5 attempts per team per minute.',
-                reference: `${attemptId} @ ${attemptTs}`
+                message: 'An unknown error occured.',
+                reference: err
               })
-            }
-          }).catch((err) => {
-            console.log(err)
-            res.json({
-              success: false,
-              message: "An unknown error occured.",
-              reference: err
             })
-          })
         })
     } else {
       res.json({
@@ -188,57 +195,40 @@ app.get(
 // repull information from Airtable to memory
 // note: always restock both caches together to prevent data mismatch
 const restock = async () => {
-  PUZZLES_CACHE = await airtable.getUnlockedPuzzles(true)
-  LEVELS_CACHE = await airtable.getLevels()
-  HINTS_CACHE = await airtable.getHints()
+  const puzzles = await airtable.getUnlockedPuzzles(true)
+  const levels = await airtable.getLevels()
+  const hints = await airtable.getHints()
+
+  PUZZLES_CACHE = {}
+  LEVELS_CACHE = {}
+  HINTS_CACHE = {}
   SOLUTION_CACHE = {}
 
-  LEVELS_CACHE.forEach((level) => {
-    if (level.fields.Puzzles) {
-      level.fields.Puzzles = mergeMeta(
-        level.fields.Puzzles,
-        level.fields.PuzzleNames,
-        level.fields.PuzzleDescriptions,
-        level.fields.PuzzleValues,
-        level.fields.PuzzleLocks,
-        level.fields.PuzzleOrders
-      )
-    }
+  levels.forEach((level) => {
+    LEVELS_CACHE[level.id] = level.fields
+    LEVELS_CACHE[level.id].puzzleList = []
   })
 
   // Cache solutions locally
-  PUZZLES_CACHE.forEach((puzzle) => {
+  puzzles.forEach((puzzle) => {
     SOLUTION_CACHE[puzzle.id] = puzzle.fields.Solution
+    PUZZLES_CACHE[puzzle.id] = puzzle.fields
+    HINTS_CACHE[puzzle.id] = {}
+
+    const levelId = puzzle.fields['Level'] ? puzzle.fields['Level'][0] : null
+
+    if (levelId) LEVELS_CACHE[levelId].puzzleList.push(puzzle)
   })
-}
 
-const idSearch = (id, root) => {
-  for (var i = 0; i < root.length; i++) {
-    if (root[i].id === id) {
-      return root[i]
-    }
-  }
-
-  return null
-}
-
-const mergeMeta = (ids, titles, descriptions, values, locks, orders) => {
-  const r = []
-
-  for (let i = 0; i < ids.length; i++) {
-    r.push({
-      id: ids[i],
-      title: titles[i],
-      description: descriptions[i],
-      value: values[i],
-      unlocked: locks[i],
-      order: orders[i]
+  levels.forEach((level) => {
+    LEVELS_CACHE[level.id].puzzleList.sort((a, b) => {
+      return a.order - b.order
     })
-  }
+  })
 
-  // sort array objects by data passed in
-  return r.sort((a, b) => {
-    return a.order - b.order
+  hints.forEach((hint) => {
+    const puzzleId = hint.fields['Puzzle'][0]
+    HINTS_CACHE[puzzleId][hint.id] = hint.fields['HintText']
   })
 }
 

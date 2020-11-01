@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{../css}}">
   {{/if}}
 {{/extend}}
-{{#puzzle.fields}}
+{{#puzzle}}
   <article class="message {{#if ../solved}}is-success{{/if}} solve" id="solve-article">
     <div class="message-body">
       <div class="message-wrapper submitWrapper has-text-centered" id="solve-wrapper">
@@ -51,9 +51,9 @@
       {{{markdown ../ContentText}}}
     {{/eq}}
   </div>
-{{/puzzle.fields}}
+{{/puzzle}}
 {{#unless solved}}
-  {{#if puzzle.fields.Hints}}
+  {{#if puzzle.Hints}}
     <hr />
     <article class="message hints">
       <div class="message-body">
@@ -63,10 +63,10 @@
               {{#each unlockedHints}}
                 <tr id="{{id}}">
                   <td><span class="tag is-success">Unlocked</span></td>
-                  <td>{{{inlineMarkdown fields.HintText}}}</td>
+                  <td>{{{inlineMarkdown text}}}</td>
                 </tr>
               {{/each}}
-              {{#each puzzle.fields.Hints}}
+              {{#each puzzle.Hints}}
                 {{#includesId ../unlockedHints this}}
               {{else}}
                 <tr id="{{id}}">
@@ -85,11 +85,11 @@
 {{/unless}}
 {{#extend "foot-inject"}}
   {{#unless ../solved}}
-  <script>
-    // METADATA OF CURRENT PUZZLE
-    const PUZZLE_ID = "{{../puzzle.id}}"
-    const TEAM_NAME = "{{../team.name}}"
-  </script>
-  <script src="/assets/scripts/solve.js" defer></script>
+    <script>
+      // METADATA OF CURRENT PUZZLE
+      const PUZZLE_ID = "{{../id}}"
+      const TEAM_NAME = "{{../team.name}}"
+    </script>
+    <script src="/assets/scripts/solve.js" defer></script>
   {{/unless}}
 {{/extend}}

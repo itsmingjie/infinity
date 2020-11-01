@@ -35,7 +35,9 @@ http.listen(config.port, () => {
 app.use((req, res, next) => {
   if (!INITIALIZED) {
     // server not initialized yet
-    res.send("The server is still initializing (it's not ready yet)! Please give it a few more seconds, and refresh the page to proceed.")
+    res.send(
+      "The server is still initializing (it's not ready yet)! Please give it a few more seconds, and refresh the page to proceed."
+    )
   } else {
     next()
   }
@@ -84,22 +86,25 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(
-  minifyHTML({
-    override: true,
-    exception_url: false,
-    htmlMinifier: {
-      removeComments: true,
-      collapseWhitespace: true,
-      collapseBooleanAttributes: true,
-      removeAttributeQuotes: true,
-      removeEmptyAttributes: true,
-      minifyJS: true,
-      minifyCSS: true
-    }
-  })
-)
-app.use(compression())
+
+if (config.env !== 'development') {
+  app.use(
+    minifyHTML({
+      override: true,
+      exception_url: false,
+      htmlMinifier: {
+        removeComments: true,
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes: true,
+        removeEmptyAttributes: true,
+        minifyJS: true,
+        minifyCSS: true
+      }
+    })
+  )
+  app.use(compression())
+}
 
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
