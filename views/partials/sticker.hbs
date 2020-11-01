@@ -16,7 +16,7 @@
 
     <script>
         document.getElementById("report-bug").addEventListener('click', () => {
-            window.location.href = "https://airtable.com/shr4vHiLzAVNNi2ow?prefill_UUID={{../team.id}}&prefill_Team%20Name={{../team.name}}&prefill_UA=" + navigator.userAgent
+            window.location.href = `https://airtable.com/shr4vHiLzAVNNi2ow?prefill_UUID={{../team.id}}&prefill_Team%20Name={{../team.name}}&prefill_UA=${navigator.userAgent}&prefill_Path=${window.location.pathname}`
         })
     </script>
 </div>
