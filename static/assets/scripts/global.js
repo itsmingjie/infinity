@@ -25,8 +25,10 @@ const statusEl = document.getElementById('socket-status')
 const announceItem = document.getElementById('announcement-item')
 
 socket.on('connect', () => {
-  statusEl.classList.remove('is-warning')
-  statusEl.classList.add('is-success')
+  if (statusEl) {
+    statusEl.classList.remove('is-warning')
+    statusEl.classList.add('is-success')
+  }
 
   if (typeof TEAM_UUID !== 'undefined') {
     // user is logged in, join room
@@ -35,8 +37,10 @@ socket.on('connect', () => {
 })
 
 socket.on('disconnect', () => {
-  statusEl.classList.add('is-warning')
-  statusEl.classList.remove('is-success')
+  if (statusEl) {
+    statusEl.classList.add('is-warning')
+    statusEl.classList.remove('is-success')
+  }
 
   console.log(
     'Disconnected from the announcements engine. Attempting to reconnect...'
@@ -44,9 +48,11 @@ socket.on('disconnect', () => {
 })
 
 socket.on('announcement', (id) => {
-  announceItem.classList.add('alerted')
-  announceItem.innerText = 'New Announcement'
-  announceItem.href = '/announcements/' + id
+  if (announceItem) {
+    announceItem.classList.add('alerted')
+    announceItem.innerText = 'New Announcement'
+    announceItem.href = '/announcements/' + id
+  }
 })
 
 socket.on('alert', (content) => {
