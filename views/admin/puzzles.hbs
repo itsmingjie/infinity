@@ -1,16 +1,12 @@
 <h1 class="title is-4">Puzzle Settings</h1>
-
 <input type="hidden" id="csrfToken" value="{{csrfToken}}" />
-
 <table class="table is-fullwidth is-hoverable">
   <tbody>
+    {{>adminFields/input label="Anchor Puzzle" prop="anchorPuzzle"}}
     {{>adminFields/checkbox label="Show Locked Levels" text="Display greyed out placeholders of currently locked levels" prop="showLockedLevels" }}
-
     {{>adminFields/button label="Restock Puzzles" target="/admin/restock" text="Restock" }}
   </tbody>
 </table>
-
-
 {{#extend "foot-inject"}}
-<script src="/assets/scripts/adminToggles.js" defer></script>
+  <script src="/assets/scripts/adminToggles.js" defer></script>
 {{/extend}}

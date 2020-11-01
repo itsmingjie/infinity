@@ -50,13 +50,20 @@ const cacheCheck = () => (req, res, next) => {
 
 app.get('/', cacheCheck(), (req, res) => {
   console.log('Oh look! I can pull levels directly from cache!')
-  res.render('game/levels', { title: 'Levels', levels: LEVELS_CACHE })
+
+  if (
+    res.locals.global.anchorPuzzle &&
+    !res.locals.solvedList.includes(res.locals.global.anchorPuzzle)
+  ) {
+    res.redirect('/game/' + Object.keys(LEVELS_CACHE)[0])
+  } else {
+    res.render('game/levels', { title: 'Levels', levels: LEVELS_CACHE })
+  }
 })
 
 app.get('/:level', cacheCheck(), (req, res) => {
   console.log('Oh look! I can pull puzzles directly from cache!')
   const level = LEVELS_CACHE[req.params.level]
-  console.log(level)
 
   if (level) {
     res.render('game/level', {
@@ -85,7 +92,9 @@ app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
 
   if (puzzle) {
     res.render('game/puzzle', {
-      title: `${puzzle.Meta ? 'META — ' : ''}${puzzle.Title} — ${puzzle.Value} pts`,
+      title: `${puzzle.Meta ? 'META — ' : ''}${puzzle.Title} — ${
+        puzzle.Value
+      } pts`,
       id: req.params.puzzle,
       puzzle,
       unlockedHints: unlockedHintsData,
