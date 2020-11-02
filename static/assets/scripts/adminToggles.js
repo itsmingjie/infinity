@@ -29,19 +29,21 @@ document.querySelectorAll('input.input').forEach((el) => {
             prop: el.dataset.prop,
             value: el.value
           })
-        }).then((response) => {
-          const t = document.getElementById(`save-${el.dataset.prop}`)
-          saveButton.classList.remove('is-loading')
-          t.firstChild.classList.add('is-success')
-
-          setTimeout(() => {
-            t.parentNode.removeChild(t)
-            el.removeAttribute('readonly')
-            el.removeAttribute('data-hassave')
-          }, 2000)
-        }).catch((err) => {
-          console.log(err)
         })
+          .then((response) => {
+            const t = document.getElementById(`save-${el.dataset.prop}`)
+            saveButton.classList.remove('is-loading')
+            t.firstChild.classList.add('is-success')
+
+            setTimeout(() => {
+              t.parentNode.removeChild(t)
+              el.removeAttribute('readonly')
+              el.removeAttribute('data-hassave')
+            }, 2000)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       })
 
       wrapper.appendChild(saveButton)
@@ -54,40 +56,52 @@ document.querySelectorAll('input.input').forEach((el) => {
 
 document.querySelectorAll('.button.endpoint').forEach((el) => {
   const og = el.textContent
+
   el.addEventListener('click', function () {
-    el.classList.add('is-loading')
-    fetch(el.dataset.target, {
-      method: el.dataset.method || 'GET'
+    Swal.fire({
+      title: 'Are you sure?',
+      html: `As a reminder, you're sending an encrypted admin request to <code>${el.dataset.target}</code>.`,
+      icon: 'question',
+      showCancelButton: true,
+      focusConfirm: false,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        fetch(el.dataset.target, {
+          method: el.dataset.method || 'GET'
+        })
+          .then((response) => {
+            el.classList.add('is-loading')
+
+            if (response.status === 200) {
+              el.classList.remove('is-loading')
+              el.classList.add('is-success')
+              el.textContent = 'SUCCESS!'
+              setTimeout(() => {
+                el.classList.remove('is-success')
+                el.textContent = og
+              }, 2000)
+            } else {
+              console.log('test')
+              el.classList.remove('is-loading')
+              el.classList.add('is-danger')
+              el.textContent = 'ERROR: ENDPOINT UNREACHABLE'
+              setTimeout(() => {
+                el.classList.remove('is-danger')
+                el.textContent = og
+              }, 2000)
+            }
+          })
+          .catch((e) => {
+            el.classList.remove('is-loading')
+            el.classList.add('is-danger')
+            el.textContent = 'ERROR: ENDPOINT UNREACHABLE'
+            setTimeout(() => {
+              el.classList.remove('is-danger')
+              el.textContent = og
+            }, 2000)
+          })
+      }
     })
-      .then((response) => {
-        if (response.status === 200) {
-          el.classList.remove('is-loading')
-          el.classList.add('is-success')
-          el.textContent = 'SUCCESS!'
-          setTimeout(() => {
-            el.classList.remove('is-success')
-            el.textContent = og
-          }, 2000)
-        } else {
-          console.log('test')
-          el.classList.remove('is-loading')
-          el.classList.add('is-danger')
-          el.textContent = 'ERROR: ENDPOINT UNREACHABLE'
-          setTimeout(() => {
-            el.classList.remove('is-danger')
-            el.textContent = og
-          }, 2000)
-        }
-      })
-      .catch((e) => {
-        el.classList.remove('is-loading')
-        el.classList.add('is-danger')
-        el.textContent = 'ERROR: ENDPOINT UNREACHABLE'
-        setTimeout(() => {
-          el.classList.remove('is-danger')
-          el.textContent = og
-        }, 2000)
-      })
   })
 })
 
