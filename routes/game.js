@@ -66,6 +66,19 @@ app.get('/:level', cacheCheck(), (req, res) => {
   const level = LEVELS_CACHE[req.params.level]
 
   if (level) {
+    const prereqs = level['Prereq']
+
+    if (
+      prereqs &&
+      !prereqs.every((v) => {
+        // make sure every prereq is satisfied with the currently solved list
+        return res.locals.solvedList.includes(v)
+      })
+    ) {
+      res.render('message', messages.unsolvedPrereq)
+      return
+    }
+
     res.render('game/level', {
       title: level.Title,
       puzzles: level.puzzleList,
@@ -172,31 +185,27 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
   }
 })
 
-app.get(
-  '/puzzle/:puzzle/hint/:hint',
-  cacheCheck(),
-  async (req, res) => {
-    const userCredits = await db.getHintCredit(req.user.id)
-    const unlockedHints = await db.getUnlockedHints(
-      req.user.id,
-      req.params.puzzle
-    )
+app.get('/puzzle/:puzzle/hint/:hint', cacheCheck(), async (req, res) => {
+  const userCredits = await db.getHintCredit(req.user.id)
+  const unlockedHints = await db.getUnlockedHints(
+    req.user.id,
+    req.params.puzzle
+  )
 
-    if (unlockedHints.includes(req.params.hint)) {
-      res.render('message', messages.hintAlreadyUnlocked)
-    } else if (userCredits < 1) {
-      res.render('message', messages.outOfHintCredit)
-    } else {
-      db.createHintIntent(req.user.id, req.params.puzzle, req.params.hint, 0)
-        .then(() => {
-          res.redirect(req.get('referer') + '#' + req.params.hint)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
+  if (unlockedHints.includes(req.params.hint)) {
+    res.render('message', messages.hintAlreadyUnlocked)
+  } else if (userCredits < 1) {
+    res.render('message', messages.outOfHintCredit)
+  } else {
+    db.createHintIntent(req.user.id, req.params.puzzle, req.params.hint, 0)
+      .then(() => {
+        res.redirect(req.get('referer') + '#' + req.params.hint)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-)
+})
 
 // repull information from Airtable to memory
 // note: always restock both caches together to prevent data mismatch
