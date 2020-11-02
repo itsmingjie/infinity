@@ -27,7 +27,6 @@ const limiter = rateLimit({
   max: 10 // limit each IP to 10 attempts per minute
 })
 
-app.use(limiter)
 app.use(bodyParser.json())
 
 const captchaFlagMiddleware = (req, res, next) => {
