@@ -30,8 +30,16 @@ const getSettings = () => {
 }
 
 const updateSettings = async (key, value) => {
-  settings[key] = value
-  await client.set('settings', JSON.stringify(settings), redis.print)
+  if (!settings) {
+    // double fetch
+    getSettings().then(async () => {
+      settings[key] = value
+      await client.set('settings', JSON.stringify(settings), redis.print)
+    })
+  } else {
+    settings[key] = value
+    await client.set('settings', JSON.stringify(settings), redis.print)
+  }
 }
 
 module.exports = { getSettings, updateSettings, client }
