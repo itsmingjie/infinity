@@ -176,7 +176,6 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
 
 app.get(
   '/puzzle/:puzzle/hint/:hint',
-  solveLimiter,
   cacheCheck(),
   async (req, res) => {
     const userCredits = await db.getHintCredit(req.user.id)
