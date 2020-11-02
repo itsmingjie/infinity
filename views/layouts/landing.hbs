@@ -30,19 +30,21 @@
                     <div class="landing-buttons mt-6">
                         <div class="field is-grouped is-grouped-centered">
                             {{#if team}}
-                            <p class="control">
-                                <a class="button is-light is-medium low-jump" href="/game">Puzzles</a>
-                            </p>
-                            <p class="control">
-                                <a class="button is-light is-medium low-jump" href="/leaderboard">Leaderboard</a>
-                            </p>
+                                <p class="control">
+                                    <a class="button is-light is-medium low-jump" href="/game">Puzzles</a>
+                                </p>
+                                <p class="control">
+                                    <a class="button is-light is-medium low-jump" href="/leaderboard">Leaderboard</a>
+                                </p>
                             {{else}}
-                            <p class="control">
-                                <a class="button is-light is-medium low-jump" href="/account/register">Sign Up</a>
-                            </p>
-                            <p class="control">
-                                <a class="button is-light is-medium low-jump" href="/account/login">Log In</a>
-                            </p>
+                                {{#unless global.registrationLockdown}}
+                                    <p class="control">
+                                        <a class="button is-light is-medium low-jump" href="/account/register">Sign Up</a>
+                                    </p>
+                                {{/unless}}
+                                <p class="control">
+                                    <a class="button is-light is-medium low-jump" href="/account/login">Log In</a>
+                                </p>
                             {{/if}}
                         </div>
                     </div>
