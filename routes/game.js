@@ -144,9 +144,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
               } else {
                 res.json({
                   success: false,
-                  message:
-                    (puzzle.CustomError || 'Try again next time?') +
-                    ' Please know that you are limited to 5 attempts per team per minute.',
+                  message: puzzle.CustomError || 'Try again next time?',
                   reference: `${attemptId} @ ${attemptTs}`
                 })
               }
