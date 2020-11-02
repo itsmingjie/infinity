@@ -590,22 +590,6 @@ section.section {
   }
 }
 
-span.dot {
-  height: 8px;
-  width: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 2px;
-
-  &.is-warning {
-    background-color: #ea8d8d;
-  }
-
-  &.is-success {
-    background-color: #43cea2;
-  }
-}
-
 .env-sticker {
   position: fixed;
   left: 10px;

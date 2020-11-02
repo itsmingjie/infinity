@@ -32,15 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const socket = io(EULER_URL, {
   transports: ['websocket']
 })
-const statusEl = document.getElementById('socket-status')
-const announceItem = document.getElementById('announcement-item')
 
 socket.on('connect', () => {
-  if (statusEl) {
-    statusEl.classList.remove('is-warning')
-    statusEl.classList.add('is-success')
-  }
-
   if (typeof TEAM_UUID !== 'undefined') {
     // user is logged in, join room
     socket.emit('join', TEAM_UUID)
@@ -48,11 +41,6 @@ socket.on('connect', () => {
 })
 
 socket.on('disconnect', () => {
-  if (statusEl) {
-    statusEl.classList.add('is-warning')
-    statusEl.classList.remove('is-success')
-  }
-
   Toast.fire({
     icon: 'error',
     title: `Disconnected from the communications engine, attempting to reconnect...`,
