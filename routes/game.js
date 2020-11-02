@@ -172,13 +172,13 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
             })
         })
     } else {
-      res.json({
+      res.status(404).json({
         success: false,
         message: messages.notFound.message
       })
     }
   } else {
-    res.json({
+    res.status(400).json({
       success: false,
       message: messages.caughtRedHanded.message
     })

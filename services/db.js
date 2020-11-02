@@ -285,6 +285,8 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
     pool
       .connect()
       .then((client) => {
+        // creates an attempt "intent"
+        client.query('BEGIN') // protection against data racing
         client
           .query(
             'INSERT INTO logs (id, action, value, uid, puzzle, detail) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
@@ -312,6 +314,7 @@ const giveHintCredit = (staffId, uid, amount) => {
   amount = amount || 1
 
   pool.connect().then((client) => {
+    client.query('BEGIN') // protection against data racing
     if (uid) {
       // bump hint credit of one user
       client.query(
@@ -338,6 +341,8 @@ const giveHintCredit = (staffId, uid, amount) => {
         [uuidv4(), 'admin', amount, staffId, `Granted ${amount} credit to all`]
       )
     }
+    client.query('COMMIT')
+    client.release()
   })
 }
 
@@ -362,6 +367,7 @@ const createHintIntent = (uid, puzzle, hint, deduction) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
       // create hint request
+      client.query('BEGIN') // protection against data racing
       client.query(
         'INSERT INTO logs (id, action, value, uid, puzzle, detail) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
         [uuidv4(), 'hint', 0 - deduction, uid, puzzle, `${hint}`]
