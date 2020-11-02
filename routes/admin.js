@@ -152,6 +152,23 @@ app.get('/alert', (req, res) => {
   res.render('admin/alert', { title: 'Alert Team' })
 })
 
+app.get('/refresh', (req, res) => {
+  fetch(url.resolve(config.euler_url, '/api/refresh'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: config.euler_token
+    }
+  })
+    .then((data) => data.json())
+    .then((result) => {
+      res.render('message', result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+})
+
 app.post('/alert', (req, res) => {
   const id = req.body.id
   const message = req.body.message
