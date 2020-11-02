@@ -44,12 +44,11 @@ If you have any questions, comments, or concerns about the puzzle hunt, feel fre
 
 ## Credits
 
-- inteGIRLS President and Human Superhero: Joy Shi
 - Puzzle Writing Team: Vishal Kanigcherla, Adam L, Zain Majumder, Joy Shi, Matthew Siff, Julie Steele, Shrikar Vasisht, Laura Yao
+- inteGIRLS President and Human Superhero: Joy Shi
 - Director of Tech Operations: Mingjie Jiang
 - Graphic Designer: Maggie Yao
 - Test Solvers: Bryan Lee, Patrick Xia, Jason Cheah, Derek Dong, Rejas Raj, Elliot Lee, Lucas Lee, Thomas Yao, Sky Yuzuki, Oliver Perl, Henry Wachs, Oliver Wolin, Dominic Bloch-Prime, Sophia Weng
-- Special thanks to Rajeev Nayak for helping get Infinity ∞ off the ground
 
 ---
 

@@ -1,6 +1,6 @@
 **Infinity ∞** is a digital puzzle-hunt platform commissioned by [inteGIRLS](https://integirls.org) and designed and developed by [Mingjie Jiang (@itsmingjie)](https://github.com/itsmingjie). It is open-source under the MIT License. In addition to the MIT Licensed distribution, we ask that you credit [inteGIRLS](https://integirls.org) and link to the [GitHub repository](https://github.com/itsmingjie/infinity) when reusing/redistributing this software.
 
-Special thanks to [Puzzle Potluck](https://puzzlepotluck.com/)'s @jeevnayak for providing guidiance on designing this platform.
+Special thanks to [Puzzle Potluck](https://puzzlepotluck.com/)'s Rajeev Nayak (@jeevnayak) for providing guidiance on designing this platform.
 
 If you are interested in supporting the organization, please contact info@integirls.org.
 
