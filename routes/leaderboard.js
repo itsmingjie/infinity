@@ -4,7 +4,7 @@ const app = express.Router()
 const db = require('../services/db')
 const divisions = require('../lib/divisions')
 
-const CACHE_TIMEOUT = 30 * 60 * 1000 // in ms
+const CACHE_TIMEOUT = 10 * 60 * 1000 // in ms
 
 let RANK_CACHE
 
