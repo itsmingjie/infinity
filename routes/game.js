@@ -26,8 +26,8 @@ const solveLimiter = rateLimit({
   keyGenerator: function (req) {
     return req.user.id
   },
-  windowMs: 60 * 1000, // 1 minute
-  max: 5 // limit each IP to 10 attempts per minute
+  windowMs: 5 * 1000, // 5 seconds
+  max: 1 // limit each IP to 10 attempts per minute
 })
 
 // Cached in memory

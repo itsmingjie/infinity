@@ -7,7 +7,6 @@ Some of the puzzles will be metapuzzles. Metapuzzles use the answers from previo
 ## Format
 
 - The puzzle hunt will run from **November 6th at 5 PM EST to November 9th at 5 PM EST**.
-- Before gaining access to the puzzles, teams will have to register for the [inteGIRLS forum](http://forum.integirls.org) and agree that they have read and will follow these rules.
 - **Do not talk about the puzzles with anyone not on your team until the end of the hunt!** Violation of this rule may get you disqualified from the competition.
   - This includes asking questions about the puzzles on social media or Internet forums.
 - **Teams may have up to four people who identify as female or non-binary on them.**
@@ -33,7 +32,7 @@ Some of the puzzles will be metapuzzles. Metapuzzles use the answers from previo
 Infinity ∞ is the platform designed and used by inteGIRLS to host, run, and maintain the puzzle hunt competition. You are subject to the following rules when participating in the competition (**in short, don't do bad things!**):
 
 1.  During the puzzle hunt, it won’t be necessary to look at the HTML source, Javascript, or CSS on any webpages in order to solve the puzzles. But you're always to pay them a visit if you're interested (you may even find some surprises)!
-2.  Each IP address will be limited to at most one guess per second and five guesses a minute to prevent server overload.
+2.  Each account will be limited to one guess per five seconds to prevent server overload.
 3.  You may not write any code to interact with the verification server of Infinity ∞ to solve the puzzles. Your team may be disqualified if we detect such an attempt during the competition.
 4.  In order to maintain fairness of the competition, all interactions of every user of the platform will be recorded, even when you are logged out. Sensitive information like passwords will be redacted from the recording. Competition admins reserve the right to check any suspicion of cheating against these logs.
 
