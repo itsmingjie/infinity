@@ -34,6 +34,9 @@ const socket = io(EULER_URL, {
 })
 
 socket.on('connect', () => {
+  const dot = document.getElementById('disconnect-dot')
+  if (dot) dot.parentNode.removeChild(dot)
+
   if (typeof TEAM_UUID !== 'undefined') {
     // user is logged in, join room
     socket.emit('join', TEAM_UUID)
@@ -41,11 +44,24 @@ socket.on('connect', () => {
 })
 
 socket.on('disconnect', () => {
-  Toast.fire({
-    icon: 'error',
-    title: `Disconnected from the communications engine, attempting to reconnect...`,
-    timer: 5000
+  const dot = document.createElement('div')
+  dot.id = 'disconnect-dot'
+  dot.style.position = 'absolute'
+  dot.style.bottom = '15px'
+  dot.style.left = '15px'
+  dot.style.backgroundColor = '#FA8072'
+  dot.style.borderRadius = '100%'
+  dot.style.width = '10px'
+  dot.style.height = '10px'
+  dot.classList.add('alerted')
+  dot.addEventListener('click', () => {
+    Toast.fire({
+      title: `We're still trying to connect to the real-time communications engine. If this continues to flash after a few seconds, please let us know via chat.`,
+      timer: 5000
+    })
   })
+
+  document.body.appendChild(dot)
 })
 
 socket.on('announcement', (id) => {
@@ -57,7 +73,7 @@ socket.on('announcement', (id) => {
 })
 
 socket.on('refresh', () => {
-  console.log("Received refresh intent")
+  console.log('Received refresh intent')
   const timeToRefresh = Math.floor(Math.random() * Math.floor(10)) + 10 // stagger refresh time to prevent traffic surge
 
   Toast.fire({
