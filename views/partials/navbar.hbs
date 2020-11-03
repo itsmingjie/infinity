@@ -12,13 +12,17 @@
   <div id="navbar-menu" class="navbar-menu">
     <div class="navbar-start">
       {{#if team}}
+        {{#unless global.puzzleLockdown}}
         <a class="navbar-item" href="/game">
           Puzzles
         </a>
+        {{/unless}}
       {{/if}}
+      {{#unless global.leaderboardLockdown}}
       <a class="navbar-item" href="/leaderboard">
         Leaderboard
       </a>
+      {{/unless}}
       {{#if team}}
         <a class="navbar-item" href="/announcements">
           Announcements
