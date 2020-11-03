@@ -10,6 +10,7 @@ const flagger = require('../lib/flagger')
 const db = require('../services/db')
 const config = require('../config')
 const messages = require('../lib/messages')
+const csv = require('../lib/csv')
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
@@ -191,6 +192,20 @@ app.post('/alert', (req, res) => {
     .catch((err) => {
       console.log(err)
     })
+})
+
+// special logic for CSV importing teams
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
+
+app.get('/teams/import', (req, res) => {
+  res.render('admin/team-import', { title: 'Import Teams' })
+})
+
+app.post('/teams/import', upload.single('teams'), async (req, res) => {
+  csv.importTeams(req.file).then(() => {
+    res.render('message', messages.success)
+  })
 })
 
 module.exports = app

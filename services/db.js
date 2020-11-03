@@ -31,7 +31,7 @@ const testConnection = () => {
     })
 }
 
-const createUser = (name, password, division, affiliation, display_name) => {
+const createUser = (name, password, division, affiliation, display_name, emails = "") => {
   return new Promise((resolve, reject) => {
     hashPassword(password).then((passHash) => {
       pool
@@ -45,13 +45,14 @@ const createUser = (name, password, division, affiliation, display_name) => {
               } else {
                 client
                   .query(
-                    'INSERT INTO teams (id, name, password, division, affiliation, display_name) VALUES ($1, $2, $3, $4, $5, $6)',
-                    [uuidv4(), name, passHash, division, affiliation, display_name]
+                    'INSERT INTO teams (id, name, password, division, affiliation, display_name, emails) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+                    [uuidv4(), name, passHash, division, affiliation, display_name, emails]
                   )
-                  .then((res) => {
+                  .then((result) => {
                     client.query('COMMIT')
                     client.release()
-                    resolve()
+                    
+                    resolve(result.rows[0].id)
                   })
                   .catch((e) => reject(e))
               }

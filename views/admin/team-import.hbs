@@ -1,0 +1,63 @@
+<h1 class="title is-4">Import Teams</h1>
+<div class="mb-5">
+    <p class="mb-3" style="color: #ff0000;font-weight: bold">
+        BEFORE YOU START: Your table must be formatted in exactly the format below.
+    </p>
+    <table class="table  is-bordered is-fullwidth">
+        <tr>
+            <td>{STRING}<br /><span style="color: lightgray">Display Name</span></td>
+            <td>{#}<br /><span style="color: lightgray">Division #</span></td>
+            <td>{STRING}<br />{STRING}<br />{STRING}<br /><span style="color: lightgray">Emails (One Per Line)</span></td>
+            <td>{STRING}<br /><span style="color: lightgray">Affiliation</span></td>
+            <td>{RAND_STRING}<br /><span style="color: lightgray">PASSWORD</span></td>
+        </tr>
+        <tr>
+            <td>inteGIRLS Staff</td>
+            <td>1</td>
+            <td>team@integirls.org<br />tech@integirls.org</td>
+            <td>inteGIRLS</td>
+            <td>uVBd6hCU6d2sitXT</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+            ...
+            </td>
+        </tr>
+    </table>
+    <p class="mb-3">Team names will be automatically generated like a URL slug. For example, "inteGIRLS Team!" will become "integirls-team". All special characters, 
+        emojis or Unicode symbols will be stripped.
+    </p>
+    <p>
+        Please avoid importing teams during the competition, as it may result in system instability.
+    </p>
+</div>
+<form method="POST" enctype="multipart/form-data" action="/admin/teams/import?_csrf={{csrfToken}}">
+    <div id="uploader" class="file has-name is-boxed">
+        <label class="file-label">
+            <input class="file-input" type="file" name="teams">
+            <span class="file-cta">
+                <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                    Choose a file…
+                </span>
+            </span>
+            <span class="file-name">
+                No file uploaded
+            </span>
+        </label>
+    </div>
+    <div class="field mt-3">
+        <button type="submit" class="button low-jump">Start Import</button>
+    </div>
+</form>
+<script>
+    const fileInput = document.querySelector('#uploader input[type=file]');
+    fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+            const fileName = document.querySelector('#uploader .file-name');
+            fileName.textContent = fileInput.files[0].name;
+        }
+    }
+</script>
