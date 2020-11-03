@@ -337,6 +337,12 @@ table.table {
       &:target {
         background: #fffacd;
       }
+
+      &.team {
+        &.banned {
+          color: red;
+        }
+      }
     }
   }
 

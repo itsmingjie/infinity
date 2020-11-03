@@ -5,18 +5,16 @@
     <td>Affiliation</td>
     <td>Emails</td>
     <td>Score</td>
-    <td>Banned</td>
     <td>Actions</td>
     <td>UUID (Server Identifier)</td>
   </thead>
   <tbody>
     {{#each teams}}
-      <tr>
+      <tr class="team{{#if banned}} banned{{/if}}">
         <td>{{name}}{{#if admin}} {{>adminSymbol}}{{/if}} [{{display_name}}]</td>
         <td>{{affiliation}}</td>
         <td><pre>{{renderEmails emails}}</pre></td>
         <td>{{score}}</td>
-        <td>{{banned}}</td>
         <td>
           {{#if banned}}
             <a href="/admin/unban/{{id}}">Unban</a>

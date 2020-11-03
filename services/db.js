@@ -207,7 +207,7 @@ const listAllUsers = () => {
     pool.connect().then((client) => {
       client
         .query(
-          'SELECT id, "name", "display_name", "affiliation", "emails", "admin", "score", "banned" FROM teams'
+          'SELECT id, "name", "display_name", "affiliation", "emails", "admin", "score", "banned" FROM teams ORDER BY admin DESC, name ASC'
         )
         .then((data) => {
           client.release()
