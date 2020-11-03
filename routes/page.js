@@ -22,7 +22,8 @@ const limiter = rateLimit({
 app.use(limiter)
 
 const PAGES = {
-  credits: 'Platform Credits'
+  credits: 'Platform Credits',
+  stuck: 'Feeling Stuck?'
 }
 
 app.get('/:pagename', (req, res) => {

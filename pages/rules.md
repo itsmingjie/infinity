@@ -6,14 +6,19 @@ Some of the puzzles will be metapuzzles. Metapuzzles use the answers from previo
 
 ## Format
 
-* The puzzle hunt will run from **November 6th at 5 PM EST to November 9th at 5 PM EST**.
-* Before gaining access to the puzzles, teams will have to register for the [inteGIRLS forum](http://forum.integirls.org) and agree that they have read and will follow these rules.
-* **Do not talk about the puzzles with anyone not on your team until the end of the hunt!** Violation of this rule may get you disqualified from the competition.
-    * This includes asking questions about the puzzles on social media or Internet forums.
-* **Teams may have up to four people who identify as female or non-binary on them.**
-* Each puzzle has either one or two hints that should help you make progress on the puzzle. The first hint will be released at 9 AM EST Saturday morning, after which hints will be released every 8 hours.
-    * If a puzzle has two hints, the first hint will help you with the first step of the puzzle, and the second hint will not make sense until you’ve done the first step.
-    * We may give out more hints if we feel like it &mdash; that will be communicated clearly if we do.
+- The puzzle hunt will run from **November 6th at 5 PM EST to November 9th at 5 PM EST**.
+- Before gaining access to the puzzles, teams will have to register for the [inteGIRLS forum](http://forum.integirls.org) and agree that they have read and will follow these rules.
+- **Do not talk about the puzzles with anyone not on your team until the end of the hunt!** Violation of this rule may get you disqualified from the competition.
+  - This includes asking questions about the puzzles on social media or Internet forums.
+- **Teams may have up to four people who identify as female or non-binary on them.**
+- There will be around 20 puzzles for the High School and Open divisions, and around 10 for the Middle School Division (with the other 10 optional and not part of the competition). Teams will not need to solve every puzzle to finish the hunt.
+
+## Hints
+
+- Each puzzle has either one or two hints that should help you make progress on the puzzle. Your team will be given your first hint credit at 9 AM EST Saturday morning, after which will be given every 8 hours.
+  - If a puzzle has two hints, the first hint will help you with the first step of the puzzle, and the second hint will not make sense until you’ve done the first step.
+  - For any puzzle, if you <a href="#!" onclick="Tawk_API.toggle()">chat us</a> (using the little purple button on the bottom right of Infinity) with your progress on the puzzle, we will tell you if the hint will be helpful or not, and which hint to take.
+  - We may give out more hints if we feel like it &mdash; that will be communicated clearly if we do.
 
 ## Ranking and Divisions
 
@@ -23,7 +28,7 @@ Some of the puzzles will be metapuzzles. Metapuzzles use the answers from previo
 - There will be three divisions: middle school (8th grade and below), high school (12th grade and below), and open.
   - Teams should play in the division of the oldest person on the team. For example, a team with three middle schoolers and one high schooler should play in the high school division.
 
-## Infinity ∞ 
+## Infinity ∞
 
 Infinity ∞ is the platform designed and used by inteGIRLS to host, run, and maintain the puzzle hunt competition. You are subject to the following rules when participating in the competition (**in short, don't do bad things!**):
 

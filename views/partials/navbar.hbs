@@ -12,21 +12,31 @@
   <div id="navbar-menu" class="navbar-menu">
     <div class="navbar-start">
       {{#if team}}
-      <a class="navbar-item" href="/game">
-        Puzzles
-      </a>
+        <a class="navbar-item" href="/game">
+          Puzzles
+        </a>
       {{/if}}
       <a class="navbar-item" href="/leaderboard">
         Leaderboard
       </a>
-      <a class="navbar-item" href="/page/rules">
-        Rules
-      </a>
       {{#if team}}
-      <a class="navbar-item" href="/announcements">
-        Announcements
-      </a>
+        <a class="navbar-item" href="/announcements">
+          Announcements
+        </a>
       {{/if}}
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Resources
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="/page/rules">
+            Rules
+          </a>
+          <a class="navbar-item" href="/page/stuck">
+            Stuck?
+          </a>
+        </div>
+      </div>
     </div>
     <div class="navbar-end">
       {{#if team}}
