@@ -82,6 +82,7 @@ app.get(
 
 app.post(
   '/create',
+  limiter,
   recaptcha.middleware.verify,
   captchaFlagMiddleware,
   utils.lockdownCheck('registrationLockdown', true),
@@ -89,14 +90,15 @@ app.post(
     const name = req.body.name
     const password = req.body.password
     const division = req.body.division
-    const affiliation = req.body.affiliation || ""
+    const affiliation = req.body.affiliation || ''
     const display_name = req.body.display_name
 
     const usernamePattern = new RegExp(/[ !@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?]/g)
 
     if (usernamePattern.test(name)) {
       return res.render('message', {
-        message: 'Invalid account details. Username cannot contain special characters.',
+        message:
+          'Invalid account details. Username cannot contain special characters.',
         title: 'Error'
       })
     }
@@ -130,6 +132,7 @@ app.get('/logout', function (req, res) {
 
 app.post(
   '/login',
+  limiter,
   recaptcha.middleware.verify,
   captchaFlagMiddleware,
   passport.authenticate('local', {
@@ -156,7 +159,7 @@ const KEY_DICT = {
   emails: 'emails'
 }
 
-app.post('/update', (req, res) => {
+app.post('/update', limiter, (req, res) => {
   const id = req.body.id || req.user.id
   const db_key = KEY_DICT[req.body.key] // the key of the database to update
   let value = req.body.value
