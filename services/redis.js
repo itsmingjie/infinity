@@ -20,7 +20,7 @@ const getSettings = () => {
       if (err) {
         return reject(err)
       } else if (!reply) {
-        resolve({})
+        return resolve({})
       }
 
       settings = JSON.parse(reply)
