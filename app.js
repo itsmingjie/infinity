@@ -132,6 +132,7 @@ const init = () => {
 
   Promise.all([
     require('./services/db').testConnection(),
+    require('./services/redis').getSettings(),
     require('./routes/game').restock(),
     require('./routes/announcements').updateAnnouncements(),
     require('./routes/leaderboard').updateRank(),
