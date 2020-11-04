@@ -5,8 +5,6 @@ const client = redis.createClient(config.redis)
 
 client.on('error', (error) => {
   console.error(error)
-  console.error("Something went wrong with Redis.")
-  process.exit(-1)
 })
 
 client.on('connect', () => {
