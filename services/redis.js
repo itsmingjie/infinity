@@ -12,7 +12,7 @@ client.on('connect', () => {
 })
 
 // settings cache
-let settings
+let settings = {}
 
 const getSettings = () => {
   return new Promise((resolve, reject) => {
@@ -20,8 +20,7 @@ const getSettings = () => {
       if (err) {
         return reject(err)
       } else if (!reply) {
-        console.error("Something went wrong with Redis.")
-        process.exit(-1)
+        resolve({})
       }
 
       settings = JSON.parse(reply)
