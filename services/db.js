@@ -31,7 +31,14 @@ const testConnection = () => {
     })
 }
 
-const createUser = (name, password, division, affiliation, display_name, emails = "") => {
+const createUser = (
+  name,
+  password,
+  division,
+  affiliation,
+  display_name,
+  emails = ''
+) => {
   return new Promise((resolve, reject) => {
     hashPassword(password).then((passHash) => {
       pool
@@ -41,17 +48,29 @@ const createUser = (name, password, division, affiliation, display_name, emails 
             .query('SELECT id FROM "teams" WHERE "name"=$1', [name])
             .then((res) => {
               if (res.rows[0]) {
-                reject(new Error(`Duplicated team login: a team with the name "${name}" already exists. Try logging in?`))
+                reject(
+                  new Error(
+                    `Duplicated team login: a team with the name "${name}" already exists. Try logging in?`
+                  )
+                )
               } else {
                 client
                   .query(
                     'INSERT INTO teams (id, name, password, division, affiliation, display_name, emails) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                    [uuidv4(), name, passHash, division, affiliation, display_name, emails]
+                    [
+                      uuidv4(),
+                      name,
+                      passHash,
+                      division,
+                      affiliation,
+                      display_name,
+                      emails
+                    ]
                   )
                   .then((result) => {
                     client.query('COMMIT')
                     client.release()
-                    
+
                     resolve(result.rows[0].id)
                   })
                   .catch((e) => reject(e))
@@ -177,10 +196,15 @@ const getUserSolved = (id) => {
 
 // Update individual user's data by key
 const updateUser = (id, key, data) => {
-  console.log("start|" + data + "|end")
+  console.log('start|' + data + '|end')
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
-      const q = format('UPDATE teams SET %I = TRIM(%L) WHERE id = %L', key, data.trim(), id)
+      const q = format(
+        'UPDATE teams SET %I = TRIM(%L) WHERE id = %L',
+        key,
+        data.trim(),
+        id
+      )
       client
         .query(q)
         .then((res) => {
@@ -313,12 +337,18 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
 
 const userFinish = (uid, finished, finalized) => {
   return new Promise((resolve, reject) => {
-    pool.connect().then((client) => {
-      client.query('UPDATE teams SET finish_time=$2, finalized=$3 WHERE id=$1', [uid, finished ? new Date() : null, finalized])
-      resolve()
-    }).catch((err) => {
-      reject(err)
-    })
+    pool
+      .connect()
+      .then((client) => {
+        client.query(
+          'UPDATE teams SET finish_time=$2, finalized=$3 WHERE id=$1',
+          [uid, finished ? new Date() : null, finalized]
+        )
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
   })
 }
 
@@ -425,13 +455,16 @@ const getUnlockedHints = (uid, puzzle) => {
 const updateScore = (uid, value) => {
   return new Promise((resolve, reject) => {
     pool.connect().then((client) => {
+      client.query('BEGIN') // protection against data racing
       client
         .query('UPDATE teams SET score=(score+$1) WHERE id=$2', [value, uid])
         .then(() => {
+          client.query('COMMIT')
           client.release()
           resolve()
         })
         .catch((err) => {
+          client.query('COMMIT')
           client.release()
           reject(err)
         })
@@ -503,7 +536,13 @@ const banUser = (uid, ban, staffId) => {
 
       client.query(
         'INSERT INTO logs (id, action, value, uid, detail) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [uuidv4(), `${ban ? 'ban' : 'unban'}`, 0, uid, `${ban ? 'Banned' : 'Unbanned'} by ${staffId}`]
+        [
+          uuidv4(),
+          `${ban ? 'ban' : 'unban'}`,
+          0,
+          uid,
+          `${ban ? 'Banned' : 'Unbanned'} by ${staffId}`
+        ]
       )
     })
     .catch((err) => {
