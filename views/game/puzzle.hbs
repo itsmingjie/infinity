@@ -54,32 +54,34 @@
 {{/puzzle}}
 {{#unless solved}}
   {{#if puzzle.Hints}}
-    <hr />
-    <article class="message hints">
-      <div class="message-body">
-        <div class="message-wrapper">
-          <table class="table is-narrow is-fullwidth hints">
-            <tbody>
-              {{#each unlockedHints}}
-                <tr id="{{id}}">
-                  <td><span class="tag is-success">Unlocked</span></td>
-                  <td>{{{inlineMarkdown text}}}</td>
-                </tr>
-              {{/each}}
-              {{#each puzzle.Hints}}
-                {{#includesId ../unlockedHints this}}
-              {{else}}
-                <tr id="{{id}}">
-                  <td><span class="tag is-danger">Locked</span></td>
-                  <td><a href="/game/puzzle/{{../../id}}/hint/{{../this}}">Get Hint {{bump @index}}</a></td>
-                </tr>
-                {{/includesId}}
-              {{/each}}
-            </tbody>
-          </table>
+    <div id="hints">
+      <hr />
+      <article class="message hints">
+        <div class="message-body">
+          <div class="message-wrapper">
+            <table class="table is-narrow is-fullwidth hints">
+              <tbody>
+                {{#each unlockedHints}}
+                  <tr id="{{id}}">
+                    <td><span class="tag is-success">Unlocked</span></td>
+                    <td>{{{inlineMarkdown text}}}</td>
+                  </tr>
+                {{/each}}
+                {{#each puzzle.Hints}}
+                  {{#includesId ../unlockedHints this}}
+                {{else}}
+                  <tr id="{{id}}">
+                    <td><span class="tag is-danger">Locked</span></td>
+                    <td><a href="/game/puzzle/{{../../id}}/hint/{{../this}}">Get Hint {{bump @index}}</a></td>
+                  </tr>
+                  {{/includesId}}
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <span class="message-across">HINTS</span>
+    </div>
+    <span class="message-across">HINTS</span>
     </article>
   {{/if}}
 {{/unless}}

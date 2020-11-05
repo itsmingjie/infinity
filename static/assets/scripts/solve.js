@@ -49,6 +49,7 @@ const solve = (e) => {
           'solve-wrapper'
         ).innerHTML = `<p>${res.message}</p>`
         document.getElementById('solve-article').classList.add('is-success')
+        document.getElementById('hints').style.display = "none"
       } else {
         Swal.fire('Incorrect!', res.message, 'error')
         solutionBox.value = ''
