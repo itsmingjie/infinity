@@ -22,27 +22,6 @@ const redis = require('./services/redis')
 const config = require('./config')
 const messages = require('./lib/messages')
 
-let INITIALIZED = false
-
-// Launch Server
-http.listen(config.port, () => {
-  console.log(`Infinity is running on *:${config.port}`)
-  console.log('I hope your code works...')
-
-  init()
-})
-
-app.use((req, res, next) => {
-  if (!INITIALIZED) {
-    // server not initialized yet
-    res.send(
-      "The server is still initializing (it's not ready yet)! Please give it a few more seconds, and refresh the page to proceed."
-    )
-  } else {
-    next()
-  }
-})
-
 if (config.env !== 'development') {
   const Bugsnag = require('@bugsnag/js')
   const BugsnagPluginExpress = require('@bugsnag/plugin-express')
@@ -133,8 +112,11 @@ app.post('/egg/key', bodyParser.json(), (req, res) => {
 app.use(express.static(path.join(__dirname, './static')))
 app.use(require('./routes/index'))
 
-// init test
-const init = () => {
+// Launch Server
+http.listen(config.port, () => {
+  console.log(`Infinity is running on *:${config.port}`)
+  console.log('I hope your code works...')
+
   console.log('--------------------------')
   console.log('====STARTING INIT TEST====')
   console.log('--------------------------')
@@ -160,4 +142,4 @@ const init = () => {
       console.error(e)
       process.exit(-1)
     })
-}
+})
