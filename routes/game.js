@@ -24,10 +24,11 @@ const solveLimiter = rateLimit({
     client: redisClient
   }),
   keyGenerator: function (req) {
+    console.log(req.user.id)
     return req.user.id
   },
-  windowMs: 5 * 1000, // 5 seconds
-  max: 1 // limit each IP to 10 attempts per minute
+  windowMs: 60 * 1000,
+  max: 10 // limit each account to 10 attempts per min
 })
 
 // Cached in memory
