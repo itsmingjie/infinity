@@ -10,8 +10,7 @@ const CACHE_TIMEOUT = 10 * 60 * 1000 // in ms
 let RANK_CACHE
 
 app.use(async (req, res, next) => {
-  if (!RANK_CACHE || Date.now() - RANK_CACHE.ts > CACHE_TIMEOUT)
-    await updateRank()
+  if (!RANK_CACHE || Date.now() - RANK_CACHE.ts > CACHE_TIMEOUT) updateRank()
 
   res.locals.divisions = Object.entries(divisions)
     .map((arr) => arr[1][1])
@@ -21,7 +20,11 @@ app.use(async (req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-  const currentDiv = res.locals.team ? res.locals.team.division === 0 ? 1 : res.locals.team.division : 1
+  const currentDiv = res.locals.team
+    ? res.locals.team.division === 0
+      ? 1
+      : res.locals.team.division
+    : 1
 
   res.redirect('/leaderboard/division/' + currentDiv)
 })
@@ -35,8 +38,8 @@ app.get('/division/:id', (req, res) => {
   const ranked = RANK_CACHE.leaderboard[Number(req.params.id)]
 
   if (!ranked) {
-      res.render('message', messages.notFound)
-      return
+    res.render('message', messages.notFound)
+    return
   }
 
   const name = ranked.name
@@ -45,7 +48,9 @@ app.get('/division/:id', (req, res) => {
 
   res.render('leaderboard/rank', {
     title: `Leaderboard: ${name} Division`,
-    board: isRanked ? board : board.sort((a, b) => a.display_name.localeCompare(b.display_name)),
+    board: isRanked
+      ? board
+      : board.sort((a, b) => a.display_name.localeCompare(b.display_name)),
     updated,
     timeout: CACHE_TIMEOUT,
     totalScore: config.total_score,
