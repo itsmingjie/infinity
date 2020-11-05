@@ -44,7 +44,7 @@ If you believe you found a security issue or a design flaw of the platform, plea
 - We reserve the right to disqualify any team, at any time, for any reason. So don’t get on our bad side :)
 - We reserve the right to change these rules at any time, for any reason. We will try our best to communicate large rules changes to the teams.
 
-If you have any questions, comments, or concerns about the puzzle hunt, feel free to email us at [puzzle@integirls.org](mailto:puzzles@integirls.org).
+If you have any questions, comments, or concerns about the puzzle hunt, feel free to email us at [puzzle@integirls.org](mailto:puzzle@integirls.org).
 
 ## Credits
 
