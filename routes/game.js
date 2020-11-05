@@ -25,7 +25,6 @@ const solveLimiter = rateLimit({
     client: redisClient
   }),
   keyGenerator: function (req) {
-    console.log(req.user.id)
     return req.user.id
   },
   windowMs: 60 * 1000,

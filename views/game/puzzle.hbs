@@ -59,6 +59,15 @@
       <article class="message hints">
         <div class="message-body">
           <div class="message-wrapper">
+            <div style="padding: 0 0.5em">
+              <h3 class="title is-4 mb-3 mt-1">Puzzle Hints</h3>
+              <p class="mb-3">
+                [<a href="#!" onclick="Tawk_API.maximize()">Chat with us</a> about your progress on this puzzle,
+                and we may be able to help you by telling you if a hint here would be useful, and which hint to
+                take if there are multiple available. You currently have {{team.hint_credit}} hint credits left to unlock
+                hints under any puzzle.]
+              </p>
+            </div>
             <table class="table is-narrow is-fullwidth hints">
               <tbody>
                 {{#each unlockedHints}}

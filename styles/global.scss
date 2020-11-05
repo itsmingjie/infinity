@@ -533,7 +533,14 @@ section.section {
 .announcement {
   p {
     line-height: 2;
-    margin-bottom: 1.5rem;
+
+    &:not(:nth-last-child(2)) {
+      margin-bottom: 1.5rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -630,6 +637,16 @@ img.badge {
   -webkit-user-select: none;
   margin-left: -10px;
   padding: 0;
+}
+
+.swal2-container {
+
+  .swal2-footer {
+    font-size: small;
+    text-align: center;
+    color: rgba(0,0,0, 0.3);
+  }
+
 }
 
 @import '../node_modules/bulma/bulma.sass';
