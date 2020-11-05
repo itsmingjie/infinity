@@ -31,14 +31,14 @@
                         <div class="field is-grouped is-grouped-centered">
                             {{#if team}}
                                 {{#unless global.puzzleLockdown}}
-                                <p class="control">
-                                    <a class="button is-light is-medium low-jump" href="/game">Puzzles</a>
-                                </p>
+                                    <p class="control">
+                                        <a class="button is-light is-medium low-jump" href="/game">Puzzles</a>
+                                    </p>
                                 {{/unless}}
                                 {{#unless global.leaderboardLockdown}}
-                                <p class="control">
-                                    <a class="button is-light is-medium low-jump" href="/leaderboard">Leaderboard</a>
-                                </p>
+                                    <p class="control">
+                                        <a class="button is-light is-medium low-jump" href="/leaderboard">Leaderboard</a>
+                                    </p>
                                 {{/unless}}
                             {{else}}
                                 {{#unless global.registrationLockdown}}
@@ -56,12 +56,13 @@
             </div>
         </section>
     </div>
+    <script>const csrfToken = "{{ csrfToken }}"</script>
     {{> footer}}
     {{> chat}}
     {{> sticker}}
     <script src="/assets/scripts/socketio.slim.js" type="text/javascript" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
-    <script src="/assets/scripts/aham.js" type="text/javascript" defer></script>
+    <script src="/assets/scripts/aham.min.js" type="text/javascript" defer></script>
     <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" type="text/javascript" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js" defer></script>
     <script src="/assets/scripts/global.js" type="text/javascript" defer></script>

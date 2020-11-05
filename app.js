@@ -121,6 +121,15 @@ app.use(async (req, res, next) => {
   next()
 })
 
+// Easter egg, feel free to disable
+app.post('/egg/key', bodyParser.json(), (req, res) => {
+  console.log(req.body)
+  res.json({
+    success: req.body.key === config.meta.key,
+    solution: req.body.key === config.meta.key ? config.meta.solution : null
+  })
+})
+
 app.use(express.static(path.join(__dirname, './static')))
 app.use(require('./routes/index'))
 

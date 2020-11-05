@@ -218,3 +218,5 @@ db
 *.css
 public
 temp
+
+*.map.js

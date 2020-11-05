@@ -24,5 +24,10 @@ module.exports = {
   euler_token: process.env.EULER_TOKEN,
   final_puzzles: process.env.FINAL_PUZZLES.split(",").map(v => v.trim()),
   last_puzzle: process.env.LAST_PUZZLE,
-  total_score: process.env.TOTAL_SCORE
+  total_score: process.env.TOTAL_SCORE,
+  meta: {
+    // metapuzzle
+    key: process.env.META_KEY || "",
+    solution: process.env.META_SOL || ""
+  }
 }

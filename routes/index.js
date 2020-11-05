@@ -8,7 +8,8 @@ app.get('/', (req, res) => {
   res.render('landing', {
     layout: 'landing',
     title: res.locals.global.gameName,
-    tagline: res.locals.global.tagline
+    tagline: res.locals.global.tagline,
+    csrfToken: req.csrfToken()
   })
 })
 
