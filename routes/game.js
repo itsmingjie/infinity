@@ -123,11 +123,16 @@ app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
 
 app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
   // validation
-  const solution = req.body.solution
-  if (solution == null || solution === "" || /[1234567890~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?  \t]/g.test(solution)) {
+  const solution = req.body.solution.trim().toLowerCase()
+  if (
+    solution == null ||
+    solution === '' ||
+    /[1234567890~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?  \t]/g.test(solution)
+  ) {
     res.json({
       success: false,
-      message: 'Invalid Solution! Solutions can only contain letters. Please try again!'
+      message:
+        'Invalid Solution! Solutions can only contain letters. Please try again!'
     })
   }
 
@@ -144,17 +149,18 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
           db.createAttempt(
             req.user.id,
             req.params.puzzle,
-            solution,
+            success ? "[redacted]" : solution,
             puzzle.Value,
             success
           )
-            .then((attempt) => {
+            .then(async (attempt) => {
               const attemptId = attempt.id
               const attemptTs = attempt.timestamp
 
               if (success) {
                 // mark time if final
-                const finished = req.params.puzzle === divisions[res.locals.team.division][2]
+                const finished =
+                  req.params.puzzle === divisions[res.locals.team.division][2]
                 const finalized = req.params.puzzle === config.last_puzzle
 
                 db.userFinish(req.user.id, finished, finalized)
@@ -170,11 +176,32 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                   })
                 })
               } else {
-                res.json({
-                  success: false,
-                  message: puzzle.CustomError || 'Try again next time?',
-                  reference: `${attemptId} @ ${attemptTs}`
-                })
+                const close1 = puzzle['Close1']
+                  ? await flagger.validateHash(solution, puzzle['Close1'])
+                  : false
+                const close2 = puzzle['Close2']
+                  ? await flagger.validateHash(solution, puzzle['Close2'])
+                  : false
+
+                if (close1) {
+                  return res.json({
+                    success: false,
+                    message: puzzle['Close1Hint'],
+                    reference: `${attemptId} @ ${attemptTs}`
+                  })
+                } else if (close2) {
+                  return res.json({
+                    success: false,
+                    message: puzzle['Close2Hint'],
+                    reference: `${attemptId} @ ${attemptTs}`
+                  })
+                } else {
+                  res.json({
+                    success: false,
+                    message: puzzle.CustomError || 'Try again next time?',
+                    reference: `${attemptId} @ ${attemptTs}`
+                  })
+                }
               }
             })
             .catch((err) => {

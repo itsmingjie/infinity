@@ -67,7 +67,7 @@ const solve = (e) => {
       if (res.success) {
         Swal.fire({
           icon: 'success',
-          text: res.message,
+          html: res.message,
           title: 'Correct!',
           footer: '[Reference: ' + res.reference + ' — share this with us if you think this is an error]'
         })
@@ -79,7 +79,7 @@ const solve = (e) => {
       } else {
         Swal.fire({
           icon: 'error',
-          text: res.message,
+          html: res.message,
           title: 'Incorrect!',
           footer: '[Reference: ' + res.reference + ' — share this with us if you think this is an error]',
           showDenyButton: true,
