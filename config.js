@@ -21,5 +21,8 @@ module.exports = {
     key: process.env.SENDGRID_KEY
   },
   euler_url: process.env.EULER_URL,
-  euler_token: process.env.EULER_TOKEN
+  euler_token: process.env.EULER_TOKEN,
+  final_puzzles: process.env.FINAL_PUZZLES.split(",").map(v => v.trim()),
+  last_puzzle: process.env.LAST_PUZZLE,
+  total_score: process.env.TOTAL_SCORE
 }

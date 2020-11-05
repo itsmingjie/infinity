@@ -226,7 +226,7 @@ const listUserByDivisions = (division) => {
     pool.connect().then((client) => {
       client
         .query(
-          'SELECT id, display_name, affiliation, score, division, banned FROM teams WHERE division=$1 AND banned=false ORDER BY score DESC',
+          'SELECT id, display_name, affiliation, score, division, banned, finish_time, finalized FROM teams WHERE division=$1 AND banned=false ORDER BY finish_time ASC, score DESC',
           [division]
         )
         .then((data) => {
@@ -308,6 +308,17 @@ const createAttempt = (uid, puzzle, attempt, value, success) => {
           .catch((e) => reject(e))
       })
       .catch((e) => reject(e))
+  })
+}
+
+const userFinish = (uid, finished, finalized) => {
+  return new Promise((resolve, reject) => {
+    pool.connect().then((client) => {
+      client.query('UPDATE teams SET finish_time=$2, finalized=$3 WHERE id=$1', [uid, finished ? new Date() : null, finalized])
+      resolve()
+    }).catch((err) => {
+      reject(err)
+    })
   })
 }
 
@@ -511,6 +522,7 @@ module.exports = {
   listUserByDivisions,
   listUserIds,
   createAttempt,
+  userFinish,
   getUnlockedHints,
   getHintCredit,
   giveHintCredit,

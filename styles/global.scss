@@ -618,4 +618,18 @@ section.section {
   }
 }
 
+table.leaderboard {
+  font-size: 90%;
+}
+
+img.badge {
+  width: 25px;
+  vertical-align: text-bottom;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  margin-left: -10px;
+  padding: 0;
+}
+
 @import '../node_modules/bulma/bulma.sass';

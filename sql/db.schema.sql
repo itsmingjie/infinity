@@ -9,7 +9,9 @@ create table if not exists teams (
     banned boolean default false,
     emails text,
     hint_credit integer default 0,
-    division integer
+    division integer,
+    finish_time timestamp,
+    finalized boolean default false
 );
 
 create unique index if not exists teams_name_uindex on teams (name);

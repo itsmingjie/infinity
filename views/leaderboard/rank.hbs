@@ -14,26 +14,40 @@
     </aside>
   </div>
   <div class="column is-three-quarters">
-    <p>This leaderboard is for reference only. Winners will be announced after the competition ends. 
-      Please refer to the competition <a href="/page/rules">rules</a> for how the winners are determined. </p>
-
     <div class="columns">
       <div class="column">
-        <h1 class="title">{{name}}</h1>
-        <table class="table is-fullwidth is-hoverable">
-          <thead>
+        <table class="table is-fullwidth is-hoverable leaderboard">
+          <thead style="font-weight: 800">
             <td>Rank</td>
             <td>Team</td>
             <td>Affiliation</td>
-            <td>Score</td>
+            {{#if ranked}}
+              <td>Score</td>
+              <td>Solved (Division)</td>
+              <td>Badges</td>
+            {{/if}}
           </thead>
           <tbody>
             {{#each board}}
               <tr>
-                <td>{{bump @index}}</td>
+                <td>{{#if ../ranked}}{{bump @index}}{{else}}-{{/if}}</td>
                 <td>{{display_name}}</td>
                 <td>{{affiliation}}</td>
-                <td>{{score}}</td>
+                {{#if ../ranked}}
+                  <td>{{score}}</td>
+                  <td>{{#if finish_time}}{{dateFmt finish_time}}{{/if}}</td>
+                  <td>
+                    {{#numEq score ../totalScore}}
+                      <img class="badge" src="/assets/images/allpuzzlesbadge.png" alt="Division Badge" title="This team has solved all available puzzles." />
+                    {{/numEq}}
+                    {{#if finalized}}
+                      <img class="badge" src="/assets/images/meta2badge.png" alt="All Puzzles Badge" title="This team has solved the final puzzle of the game." />
+                    {{/if}}
+                    {{#if finish_time}}
+                      <img class="badge" src="/assets/images/meta1badge.png" alt="Division Badge" title="This team has solved the the final puzzle required for the division." />
+                    {{/if}}
+                  </td>
+                {{/if}}
               </tr>
             {{/each}}
           </tbody>

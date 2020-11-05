@@ -3,6 +3,7 @@ const app = express.Router()
 
 const db = require('../services/db')
 const divisions = require('../lib/divisions')
+const config = require('../config')
 
 const CACHE_TIMEOUT = 10 * 60 * 1000 // in ms
 
@@ -40,12 +41,15 @@ app.get('/division/:id', (req, res) => {
 
   const name = ranked.name
   const board = ranked.board
+  const isRanked = divisions[Number(req.params.id)][3]
 
   res.render('leaderboard/rank', {
     title: `Leaderboard: ${name} Division`,
-    board,
+    board: isRanked ? board : board.sort((a, b) => a.display_name.localeCompare(b.display_name)),
     updated,
-    timeout: CACHE_TIMEOUT
+    timeout: CACHE_TIMEOUT,
+    totalScore: config.total_score,
+    ranked: isRanked
   })
 })
 

@@ -13,8 +13,9 @@ const db = require('../services/db')
 const airtable = require('../services/airtable')
 const messages = require('../lib/messages')
 const flagger = require('../lib/flagger')
-const { forEach } = require('lodash')
+const divisions = require('../lib/divisions')
 const redisClient = require('../services/redis').client
+const config = require('../config')
 
 app.use(bodyParser.json())
 
@@ -145,6 +146,13 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
               const attemptTs = attempt.timestamp
 
               if (success) {
+
+                // mark time if final
+                const finished = req.params.puzzle === divisions[res.locals.team.division][2]
+                const finalized = req.params.puzzle === config.last_puzzle
+
+                db.userFinish(req.user.id, finished, finalized)
+
                 db.updateScore(req.user.id, puzzle.Value).then(() => {
                   res.json({
                     success: true,
