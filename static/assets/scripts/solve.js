@@ -8,6 +8,11 @@ const solve = (e) => {
 
   if (solution == null || solution === "")
     return
+  else if (/[1234567890~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?  \t]/g.test(solution)) {
+    Swal.fire('Invalid Solution!', 'Solutions can only contain letters. Please try again!', 'error')
+    solutionBox.value = ''
+    return
+  }
 
   fetch(`/game/puzzle/${PUZZLE_ID}`, {
     method: 'POST',
@@ -18,7 +23,7 @@ const solve = (e) => {
       'CSRF-Token': csrfToken
     },
     body: JSON.stringify({
-      solution
+      solution: solution.trim()
     })
   })
     .then((response) => {

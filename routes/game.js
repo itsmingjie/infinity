@@ -123,9 +123,17 @@ app.get('/puzzle/:puzzle', cacheCheck(), async (req, res) => {
 })
 
 app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
+  // validation
+  const solution = req.body.solution
+  if (solution == null || solution === "" || /[1234567890~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?  \t]/g.test(solution)) {
+    res.json({
+      success: false,
+      message: 'Invalid Solution! Solutions can only contain letters. Please try again!'
+    })
+  }
+
   if (!res.locals.solvedList.includes(req.params.puzzle)) {
     const puzzle = PUZZLES_CACHE[req.params.puzzle]
-    const solution = parseSolution(req.body.solution)
 
     if (puzzle) {
       const isMeta = puzzle.meta // whether the puzzle is a metapuzzle
@@ -146,7 +154,6 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
               const attemptTs = attempt.timestamp
 
               if (success) {
-
                 // mark time if final
                 const finished = req.params.puzzle === divisions[res.locals.team.division][2]
                 const finalized = req.params.puzzle === config.last_puzzle
