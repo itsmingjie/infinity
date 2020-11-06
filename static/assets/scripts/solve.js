@@ -86,6 +86,7 @@ const solve = (e) => {
         ).innerHTML = `<p>${res.message}</p>`
         document.getElementById('solve-article').classList.add('is-success')
         document.getElementById('hints').style.display = 'none'
+        document.querySelector('.hero').style.background = 'linear-gradient(45deg, #43cea2 0%, #83C9F4 100%)'
       } else {
         Swal.fire({
           icon: 'error',

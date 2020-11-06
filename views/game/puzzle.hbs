@@ -2,6 +2,14 @@
   {{#if ../css}}
     <link rel="stylesheet" href="{{../css}}">
   {{/if}}
+
+  {{#if ../solved}}
+    <style>
+      .hero {
+        background: linear-gradient(45deg, #43cea2 0%, #83C9F4 100%)
+      }
+    </style>
+  {{/if}}
 {{/extend}}
 {{#puzzle}}
   <article class="message {{#if ../solved}}is-success{{/if}} solve" id="solve-article">
