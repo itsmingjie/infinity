@@ -284,8 +284,10 @@ const restock = async () => {
   })
 
   hints.forEach((hint) => {
-    const puzzleId = hint.fields['Puzzle'][0]
-    HINTS_CACHE[puzzleId][hint.id] = hint.fields['HintText']
+    if (hint.fields['Puzzle']) {
+      const puzzleId = hint.fields['Puzzle'][0]
+      HINTS_CACHE[puzzleId][hint.id] = hint.fields['HintText']
+    }
   })
 }
 
