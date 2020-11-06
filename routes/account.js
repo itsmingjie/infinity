@@ -24,7 +24,7 @@ const limiter = rateLimit({
     client: redisClient
   }),
   windowMs: 60 * 1000, // 1 minute
-  max: 10 // limit each IP to 10 attempts per minute
+  max: 50 // limit each IP to 10 attempts per minute
 })
 
 app.use(bodyParser.json())
