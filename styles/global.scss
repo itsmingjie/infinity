@@ -649,4 +649,8 @@ img.badge {
 
 }
 
+canvas {
+  z-index: 1000!important;
+}
+
 @import '../node_modules/bulma/bulma.sass';
