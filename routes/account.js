@@ -154,7 +154,6 @@ app.post(
 )
 
 const KEY_DICT = {
-  display_name: 'display_name',
   affiliation: 'affiliation',
   emails: 'emails'
 }
