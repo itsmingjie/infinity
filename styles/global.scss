@@ -11,7 +11,7 @@ $link: #719df0;
 $gradient-start: #ea8d8d;
 $gradient-end: #a890fe;
 $admin-start: #43cea2;
-$admin-end: #185a9d;
+$admin-end: #83C9F4;
 $yosemite: linear-gradient(45deg, $gradient-start 0%, $gradient-end 100%);
 $xosemite: linear-gradient(45deg, $admin-start 0%, $admin-end 100%);
 
@@ -29,6 +29,10 @@ body {
   font-size: small;
   font-style: italic;
   color: gray;
+}
+
+.is-solved {
+  background: $xosemite;
 }
 
 .is-brand {

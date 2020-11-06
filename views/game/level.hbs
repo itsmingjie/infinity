@@ -3,7 +3,7 @@
     {{#fields}}
       <div class="column is-one-third">
         <div class="card{{#unless Unlocked}} locked{{/unless}}">
-          <header class="card-header is-brand">
+          <header class="card-header {{#notInclude ../../solved ../id}}is-brand{{else}}is-solved{{/notInclude}}">
             <p class="card-header-title">
             {{#if Meta}}
               META &mdash;
@@ -21,7 +21,7 @@
           </div>
           <footer class="card-footer">
             {{#if Unlocked}}
-              <a href="/game/puzzle/{{../id}}" class="card-footer-item">Solve</a>
+              <a href="/game/puzzle/{{../id}}" class="card-footer-item">{{#notInclude ../../solved ../id}}Solve{{else}}Already Solved!{{/notInclude}}</a>
             {{else}}
               <p class="is-hint card-footer-item">This puzzle is locked.</p>
             {{/if}}

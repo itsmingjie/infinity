@@ -83,7 +83,8 @@ app.get('/:level', cacheCheck(), (req, res) => {
     res.render('game/level', {
       title: level.Title,
       puzzles: level.puzzleList,
-      metas: level.Meta
+      metas: level.Meta,
+      solved: res.locals.solvedList
     })
   } else {
     res.render('message', messages.notFound)
