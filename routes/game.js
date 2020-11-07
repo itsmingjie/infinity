@@ -216,7 +216,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                 })
               } else {
                 discord.push(
-                  `**${res.locals.team.display_name}** just submitted an incorrect attempt ${solution} for puzzle \`${req.params.puzzle}\`.`
+                  `**${res.locals.team.display_name}** just submitted an incorrect attempt \`**${solution}**\` for puzzle \`${req.params.puzzle}\`.`
                 )
 
                 const close1 = puzzle['Close1']
