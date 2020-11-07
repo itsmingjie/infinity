@@ -340,17 +340,27 @@ const userFinish = (uid, finished, finalized) => {
     pool
       .connect()
       .then((client) => {
-        if (finished) {
-          client.query(
-            'UPDATE teams SET finish_time=$2, finalized=$3 WHERE id=$1',
-            [uid, new Date(), finalized]
-          )
-        } else {
-          client.query('UPDATE teams SET finalized=$2 WHERE id=$1', [
-            uid,
-            finalized
-          ])
-        }
+        client
+        .query('SELECT finalized FROM teams WHERE id=$1', [uid])
+        .then((data) => {
+          if (finished) {
+            client.query(
+              'UPDATE teams SET finish_time=$2, finalized=$3 WHERE id=$1',
+              [uid, new Date(), data.rows[0].finalized || finalized]
+            )
+          } else {
+            client.query('UPDATE teams SET finalized=$2 WHERE id=$1', [
+              uid,
+              data.rows[0].finalized || finalized
+            ])
+          }
+        })
+        .catch((err) => {
+          client.release()
+          reject(err)
+        })
+
+        
         resolve()
       })
       .catch((err) => {
