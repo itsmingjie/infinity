@@ -5,7 +5,7 @@ const db = require('../services/db')
 const divisions = require('../lib/divisions')
 const config = require('../config')
 
-const CACHE_TIMEOUT = 10 * 60 * 1000 // in ms
+const CACHE_TIMEOUT = 5 * 60 * 1000 // in ms
 
 let RANK_CACHE
 
