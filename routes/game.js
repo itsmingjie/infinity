@@ -167,12 +167,12 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
 
                 db.userFinish(req.user.id, finished, finalized)
                 discord.push(
-                  `**${res.locals.team.display_name}** just solved puzzle \`${req.params.puzzle}\`!`
+                  `✅ **${res.locals.team.display_name}** solved puzzle \`${req.params.puzzle}\``
                 )
 
                 if (finished) {
                   discord.push(
-                    `**${
+                    `⭐ **${
                       res.locals.team.display_name
                     }** just finished the division's final puzzle at ${
                       new Date().toLocaleString('en-En', {
@@ -189,7 +189,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
 
                 if (finalized) {
                   discord.push(
-                    `**${
+                    `🌟 **${
                       res.locals.team.display_name
                     }** just finished the final puzzle of the competition at ${
                       new Date().toLocaleString('en-En', {
@@ -216,7 +216,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                 })
               } else {
                 discord.push(
-                  `**${res.locals.team.display_name}** just submitted an incorrect attempt **\`${solution}\`** for puzzle \`${req.params.puzzle}\`.`
+                  `❌ **${res.locals.team.display_name}** attempted **\`${solution}\`** for \`${req.params.puzzle}\`.`
                 )
 
                 const close1 = puzzle['Close1']
@@ -283,7 +283,7 @@ app.get('/puzzle/:puzzle/hint/:hint', cacheCheck(), async (req, res) => {
     res.render('message', messages.outOfHintCredit)
   } else {
     discord.push(
-      `**${res.locals.team.display_name}** just unlocked hint \`${req.params.hint}\` for puzzle \`${req.params.puzzle}\`.`
+      `🔑 **${res.locals.team.display_name}** unlocked hint \`${req.params.hint}\` for \`${req.params.puzzle}\`.`
     )
 
     db.createHintIntent(req.user.id, req.params.puzzle, req.params.hint, 0)

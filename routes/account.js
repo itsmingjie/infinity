@@ -151,7 +151,7 @@ app.post(
 
     if (config.env !== 'development') {
       db.logSignin(req.user.id, requestIp.getClientIp(req))
-      discord.push(`**${req.body.name}** just logged in from ${requestIp.getClientIp(req)}!`)
+      discord.push(`👋 **${req.body.name}** logged in from ${requestIp.getClientIp(req)}`)
     }
 
     res.redirect(req.body.redirectURL || '/')
