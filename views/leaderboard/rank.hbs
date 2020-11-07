@@ -24,8 +24,8 @@
             {{#if ranked}}
               <td>Score</td>
               <td>Solved (Division)</td>
-              <td>Badges</td>
             {{/if}}
+            <td>Badges</td>
           </thead>
           <tbody>
             {{#each board}}
@@ -36,6 +36,7 @@
                 {{#if ../ranked}}
                   <td>{{score}}</td>
                   <td>{{#if finish_time}}{{dateFmt finish_time}}{{/if}}</td>
+                {{/if}}
                   <td>
                     {{#numEq score ../totalScore}}
                       <img class="badge" src="/assets/images/allpuzzlesbadge.png" alt="Division Badge" title="This team has solved all available puzzles." />
@@ -47,7 +48,6 @@
                       <img class="badge" src="/assets/images/meta1badge.png" alt="Division Badge" title="This team has solved the the final puzzle required for the division." />
                     {{/if}}
                   </td>
-                {{/if}}
               </tr>
             {{/each}}
           </tbody>
