@@ -18,6 +18,7 @@ const passport = require('../lib/passport')
 const messages = require('../lib/messages')
 const divisions = require('../lib/divisions')
 const redisClient = require('../services/redis').client
+const discord = require('../services/discord')
 
 const limiter = rateLimit({
   store: new LimitStore({
@@ -107,6 +108,8 @@ app.post(
     if (password !== '') {
       db.createUser(name, password, division, affiliation, display_name)
         .then(() => {
+          discord.push(`New team ${name} [${display_name}] ${affiliation ? `with affiliation ${affiliation}` : ""} just registered for division ${division}!`)
+
           res.render('message', {
             message:
               'Your account has been registered successfully. You may now proceed to log in.',
@@ -146,8 +149,10 @@ app.post(
       req.session.cookie.expires = false
     }
 
-    if (config.env !== 'development')
+    if (config.env !== 'development') {
       db.logSignin(req.user.id, requestIp.getClientIp(req))
+      discord.push(`**${req.body.name}** just logged in from ${requestIp.getClientIp(req)}!`)
+    }
 
     res.redirect(req.body.redirectURL || '/')
   }

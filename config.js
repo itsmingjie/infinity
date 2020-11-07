@@ -29,5 +29,9 @@ module.exports = {
     // metapuzzle
     key: process.env.META_KEY || "",
     solution: process.env.META_SOL || ""
+  },
+  discord: {
+    token: process.env.DISCORD_TOKEN,
+    channel: process.env.DISCORD_CHANNEL
   }
 }

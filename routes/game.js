@@ -15,6 +15,7 @@ const messages = require('../lib/messages')
 const flagger = require('../lib/flagger')
 const divisions = require('../lib/divisions')
 const redisClient = require('../services/redis').client
+const discord = require('../services/discord')
 const config = require('../config')
 
 app.use(bodyParser.json())
@@ -150,7 +151,7 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
           db.createAttempt(
             req.user.id,
             req.params.puzzle,
-            success ? "[redacted]" : solution,
+            success ? '[redacted]' : solution,
             puzzle.Value,
             success
           )
@@ -165,6 +166,43 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                 const finalized = req.params.puzzle === config.last_puzzle
 
                 db.userFinish(req.user.id, finished, finalized)
+                discord.push(
+                  `**${res.locals.team.display_name}** just solved puzzle \`${req.params.puzzle}\`!`
+                )
+
+                if (finished) {
+                  discord.push(
+                    `**${
+                      res.locals.team.display_name
+                    }** just finished the division's final puzzle at ${
+                      new Date().toLocaleString('en-En', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                        timeZone: 'America/New_York'
+                      }) + ' ET'
+                    }.`
+                  )
+                }
+
+                if (finalized) {
+                  discord.push(
+                    `**${
+                      res.locals.team.display_name
+                    }** just finished the final puzzle of the competition at ${
+                      new Date().toLocaleString('en-En', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                        timeZone: 'America/New_York'
+                      }) + ' ET'
+                    }.`
+                  )
+                }
 
                 db.updateScore(req.user.id, puzzle.Value).then(() => {
                   res.json({
@@ -177,6 +215,10 @@ app.post('/puzzle/:puzzle', solveLimiter, cacheCheck(), (req, res) => {
                   })
                 })
               } else {
+                discord.push(
+                  `**${res.locals.team.display_name}** just submitted an incorrect attempt ${solution} for puzzle \`${req.params.puzzle}\`.`
+                )
+
                 const close1 = puzzle['Close1']
                   ? await flagger.validateHash(solution, puzzle['Close1'])
                   : false
@@ -240,6 +282,10 @@ app.get('/puzzle/:puzzle/hint/:hint', cacheCheck(), async (req, res) => {
   } else if (userCredits < 1) {
     res.render('message', messages.outOfHintCredit)
   } else {
+    discord.push(
+      `**${res.locals.team.display_name}** just unlocked hint \`${req.params.hint}\` for puzzle \`${req.params.puzzle}\`.`
+    )
+
     db.createHintIntent(req.user.id, req.params.puzzle, req.params.hint, 0)
       .then(() => {
         res.redirect(req.get('referer') + '#' + req.params.hint)

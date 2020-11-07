@@ -25,6 +25,7 @@
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
+    "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.0.0",
