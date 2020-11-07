@@ -21,6 +21,7 @@ const db = require('./services/db')
 const redis = require('./services/redis')
 const config = require('./config')
 const messages = require('./lib/messages')
+const discord = require('./services/discord')
 
 if (config.env !== 'development') {
   const Bugsnag = require('@bugsnag/js')
@@ -102,7 +103,10 @@ app.use(async (req, res, next) => {
 
 // Easter egg, feel free to disable
 app.post('/egg/key', bodyParser.json(), (req, res) => {
-  console.log(req.body)
+  if (req.body.key === config.meta.key) {
+      discord.push(`🎉 **${res.locals.team ? res.locals.team.display_name : "Unlogged Guest"}** solved the \`FOUND\` meta-meta!!!`)
+  }
+
   res.json({
     success: req.body.key === config.meta.key,
     solution: req.body.key === config.meta.key ? config.meta.solution : null
