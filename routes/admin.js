@@ -11,6 +11,7 @@ const db = require('../services/db')
 const config = require('../config')
 const messages = require('../lib/messages')
 const csv = require('../lib/csv')
+const discord = require('../services/discord')
 
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
