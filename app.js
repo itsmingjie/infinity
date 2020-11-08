@@ -11,6 +11,7 @@ const minifyHTML = require('express-minify-html')
 const compression = require('compression')
 const csrf = require('csurf')
 const redisStore = require('connect-redis')(session)
+const networkInterfaces = require('os').networkInterfaces
 
 const app = express()
 const http = require('http').createServer(app)
@@ -90,6 +91,14 @@ app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
+const getLocalExternalIP = () =>
+  []
+    .concat(...Object.values(networkInterfaces()))
+    .filter((details) => details.family === 'IPv4' && !details.internal)
+    .pop().address
+
+const systemHash = Buffer.from(getLocalExternalIP()).toString('base64').toUpperCase().substring(0, 6)
+
 // always pass in global configs and user credentials
 app.use(async (req, res, next) => {
   res.locals.team = req.user ? await db.getUser(req.user.id) : null
@@ -97,6 +106,7 @@ app.use(async (req, res, next) => {
   res.locals.global = await redis.getSettings()
   res.locals.environment = config.env
   res.locals.euler_url = config.euler_url
+  res.locals.node_id = systemHash
 
   next()
 })
