@@ -14,7 +14,7 @@ const getLocalExternalIP = () =>
     .filter((details) => details.family === 'IPv4' && !details.internal)
     .pop().address
 
-const systemHash = Buffer.from(getLocalExternalIP()).toString('base64').replaceAll("=", "X").toUpperCase().substring(6)
+const systemHash = Buffer.from(getLocalExternalIP()).toString('base64').replace(/=/g, "X").toUpperCase().substring(6)
 
 bot.on('ready', () => {
   console.info(`Logged in as ${bot.user.tag}!}`)
