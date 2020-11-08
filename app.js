@@ -97,7 +97,7 @@ const getLocalExternalIP = () =>
     .filter((details) => details.family === 'IPv4' && !details.internal)
     .pop().address
 
-const systemHash = Buffer.from(getLocalExternalIP()).toString('base64').replace("=", "").toUpperCase().substring(6)
+const systemHash = Buffer.from(getLocalExternalIP()).toString('base64').replaceAll("=", "X").toUpperCase().substring(6)
 
 // always pass in global configs and user credentials
 app.use(async (req, res, next) => {
