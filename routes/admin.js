@@ -138,6 +138,7 @@ app.post('/announcement', (req, res) => {
 app.get('/ban/:id', (req, res) => {
   const uid = req.params.id
   db.banUser(uid, true, res.locals.team.name)
+  discord.push(`🈲 ${uid}\` was banned by ${res.locals.team.name}!`)
 
   res.render('message', messages.success)
 })
@@ -145,6 +146,7 @@ app.get('/ban/:id', (req, res) => {
 app.get('/unban/:id', (req, res) => {
   const uid = req.params.id
   db.banUser(uid, false, res.locals.team.name)
+  discord.push(`🆗 \`${uid}\` was unbanned by ${res.locals.team.name}!`)
 
   res.render('message', messages.success)
 })

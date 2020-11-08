@@ -108,7 +108,7 @@ app.post(
     if (password !== '') {
       db.createUser(name, password, division, affiliation, display_name)
         .then(() => {
-          discord.push(`New team ${name} [${display_name}] ${affiliation ? `with affiliation ${affiliation}` : ""} just registered for division ${division}!`)
+          discord.push(`☀ New team ${name} [${display_name}] ${affiliation ? `with affiliation ${affiliation}` : ""} just registered for division ${division}!`)
 
           res.render('message', {
             message:
