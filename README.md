@@ -10,8 +10,8 @@ Infinity ∞ is a puzzle hunt server written for [inteGIRLS](https://www.integir
 Please contact [tech@integirls.org](mailto:tech@integirls.org) before reusing this software for a large competition. We may be able to help.
 
 ![Homepage](docs/home.png)
-![Grid](docs/grid.png)
-![Puzzle](docs/puzzle.png)
+
+[More Screenshots »](/screenshots.md)
 
 ## Tech Stack
 
